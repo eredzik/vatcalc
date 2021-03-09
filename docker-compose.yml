@@ -1,0 +1,9 @@
+version: "3.3"
+services:
+  backend:
+    build:
+      context : backend/
+      dockerfile: "backend.dockerfile"
+    ports:
+      - "8000:8000"
+    # network_mode: "host"
