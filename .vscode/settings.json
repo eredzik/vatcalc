@@ -1,7 +1,0 @@
-{
-    "python.pythonPath": "/home/emil/.local/share/virtualenvs/backend-tY7dEsY7/bin/python",
-    "python.formatting.provider": "black",
-    "python.linting.mypyArgs": [
-        "--config-file=${workspaceFolder}/app/mypy.ini"
-    ]
-}

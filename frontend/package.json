@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "@dillonkearns/elm-graphql": "^4.2.0"
+  }
+}

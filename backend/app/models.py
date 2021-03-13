@@ -1,7 +1,7 @@
 from sqlalchemy import Boolean, Column, Date, Float, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, scoped_session
 
-from .database import Base
+from .database import Base, SessionLocal
 
 
 class Invoice(Base):
