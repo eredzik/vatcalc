@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "@dillonkearns/elm-graphql": "^4.2.0"
+  },
+  "dependencies": {
+    "elm-graphql": "^1.0.6"
   }
 }

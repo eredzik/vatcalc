@@ -8,9 +8,12 @@ uvicorn = "*"
 fastapi = "*"
 sqlalchemy = "*"
 graphene = "*"
+graphene-sqlalchemy = "*"
 
 [dev-packages]
-pytest= "*"
+pytest = "*"
+sqlalchemy-stubs = "*"
+mypy = "*"
 
 [requires]
 python_version = "3.8"

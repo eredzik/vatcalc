@@ -11,7 +11,7 @@ class TradingPartner(SQLAlchemyObjectType):
 
 
 class Query(graphene.ObjectType):
-    all_partners = graphene.List(TradingPartner)
+    all_partners = graphene.NonNull(graphene.List(graphene.NonNull(TradingPartner)))
 
     def resolve_all_partners(self, info):
         query = TradingPartner.get_query(info)

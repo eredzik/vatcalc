@@ -7,6 +7,21 @@
 
 module Main exposing (Model, init, main, update, view)
 
+-- import DecoderTradePartners
+--     exposing
+--         ( TradePartner
+--         , TradePartnerNew
+--         , partnersDecoder
+--         , partnersEncoder
+--         )
+-- import Backend.Object exposing (TradingPartner)
+
+import API.FetchTradePartners exposing (getAllPartners)
+import API.GraphQL exposing (makeGraphQLQuery)
+import API.Objects exposing (TradePartner)
+import Backend.Object
+import Backend.Object.TradingPartner as TradingPartner
+import Backend.Query as Query
 import Bootstrap.Button as Button
 import Bootstrap.CDN as CDN
 import Bootstrap.Carousel exposing (Msg)
@@ -17,24 +32,33 @@ import Bootstrap.Navbar as Navbar
 import Bootstrap.Table as Table
 import Browser exposing (UrlRequest)
 import Browser.Navigation as Navigation
-import DecoderTradePartners
-    exposing
-        ( TradePartner
-        , TradePartnerNew
-        , partnersDecoder
-        , partnersEncoder
-        )
+import Debug exposing (toString)
+import Graphql.Http exposing (HttpError)
+import Graphql.Operation exposing (RootQuery)
+import Graphql.SelectionSet as SelectionSet exposing (SelectionSet)
 import Html exposing (..)
 import Html.Attributes exposing (class, href, maxlength)
-import Http
+import Http exposing (Response)
 import Json.Decode
     exposing
-        ( list
+        ( Decoder
+        , field
+        , int
+        , list
+        , string
         )
+import Json.Encode as Encode
 import Platform.Cmd
-import RemoteData exposing (WebData)
+import RemoteData exposing (RemoteData, WebData)
 import String exposing (length)
 import Url exposing (Url)
+
+
+type alias TradePartnerNew =
+    { nip_number : String
+    , name : String
+    , adress : String
+    }
 
 
 type NipValidity
@@ -48,7 +72,7 @@ type alias Model =
     , url : Url.Url
     , nipValid : NipValidity
     , newTradePartner : TradePartnerNew
-    , tradePartners : WebData (List TradePartner)
+    , tradePartners : RemoteData (Graphql.Http.Error (List TradePartner)) (List TradePartner)
     , navbarState : Navbar.State
     }
 
@@ -74,7 +98,7 @@ init _ url key =
       , tradePartners = RemoteData.Loading
       , navbarState = navbarState
       }
-    , Platform.Cmd.batch [ getPartnersList, navbarCmd ]
+    , Platform.Cmd.batch [ fetchAllPartners, navbarCmd ]
     )
 
 
@@ -94,26 +118,18 @@ type alias Flags =
     {}
 
 
-getPartnersList : Cmd Msg
-getPartnersList =
-    Http.get
-        { url = "http://localhost:8000/trade_partners/"
-        , expect =
-            list partnersDecoder
-                |> Http.expectJson
-                    (RemoteData.fromResult >> GotPartnersList)
-        }
-
-
 type Msg
     = UpdateNIP String NipValidity
     | ClickedLink UrlRequest
     | UrlChange Url
-    | GotPartnersList (WebData (List TradePartner))
+    | GotPartnersList (RemoteData (Graphql.Http.Error (List TradePartner)) (List TradePartner))
     | NavbarMsg Navbar.State
     | UpdatePartnerData TradePartnerNew
-    | AddPartnerHttp
-    | GotAddPartnerHttpResponse (WebData TradePartner)
+
+
+
+-- | AddPartnerHttp
+-- | GotAddPartnerHttpResponse (WebData TradePartner)
 
 
 validateNIP : String -> Msg
@@ -171,10 +187,10 @@ viewTradePartners trade_partners =
 viewTradePartner : TradePartner -> Table.Row Msg
 viewTradePartner trade_partner =
     Table.tr []
-        [ Table.td [] [ text (String.fromInt trade_partner.id) ]
-        , Table.td [] [ text trade_partner.name ]
-        , Table.td [] [ text trade_partner.nip_number ]
-        , Table.td [] [ text trade_partner.adress ]
+        [ Table.td [] [ text (toString trade_partner.id) ]
+        , Table.td [] [ text (Maybe.withDefault "Unavailable" trade_partner.name) ]
+        , Table.td [] [ text (Maybe.withDefault "Unavailable" trade_partner.nip_number) ]
+        , Table.td [] [ text (Maybe.withDefault "Unavailable" trade_partner.adress) ]
         ]
 
 
@@ -209,7 +225,7 @@ viewPartnersOrError model =
             viewTradePartners trade_partners
 
         RemoteData.Failure httpError ->
-            viewError (buildErrorMessage httpError)
+            h3 [] [ text ("download failed" ++ toString httpError) ]
 
 
 viewError : String -> Html Msg
@@ -224,23 +240,23 @@ viewError errorMessage =
         ]
 
 
-buildErrorMessage : Http.Error -> String
+buildErrorMessage : Graphql.Http.HttpError -> String
 buildErrorMessage httpError =
     case httpError of
-        Http.BadUrl message ->
+        Graphql.Http.BadUrl message ->
             message
 
-        Http.Timeout ->
+        Graphql.Http.Timeout ->
             "Server is taking too long to respond. Please try again later."
 
-        Http.NetworkError ->
+        Graphql.Http.NetworkError ->
             "Unable to reach server."
 
-        Http.BadStatus statusCode ->
-            "Request failed with status code: " ++ String.fromInt statusCode
+        Graphql.Http.BadStatus metadata statusCode ->
+            "Request failed with status code: " ++ statusCode ++ metadata.url ++ metadata.statusText
 
-        Http.BadBody message ->
-            message
+        Graphql.Http.BadPayload message ->
+            Json.Decode.errorToString message
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -268,26 +284,32 @@ update msg model =
         NavbarMsg state ->
             ( { model | navbarState = state }, Cmd.none )
 
-        AddPartnerHttp ->
-            ( model, createNewPartner model.newTradePartner )
-
+        -- AddPartnerHttp ->
+        -- ( model, createNewPartner model.newTradePartner )
         UpdatePartnerData partnerData ->
             ( { model | newTradePartner = partnerData }, Cmd.none )
 
-        GotAddPartnerHttpResponse _ ->
-            ( { model | newTradePartner = init_trade_partner }, getPartnersList )
 
 
-createNewPartner : TradePartnerNew -> Cmd Msg
-createNewPartner partnerData =
-    Http.post
-        { url = "http://localhost:8000/trade_partners/"
-        , body = Http.jsonBody <| partnersEncoder partnerData
-        , expect =
-            partnersDecoder
-                |> Http.expectJson
-                    (RemoteData.fromResult >> GotAddPartnerHttpResponse)
-        }
+-- GotAddPartnerHttpResponse _ ->
+-- ( { model | newTradePartner = init_trade_partner }, getAllPartners )
+-- partnersEncoder : TradePartnerNew -> Encode.Value
+-- partnersEncoder trade_partner =
+--     Encode.object
+--         [ ( "nip_number", Encode.string trade_partner.nip_number )
+--         , ( "name", Encode.string trade_partner.name )
+--         , ( "adress", Encode.string trade_partner.adress )
+--         ]
+-- createNewPartner : TradePartnerNew -> Cmd Msg
+-- createNewPartner partnerData =
+--     Http.post
+--         { url = "http://localhost:8000/trade_partners/"
+--         , body = Http.jsonBody <| partnersEncoder partnerData
+--         , expect =
+--             partnersDecoder
+--                 |> Http.expectJson
+--                     (RemoteData.fromResult >> GotAddPartnerHttpResponse)
+--         }
 
 
 type alias Document msg =
@@ -346,7 +368,8 @@ viewTradePartnerAdd model =
                 , Input.value model.newTradePartner.adress
                 ]
             ]
-        , Button.submitButton [ Button.primary, Button.onClick AddPartnerHttp ] [ text "Dodaj kontrahenta" ]
+
+        -- , Button.submitButton [ Button.primary, Button.onClick AddPartnerHttp ] [ text "Dodaj kontrahenta" ]
         ]
 
 
@@ -370,3 +393,8 @@ view model =
             ]
         ]
     }
+
+
+fetchAllPartners : Cmd Msg
+fetchAllPartners =
+    makeGraphQLQuery getAllPartners (RemoteData.fromResult >> GotPartnersList)

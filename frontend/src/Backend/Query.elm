@@ -21,6 +21,6 @@ import Json.Decode as Decode exposing (Decoder)
 
 allPartners :
     SelectionSet decodesTo Backend.Object.TradingPartner
-    -> SelectionSet (Maybe (List (Maybe decodesTo))) RootQuery
+    -> SelectionSet (List decodesTo) RootQuery
 allPartners object____ =
-    Object.selectionForCompositeField "allPartners" [] object____ (identity >> Decode.nullable >> Decode.list >> Decode.nullable)
+    Object.selectionForCompositeField "allPartners" [] object____ (identity >> Decode.list)

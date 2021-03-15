@@ -19,9 +19,9 @@ import Graphql.SelectionSet exposing (SelectionSet)
 import Json.Decode as Decode
 
 
-id : SelectionSet Backend.ScalarCodecs.Id Backend.Object.TradingPartner
-id =
-    Object.selectionForField "ScalarCodecs.Id" "id" [] (Backend.ScalarCodecs.codecs |> Backend.Scalar.unwrapCodecs |> .codecId |> .decoder)
+uuid : SelectionSet Backend.ScalarCodecs.Id Backend.Object.TradingPartner
+uuid =
+    Object.selectionForField "ScalarCodecs.Id" "uuid" [] (Backend.ScalarCodecs.codecs |> Backend.Scalar.unwrapCodecs |> .codecId |> .decoder)
 
 
 nipNumber : SelectionSet (Maybe String) Backend.Object.TradingPartner
