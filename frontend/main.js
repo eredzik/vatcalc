@@ -5763,7 +5763,7 @@ var $author$project$Backend$Query$allPartners = function (object____) {
 		A2($elm$core$Basics$composeR, $elm$core$Basics$identity, $elm$json$Json$Decode$list));
 };
 var $author$project$API$Objects$TradePartner = F4(
-	function (nip_number, name, adress, id) {
+	function (id, nip_number, name, adress) {
 		return {adress: adress, id: id, name: name, nip_number: nip_number};
 	});
 var $elm$json$Json$Decode$null = _Json_decodeNull;
@@ -5839,59 +5839,9 @@ var $author$project$Backend$Object$TradingPartner$nipNumber = A4(
 	'nipNumber',
 	_List_Nil,
 	$elm$json$Json$Decode$nullable($elm$json$Json$Decode$string));
-var $author$project$Backend$Scalar$Id = function (a) {
-	return {$: 'Id', a: a};
-};
-var $elm$json$Json$Decode$bool = _Json_decodeBool;
-var $elm$json$Json$Decode$float = _Json_decodeFloat;
-var $elm$core$String$fromFloat = _String_fromNumber;
 var $elm$json$Json$Decode$int = _Json_decodeInt;
-var $dillonkearns$elm_graphql$Graphql$Internal$Builder$Object$scalarDecoder = $elm$json$Json$Decode$oneOf(
-	_List_fromArray(
-		[
-			$elm$json$Json$Decode$string,
-			A2($elm$json$Json$Decode$map, $elm$core$String$fromFloat, $elm$json$Json$Decode$float),
-			A2($elm$json$Json$Decode$map, $elm$core$String$fromInt, $elm$json$Json$Decode$int),
-			A2(
-			$elm$json$Json$Decode$map,
-			function (bool) {
-				if (bool) {
-					return 'true';
-				} else {
-					return 'false';
-				}
-			},
-			$elm$json$Json$Decode$bool)
-		]));
-var $elm$json$Json$Encode$string = _Json_wrap;
-var $author$project$Backend$Scalar$defaultCodecs = {
-	codecId: {
-		decoder: A2($elm$json$Json$Decode$map, $author$project$Backend$Scalar$Id, $dillonkearns$elm_graphql$Graphql$Internal$Builder$Object$scalarDecoder),
-		encoder: function (_v0) {
-			var raw = _v0.a;
-			return $elm$json$Json$Encode$string(raw);
-		}
-	}
-};
-var $author$project$Backend$Scalar$Codecs = function (a) {
-	return {$: 'Codecs', a: a};
-};
-var $author$project$Backend$Scalar$defineCodecs = function (definitions) {
-	return $author$project$Backend$Scalar$Codecs(definitions);
-};
-var $author$project$Backend$ScalarCodecs$codecs = $author$project$Backend$Scalar$defineCodecs(
-	{codecId: $author$project$Backend$Scalar$defaultCodecs.codecId});
-var $author$project$Backend$Scalar$unwrapCodecs = function (_v0) {
-	var unwrappedCodecs = _v0.a;
-	return unwrappedCodecs;
-};
-var $author$project$Backend$Object$TradingPartner$uuid = A4(
-	$dillonkearns$elm_graphql$Graphql$Internal$Builder$Object$selectionForField,
-	'ScalarCodecs.Id',
-	'uuid',
-	_List_Nil,
-	$author$project$Backend$Scalar$unwrapCodecs($author$project$Backend$ScalarCodecs$codecs).codecId.decoder);
-var $author$project$API$FetchTradePartners$partnersSelection = A5($dillonkearns$elm_graphql$Graphql$SelectionSet$map4, $author$project$API$Objects$TradePartner, $author$project$Backend$Object$TradingPartner$nipNumber, $author$project$Backend$Object$TradingPartner$name, $author$project$Backend$Object$TradingPartner$adress, $author$project$Backend$Object$TradingPartner$uuid);
+var $author$project$Backend$Object$TradingPartner$uuid = A4($dillonkearns$elm_graphql$Graphql$Internal$Builder$Object$selectionForField, 'Int', 'uuid', _List_Nil, $elm$json$Json$Decode$int);
+var $author$project$API$FetchTradePartners$partnersSelection = A5($dillonkearns$elm_graphql$Graphql$SelectionSet$map4, $author$project$API$Objects$TradePartner, $author$project$Backend$Object$TradingPartner$uuid, $author$project$Backend$Object$TradingPartner$nipNumber, $author$project$Backend$Object$TradingPartner$name, $author$project$Backend$Object$TradingPartner$adress);
 var $author$project$API$FetchTradePartners$getAllPartners = $author$project$Backend$Query$allPartners($author$project$API$FetchTradePartners$partnersSelection);
 var $author$project$API$GraphQL$graphql_url = 'http://localhost:8000/';
 var $dillonkearns$elm_graphql$Graphql$Http$Query = F2(
@@ -7022,6 +6972,7 @@ var $dillonkearns$elm_graphql$Graphql$Document$serializeQueryWithOperationName =
 		var decoder_ = _v0.b;
 		return A3($dillonkearns$elm_graphql$Graphql$Document$serializeWithOperationName, 'query', operationName, fields);
 	});
+var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$url$Url$percentEncode = _Url_percentEncode;
 var $dillonkearns$elm_graphql$Graphql$Http$QueryParams$replace = F2(
 	function (old, _new) {
@@ -7704,6 +7655,7 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$transitionHandler = F2(
 					},
 					state)));
 	});
+var $elm$core$String$fromFloat = _String_fromNumber;
 var $rundis$elm_bootstrap$Bootstrap$Navbar$transitionStyle = function (maybeHeight) {
 	var pixelHeight = A2(
 		$elm$core$Maybe$withDefault,
@@ -8225,6 +8177,7 @@ var $elm$json$Json$Decode$at = F2(
 	});
 var $elm$json$Json$Decode$decodeValue = _Json_run;
 var $elm$json$Json$Decode$fail = _Json_fail;
+var $elm$json$Json$Decode$float = _Json_decodeFloat;
 var $rundis$elm_bootstrap$Bootstrap$Utilities$DomHelper$parentElement = function (decoder) {
 	return A2($elm$json$Json$Decode$field, 'parentElement', decoder);
 };

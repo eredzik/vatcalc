@@ -5,16 +5,19 @@ from . import models
 from .database import db_session
 
 
-class TradingPartner(SQLAlchemyObjectType):
-    class Meta:
-        model = models.TradingPartner
+class TradingPartner(graphene.ObjectType):
+    uuid = graphene.NonNull(graphene.Int)
+    nip_number = graphene.String()
+    name = graphene.String()
+    adress = graphene.String()
 
 
 class Query(graphene.ObjectType):
     all_partners = graphene.NonNull(graphene.List(graphene.NonNull(TradingPartner)))
 
     def resolve_all_partners(self, info):
-        query = TradingPartner.get_query(info)
+
+        query = models.TradingPartner.query
         return query.all()
 
 

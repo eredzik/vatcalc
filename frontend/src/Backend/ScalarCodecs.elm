@@ -4,16 +4,7 @@
 
 module Backend.ScalarCodecs exposing (..)
 
-import Backend.Scalar exposing (defaultCodecs)
-import Json.Decode as Decode exposing (Decoder)
 
-
-type alias Id =
-    Backend.Scalar.Id
-
-
-codecs : Backend.Scalar.Codecs Id
-codecs =
-    Backend.Scalar.defineCodecs
-        { codecId = defaultCodecs.codecId
-        }
+placeholder : String
+placeholder =
+    ""
