@@ -16,10 +16,13 @@ module Main exposing (Model, init, main, update, view)
 --         )
 -- import Backend.Object exposing (TradingPartner)
 
+import API.CreateNewPartner exposing (createNewPartner)
 import API.FetchTradePartners exposing (getAllPartners)
-import API.GraphQL exposing (makeGraphQLQuery)
-import API.Objects exposing (TradePartner)
+import API.GraphQL exposing (makeGraphQLMutation, makeGraphQLQuery)
+import API.Objects exposing (TradePartner, TradePartnerNew, TradePartnerResponse)
+import Backend.Mutation
 import Backend.Object
+import Backend.Object.CreateTradingPartner
 import Backend.Object.TradingPartner as TradingPartner
 import Backend.Query as Query
 import Bootstrap.Button as Button
@@ -52,13 +55,6 @@ import Platform.Cmd
 import RemoteData exposing (RemoteData, WebData)
 import String exposing (length)
 import Url exposing (Url)
-
-
-type alias TradePartnerNew =
-    { nip_number : String
-    , name : String
-    , adress : String
-    }
 
 
 type NipValidity
@@ -125,10 +121,11 @@ type Msg
     | GotPartnersList (RemoteData (Graphql.Http.Error (List TradePartner)) (List TradePartner))
     | NavbarMsg Navbar.State
     | UpdatePartnerData TradePartnerNew
+    | AddNewPartner
+    | GotNewPartnerResult (RemoteData (Graphql.Http.Error (Maybe TradePartnerResponse)) (Maybe TradePartnerResponse))
 
 
 
--- | AddPartnerHttp
 -- | GotAddPartnerHttpResponse (WebData TradePartner)
 
 
@@ -284,10 +281,14 @@ update msg model =
         NavbarMsg state ->
             ( { model | navbarState = state }, Cmd.none )
 
-        -- AddPartnerHttp ->
-        -- ( model, createNewPartner model.newTradePartner )
+        AddNewPartner ->
+            ( model, addNewPartner model.newTradePartner )
+
         UpdatePartnerData partnerData ->
             ( { model | newTradePartner = partnerData }, Cmd.none )
+
+        GotNewPartnerResult response ->
+            ( model, fetchAllPartners )
 
 
 
@@ -368,8 +369,11 @@ viewTradePartnerAdd model =
                 , Input.value model.newTradePartner.adress
                 ]
             ]
-
-        -- , Button.submitButton [ Button.primary, Button.onClick AddPartnerHttp ] [ text "Dodaj kontrahenta" ]
+        , Button.submitButton
+            [ Button.primary
+            , Button.onClick AddNewPartner
+            ]
+            [ text "Dodaj kontrahenta" ]
         ]
 
 
@@ -398,3 +402,10 @@ view model =
 fetchAllPartners : Cmd Msg
 fetchAllPartners =
     makeGraphQLQuery getAllPartners (RemoteData.fromResult >> GotPartnersList)
+
+
+addNewPartner : TradePartnerNew -> Cmd Msg
+addNewPartner trade_partner_data =
+    makeGraphQLMutation
+        (createNewPartner trade_partner_data)
+        (RemoteData.fromResult >> GotNewPartnerResult)

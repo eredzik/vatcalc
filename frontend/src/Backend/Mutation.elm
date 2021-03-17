@@ -20,23 +20,27 @@ import Json.Decode as Decode exposing (Decoder)
 
 
 type alias CreateTradingPartnerOptionalArguments =
-    { adress : OptionalArgument String
-    , name : OptionalArgument String
-    , nipNumber : OptionalArgument String
+    { adress : OptionalArgument String }
+
+
+type alias CreateTradingPartnerRequiredArguments =
+    { name : String
+    , nipNumber : String
     }
 
 
 createTradingPartner :
     (CreateTradingPartnerOptionalArguments -> CreateTradingPartnerOptionalArguments)
+    -> CreateTradingPartnerRequiredArguments
     -> SelectionSet decodesTo Backend.Object.CreateTradingPartner
     -> SelectionSet (Maybe decodesTo) RootMutation
-createTradingPartner fillInOptionals____ object____ =
+createTradingPartner fillInOptionals____ requiredArgs____ object____ =
     let
         filledInOptionals____ =
-            fillInOptionals____ { adress = Absent, name = Absent, nipNumber = Absent }
+            fillInOptionals____ { adress = Absent }
 
         optionalArgs____ =
-            [ Argument.optional "adress" filledInOptionals____.adress Encode.string, Argument.optional "name" filledInOptionals____.name Encode.string, Argument.optional "nipNumber" filledInOptionals____.nipNumber Encode.string ]
+            [ Argument.optional "adress" filledInOptionals____.adress Encode.string ]
                 |> List.filterMap identity
     in
-    Object.selectionForCompositeField "createTradingPartner" optionalArgs____ object____ (identity >> Decode.nullable)
+    Object.selectionForCompositeField "createTradingPartner" (optionalArgs____ ++ [ Argument.required "name" requiredArgs____.name Encode.string, Argument.required "nipNumber" requiredArgs____.nipNumber Encode.string ]) object____ (identity >> Decode.nullable)

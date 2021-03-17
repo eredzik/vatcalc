@@ -1,7 +1,7 @@
-module API.GraphQL exposing (makeGraphQLQuery)
+module API.GraphQL exposing (makeGraphQLMutation, makeGraphQLQuery)
 
 import Graphql.Http
-import Graphql.Operation exposing (RootQuery)
+import Graphql.Operation exposing (RootMutation, RootQuery)
 import Graphql.SelectionSet exposing (SelectionSet, map4, with)
 
 
@@ -17,4 +17,14 @@ makeGraphQLQuery :
 makeGraphQLQuery query decodesTo =
     query
         |> Graphql.Http.queryRequest graphql_url
+        |> Graphql.Http.send decodesTo
+
+
+makeGraphQLMutation :
+    SelectionSet decodesTo RootMutation
+    -> (Result (Graphql.Http.Error decodesTo) decodesTo -> msg)
+    -> Cmd msg
+makeGraphQLMutation mutation decodesTo =
+    mutation
+        |> Graphql.Http.mutationRequest graphql_url
         |> Graphql.Http.send decodesTo

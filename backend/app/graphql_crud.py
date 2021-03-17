@@ -21,29 +21,38 @@ class Query(graphene.ObjectType):
         return query.all()
 
 
+def validate_nip(nip: str):
+    if nip:
+        return True
+    else:
+        return False
+
+
 class CreateTradingPartner(graphene.Mutation):
     class Arguments:
-        nip_number = graphene.String()
-        name = graphene.String()
+        nip_number = graphene.NonNull(graphene.String)
+        name = graphene.NonNull(graphene.String)
         adress = graphene.String()
 
     ok = graphene.Boolean()
     trading_partner = graphene.Field(TradingPartner)
 
     def mutate(root, info, nip_number, name, adress):
+        ok = True
+        if not validate_nip(nip_number):
+            ok = False
         trading_partner = (
             db_session.query(models.TradingPartner)
             .filter(models.TradingPartner.nip_number == nip_number)
             .first()
         )
-        if not trading_partner:
+        if (not trading_partner) and ok:
             trading_partner = models.TradingPartner(
                 name=name, nip_number=nip_number, adress=adress
             )
             db_session.add(trading_partner)
             db_session.commit()
             db_session.flush()
-            ok = True
         else:
             ok = False
 

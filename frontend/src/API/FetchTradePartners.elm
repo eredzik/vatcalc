@@ -1,4 +1,4 @@
-module API.FetchTradePartners exposing (getAllPartners)
+module API.FetchTradePartners exposing (getAllPartners, partnersSelection)
 
 import API.GraphQL exposing (makeGraphQLQuery)
 import API.Objects exposing (TradePartner)

@@ -1,4 +1,4 @@
-frontend/main.js:
+frontend/src/Main.elm:
 	sh scripts/build_frontend.sh
 
 clean :

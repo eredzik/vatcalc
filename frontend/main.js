@@ -7367,6 +7367,160 @@ var $author$project$Main$init = F3(
 	});
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
+var $author$project$Main$GotNewPartnerResult = function (a) {
+	return {$: 'GotNewPartnerResult', a: a};
+};
+var $author$project$Backend$Mutation$CreateTradingPartnerRequiredArguments = F2(
+	function (name, nipNumber) {
+		return {name: name, nipNumber: nipNumber};
+	});
+var $dillonkearns$elm_graphql$Graphql$OptionalArgument$Present = function (a) {
+	return {$: 'Present', a: a};
+};
+var $author$project$API$CreateNewPartner$createNewPartnerOptionalArgs = function (adress) {
+	return function (args) {
+		return _Utils_update(
+			args,
+			{
+				adress: $dillonkearns$elm_graphql$Graphql$OptionalArgument$Present(adress)
+			});
+	};
+};
+var $dillonkearns$elm_graphql$Graphql$OptionalArgument$Absent = {$: 'Absent'};
+var $dillonkearns$elm_graphql$Graphql$Internal$Builder$Argument$Argument = F2(
+	function (a, b) {
+		return {$: 'Argument', a: a, b: b};
+	});
+var $dillonkearns$elm_graphql$Graphql$Internal$Encode$Json = function (a) {
+	return {$: 'Json', a: a};
+};
+var $elm$json$Json$Encode$null = _Json_encodeNull;
+var $dillonkearns$elm_graphql$Graphql$Internal$Encode$null = $dillonkearns$elm_graphql$Graphql$Internal$Encode$Json($elm$json$Json$Encode$null);
+var $dillonkearns$elm_graphql$Graphql$Internal$Builder$Argument$optional = F3(
+	function (fieldName, maybeValue, toValue) {
+		switch (maybeValue.$) {
+			case 'Present':
+				var value = maybeValue.a;
+				return $elm$core$Maybe$Just(
+					A2(
+						$dillonkearns$elm_graphql$Graphql$Internal$Builder$Argument$Argument,
+						fieldName,
+						toValue(value)));
+			case 'Absent':
+				return $elm$core$Maybe$Nothing;
+			default:
+				return $elm$core$Maybe$Just(
+					A2($dillonkearns$elm_graphql$Graphql$Internal$Builder$Argument$Argument, fieldName, $dillonkearns$elm_graphql$Graphql$Internal$Encode$null));
+		}
+	});
+var $dillonkearns$elm_graphql$Graphql$Internal$Builder$Argument$required = F3(
+	function (fieldName, raw, encode) {
+		return A2(
+			$dillonkearns$elm_graphql$Graphql$Internal$Builder$Argument$Argument,
+			fieldName,
+			encode(raw));
+	});
+var $dillonkearns$elm_graphql$Graphql$Internal$Encode$string = function (value) {
+	return $dillonkearns$elm_graphql$Graphql$Internal$Encode$Json(
+		$elm$json$Json$Encode$string(value));
+};
+var $author$project$Backend$Mutation$createTradingPartner = F3(
+	function (fillInOptionals____, requiredArgs____, object____) {
+		var filledInOptionals____ = fillInOptionals____(
+			{adress: $dillonkearns$elm_graphql$Graphql$OptionalArgument$Absent});
+		var optionalArgs____ = A2(
+			$elm$core$List$filterMap,
+			$elm$core$Basics$identity,
+			_List_fromArray(
+				[
+					A3($dillonkearns$elm_graphql$Graphql$Internal$Builder$Argument$optional, 'adress', filledInOptionals____.adress, $dillonkearns$elm_graphql$Graphql$Internal$Encode$string)
+				]));
+		return A4(
+			$dillonkearns$elm_graphql$Graphql$Internal$Builder$Object$selectionForCompositeField,
+			'createTradingPartner',
+			_Utils_ap(
+				optionalArgs____,
+				_List_fromArray(
+					[
+						A3($dillonkearns$elm_graphql$Graphql$Internal$Builder$Argument$required, 'name', requiredArgs____.name, $dillonkearns$elm_graphql$Graphql$Internal$Encode$string),
+						A3($dillonkearns$elm_graphql$Graphql$Internal$Builder$Argument$required, 'nipNumber', requiredArgs____.nipNumber, $dillonkearns$elm_graphql$Graphql$Internal$Encode$string)
+					])),
+			object____,
+			A2($elm$core$Basics$composeR, $elm$core$Basics$identity, $elm$json$Json$Decode$nullable));
+	});
+var $author$project$API$Objects$TradePartnerResponse = F2(
+	function (ok, trade_partner) {
+		return {ok: ok, trade_partner: trade_partner};
+	});
+var $dillonkearns$elm_graphql$Graphql$SelectionSet$map2 = F3(
+	function (combine, _v0, _v1) {
+		var selectionFields1 = _v0.a;
+		var selectionDecoder1 = _v0.b;
+		var selectionFields2 = _v1.a;
+		var selectionDecoder2 = _v1.b;
+		return A2(
+			$dillonkearns$elm_graphql$Graphql$SelectionSet$SelectionSet,
+			_Utils_ap(selectionFields1, selectionFields2),
+			A3($elm$json$Json$Decode$map2, combine, selectionDecoder1, selectionDecoder2));
+	});
+var $elm$json$Json$Decode$bool = _Json_decodeBool;
+var $author$project$Backend$Object$CreateTradingPartner$ok = A4(
+	$dillonkearns$elm_graphql$Graphql$Internal$Builder$Object$selectionForField,
+	'(Maybe Bool)',
+	'ok',
+	_List_Nil,
+	$elm$json$Json$Decode$nullable($elm$json$Json$Decode$bool));
+var $author$project$Backend$Object$CreateTradingPartner$tradingPartner = function (object____) {
+	return A4(
+		$dillonkearns$elm_graphql$Graphql$Internal$Builder$Object$selectionForCompositeField,
+		'tradingPartner',
+		_List_Nil,
+		object____,
+		A2($elm$core$Basics$composeR, $elm$core$Basics$identity, $elm$json$Json$Decode$nullable));
+};
+var $author$project$API$CreateNewPartner$partnersSelection = A3(
+	$dillonkearns$elm_graphql$Graphql$SelectionSet$map2,
+	$author$project$API$Objects$TradePartnerResponse,
+	$author$project$Backend$Object$CreateTradingPartner$ok,
+	$author$project$Backend$Object$CreateTradingPartner$tradingPartner(
+		A5($dillonkearns$elm_graphql$Graphql$SelectionSet$map4, $author$project$API$Objects$TradePartner, $author$project$Backend$Object$TradingPartner$uuid, $author$project$Backend$Object$TradingPartner$nipNumber, $author$project$Backend$Object$TradingPartner$name, $author$project$Backend$Object$TradingPartner$adress)));
+var $author$project$API$CreateNewPartner$createNewPartner = function (trade_partner) {
+	return A3(
+		$author$project$Backend$Mutation$createTradingPartner,
+		$author$project$API$CreateNewPartner$createNewPartnerOptionalArgs(trade_partner.adress),
+		A2($author$project$Backend$Mutation$CreateTradingPartnerRequiredArguments, trade_partner.name, trade_partner.nip_number),
+		$author$project$API$CreateNewPartner$partnersSelection);
+};
+var $dillonkearns$elm_graphql$Graphql$Http$Mutation = function (a) {
+	return {$: 'Mutation', a: a};
+};
+var $dillonkearns$elm_graphql$Graphql$Http$mutationRequest = F2(
+	function (baseUrl, mutationSelectionSet) {
+		return $dillonkearns$elm_graphql$Graphql$Http$Request(
+			{
+				baseUrl: baseUrl,
+				details: $dillonkearns$elm_graphql$Graphql$Http$Mutation(mutationSelectionSet),
+				expect: $dillonkearns$elm_graphql$Graphql$Document$decoder(mutationSelectionSet),
+				headers: _List_Nil,
+				operationName: $elm$core$Maybe$Nothing,
+				queryParams: _List_Nil,
+				timeout: $elm$core$Maybe$Nothing,
+				withCredentials: false
+			});
+	});
+var $author$project$API$GraphQL$makeGraphQLMutation = F2(
+	function (mutation, decodesTo) {
+		return A2(
+			$dillonkearns$elm_graphql$Graphql$Http$send,
+			decodesTo,
+			A2($dillonkearns$elm_graphql$Graphql$Http$mutationRequest, $author$project$API$GraphQL$graphql_url, mutation));
+	});
+var $author$project$Main$addNewPartner = function (trade_partner_data) {
+	return A2(
+		$author$project$API$GraphQL$makeGraphQLMutation,
+		$author$project$API$CreateNewPartner$createNewPartner(trade_partner_data),
+		A2($elm$core$Basics$composeR, $krisajenkins$remotedata$RemoteData$fromResult, $author$project$Main$GotNewPartnerResult));
+};
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$update = F2(
 	function (msg, model) {
@@ -7401,13 +7555,20 @@ var $author$project$Main$update = F2(
 						model,
 						{navbarState: state}),
 					$elm$core$Platform$Cmd$none);
-			default:
+			case 'AddNewPartner':
+				return _Utils_Tuple2(
+					model,
+					$author$project$Main$addNewPartner(model.newTradePartner));
+			case 'UpdatePartnerData':
 				var partnerData = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{newTradePartner: partnerData}),
 					$elm$core$Platform$Cmd$none);
+			default:
+				var response = msg.a;
+				return _Utils_Tuple2(model, $author$project$Main$fetchAllPartners);
 		}
 	});
 var $rundis$elm_bootstrap$Bootstrap$Navbar$Brand = function (a) {
@@ -8325,6 +8486,7 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$view = F2(
 								]))
 						]))));
 	});
+var $author$project$Main$AddNewPartner = {$: 'AddNewPartner'};
 var $author$project$Main$UpdatePartnerData = function (a) {
 	return {$: 'UpdatePartnerData', a: a};
 };
@@ -8519,6 +8681,33 @@ var $elm$html$Html$Attributes$maxlength = function (n) {
 		'maxlength',
 		$elm$core$String$fromInt(n));
 };
+var $rundis$elm_bootstrap$Bootstrap$Internal$Button$Attrs = function (a) {
+	return {$: 'Attrs', a: a};
+};
+var $rundis$elm_bootstrap$Bootstrap$Button$attrs = function (attrs_) {
+	return $rundis$elm_bootstrap$Bootstrap$Internal$Button$Attrs(attrs_);
+};
+var $elm$virtual_dom$VirtualDom$MayPreventDefault = function (a) {
+	return {$: 'MayPreventDefault', a: a};
+};
+var $elm$html$Html$Events$preventDefaultOn = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$MayPreventDefault(decoder));
+	});
+var $rundis$elm_bootstrap$Bootstrap$Button$onClick = function (message) {
+	return $rundis$elm_bootstrap$Bootstrap$Button$attrs(
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$Events$preventDefaultOn,
+				'click',
+				$elm$json$Json$Decode$succeed(
+					_Utils_Tuple2(message, true)))
+			]));
+};
 var $rundis$elm_bootstrap$Bootstrap$Form$Input$OnInput = function (a) {
 	return {$: 'OnInput', a: a};
 };
@@ -8528,12 +8717,25 @@ var $rundis$elm_bootstrap$Bootstrap$Form$Input$onInput = function (toMsg) {
 var $rundis$elm_bootstrap$Bootstrap$Internal$Button$Coloring = function (a) {
 	return {$: 'Coloring', a: a};
 };
+var $rundis$elm_bootstrap$Bootstrap$Internal$Button$Primary = {$: 'Primary'};
 var $rundis$elm_bootstrap$Bootstrap$Internal$Button$Roled = function (a) {
 	return {$: 'Roled', a: a};
 };
+var $rundis$elm_bootstrap$Bootstrap$Button$primary = $rundis$elm_bootstrap$Bootstrap$Internal$Button$Coloring(
+	$rundis$elm_bootstrap$Bootstrap$Internal$Button$Roled($rundis$elm_bootstrap$Bootstrap$Internal$Button$Primary));
 var $rundis$elm_bootstrap$Bootstrap$Internal$Button$Secondary = {$: 'Secondary'};
 var $rundis$elm_bootstrap$Bootstrap$Button$secondary = $rundis$elm_bootstrap$Bootstrap$Internal$Button$Coloring(
 	$rundis$elm_bootstrap$Bootstrap$Internal$Button$Roled($rundis$elm_bootstrap$Bootstrap$Internal$Button$Secondary));
+var $rundis$elm_bootstrap$Bootstrap$Button$submitButton = F2(
+	function (options, children) {
+		return A2(
+			$elm$html$Html$button,
+			A2(
+				$elm$core$List$cons,
+				$elm$html$Html$Attributes$type_('submit'),
+				$rundis$elm_bootstrap$Bootstrap$Internal$Button$buttonAttributes(options)),
+			children);
+	});
 var $rundis$elm_bootstrap$Bootstrap$Form$FormInternal$Success = {$: 'Success'};
 var $rundis$elm_bootstrap$Bootstrap$Form$Input$success = $rundis$elm_bootstrap$Bootstrap$Form$Input$Validation($rundis$elm_bootstrap$Bootstrap$Form$FormInternal$Success);
 var $rundis$elm_bootstrap$Bootstrap$Form$Input$Text = {$: 'Text'};
@@ -8886,6 +9088,17 @@ var $author$project$Main$viewTradePartnerAdd = function (model) {
 								}),
 								$rundis$elm_bootstrap$Bootstrap$Form$Input$value(model.newTradePartner.adress)
 							]))
+					])),
+				A2(
+				$rundis$elm_bootstrap$Bootstrap$Button$submitButton,
+				_List_fromArray(
+					[
+						$rundis$elm_bootstrap$Bootstrap$Button$primary,
+						$rundis$elm_bootstrap$Bootstrap$Button$onClick($author$project$Main$AddNewPartner)
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Dodaj kontrahenta')
 					]))
 			]));
 };
