@@ -2,7 +2,7 @@
 -- https://github.com/dillonkearns/elm-graphql
 
 
-module Backend.Query exposing (..)
+module Backend.Object.CreateInvoice exposing (..)
 
 import Backend.InputObject
 import Backend.Interface
@@ -16,18 +16,21 @@ import Graphql.Internal.Encode as Encode exposing (Value)
 import Graphql.Operation exposing (RootMutation, RootQuery, RootSubscription)
 import Graphql.OptionalArgument exposing (OptionalArgument(..))
 import Graphql.SelectionSet exposing (SelectionSet)
-import Json.Decode as Decode exposing (Decoder)
+import Json.Decode as Decode
 
 
-allPartners :
-    SelectionSet decodesTo Backend.Object.TradingPartner
-    -> SelectionSet (List decodesTo) RootQuery
-allPartners object____ =
-    Object.selectionForCompositeField "allPartners" [] object____ (identity >> Decode.list)
+ok : SelectionSet (Maybe Bool) Backend.Object.CreateInvoice
+ok =
+    Object.selectionForField "(Maybe Bool)" "ok" [] (Decode.bool |> Decode.nullable)
 
 
-allInvoices :
+invoice :
     SelectionSet decodesTo Backend.Object.Invoice
-    -> SelectionSet (Maybe (List decodesTo)) RootQuery
-allInvoices object____ =
-    Object.selectionForCompositeField "allInvoices" [] object____ (identity >> Decode.list >> Decode.nullable)
+    -> SelectionSet (Maybe decodesTo) Backend.Object.CreateInvoice
+invoice object____ =
+    Object.selectionForCompositeField "invoice" [] object____ (identity >> Decode.nullable)
+
+
+infoOutput : SelectionSet (Maybe String) Backend.Object.CreateInvoice
+infoOutput =
+    Object.selectionForField "(Maybe String)" "infoOutput" [] (Decode.string |> Decode.nullable)

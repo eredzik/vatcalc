@@ -4,7 +4,16 @@
 
 module Backend.ScalarCodecs exposing (..)
 
+import Backend.Scalar exposing (defaultCodecs)
+import Json.Decode as Decode exposing (Decoder)
 
-placeholder : String
-placeholder =
-    ""
+
+type alias Date =
+    Backend.Scalar.Date
+
+
+codecs : Backend.Scalar.Codecs Date
+codecs =
+    Backend.Scalar.defineCodecs
+        { codecDate = defaultCodecs.codecDate
+        }

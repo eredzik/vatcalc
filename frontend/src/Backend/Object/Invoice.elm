@@ -2,7 +2,7 @@
 -- https://github.com/dillonkearns/elm-graphql
 
 
-module Backend.Query exposing (..)
+module Backend.Object.Invoice exposing (..)
 
 import Backend.InputObject
 import Backend.Interface
@@ -16,18 +16,19 @@ import Graphql.Internal.Encode as Encode exposing (Value)
 import Graphql.Operation exposing (RootMutation, RootQuery, RootSubscription)
 import Graphql.OptionalArgument exposing (OptionalArgument(..))
 import Graphql.SelectionSet exposing (SelectionSet)
-import Json.Decode as Decode exposing (Decoder)
+import Json.Decode as Decode
 
 
-allPartners :
-    SelectionSet decodesTo Backend.Object.TradingPartner
-    -> SelectionSet (List decodesTo) RootQuery
-allPartners object____ =
-    Object.selectionForCompositeField "allPartners" [] object____ (identity >> Decode.list)
+uuid : SelectionSet Int Backend.Object.Invoice
+uuid =
+    Object.selectionForField "Int" "uuid" [] Decode.int
 
 
-allInvoices :
-    SelectionSet decodesTo Backend.Object.Invoice
-    -> SelectionSet (Maybe (List decodesTo)) RootQuery
-allInvoices object____ =
-    Object.selectionForCompositeField "allInvoices" [] object____ (identity >> Decode.list >> Decode.nullable)
+invoiceId : SelectionSet String Backend.Object.Invoice
+invoiceId =
+    Object.selectionForField "String" "invoiceId" [] Decode.string
+
+
+invoiceDate : SelectionSet Backend.ScalarCodecs.Date Backend.Object.Invoice
+invoiceDate =
+    Object.selectionForField "ScalarCodecs.Date" "invoiceDate" [] (Backend.ScalarCodecs.codecs |> Backend.Scalar.unwrapCodecs |> .codecDate |> .decoder)

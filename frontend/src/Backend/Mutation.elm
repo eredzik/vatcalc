@@ -44,3 +44,15 @@ createTradingPartner fillInOptionals____ requiredArgs____ object____ =
                 |> List.filterMap identity
     in
     Object.selectionForCompositeField "createTradingPartner" (optionalArgs____ ++ [ Argument.required "name" requiredArgs____.name Encode.string, Argument.required "nipNumber" requiredArgs____.nipNumber Encode.string ]) object____ (identity >> Decode.nullable)
+
+
+type alias CreateInvoiceRequiredArguments =
+    { invoiceInput : Backend.InputObject.InvoiceInput }
+
+
+createInvoice :
+    CreateInvoiceRequiredArguments
+    -> SelectionSet decodesTo Backend.Object.CreateInvoice
+    -> SelectionSet (Maybe decodesTo) RootMutation
+createInvoice requiredArgs____ object____ =
+    Object.selectionForCompositeField "createInvoice" [ Argument.required "invoiceInput" requiredArgs____.invoiceInput Backend.InputObject.encodeInvoiceInput ] object____ (identity >> Decode.nullable)

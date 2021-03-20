@@ -5,8 +5,16 @@
 module Backend.Object exposing (..)
 
 
+type CreateInvoice
+    = CreateInvoice
+
+
 type CreateTradingPartner
     = CreateTradingPartner
+
+
+type Invoice
+    = Invoice
 
 
 type TradingPartner
