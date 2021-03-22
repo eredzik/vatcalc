@@ -12,11 +12,10 @@ module Main exposing (Model, init, main, update, view)
 import Bootstrap.CDN as CDN
 import Bootstrap.Carousel exposing (Msg)
 import Bootstrap.Grid as Grid
-import Bootstrap.Navbar
 import Browser
 import Browser.Navigation
 import Html exposing (..)
-import Html.Attributes exposing (href)
+import Invoice exposing (fetchAllInvoices)
 import Navbar
 import Platform.Cmd
 import Route
@@ -29,6 +28,7 @@ type alias Model =
     , url : Url.Url
     , navbar : Navbar.Model
     , tradePartners : TradePartners.Model
+    , invoices : Invoice.Model
     }
 
 
@@ -41,6 +41,7 @@ type Msg
     | UrlChange Url.Url
     | NavbarMsg Navbar.Msg
     | TradePartnersMsg TradePartners.Msg
+    | InvoiceMsg Invoice.Msg
 
 
 init : Flags -> Url.Url -> Browser.Navigation.Key -> ( Model, Cmd Msg )
@@ -53,10 +54,12 @@ init _ url key =
       , url = url
       , navbar = navbarstate
       , tradePartners = TradePartners.init
+      , invoices = Invoice.init
       }
     , Platform.Cmd.batch
         [ Cmd.map NavbarMsg navbarcmd
         , Cmd.map TradePartnersMsg fetchAllPartners
+        , Cmd.map InvoiceMsg fetchAllInvoices
         ]
     )
 
@@ -110,6 +113,16 @@ update msg model =
             in
             ( { model | tradePartners = tradepartnermodel }, tradepartnercmdout )
 
+        InvoiceMsg subMsg ->
+            let
+                ( outmodel, cmd ) =
+                    Invoice.update subMsg model.invoices
+
+                outcmd =
+                    Cmd.map InvoiceMsg cmd
+            in
+            ( { model | invoices = outmodel }, outcmd )
+
 
 type alias Document msg =
     { title : String
@@ -128,7 +141,11 @@ view model =
                 )
 
         viewInvoices =
-            Html.text "aaa"
+            Html.map InvoiceMsg
+                (Grid.row []
+                    [ Invoice.view model.invoices
+                    ]
+                )
 
         view_all =
             case Route.fromUrl model.url of

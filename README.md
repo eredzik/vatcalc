@@ -14,8 +14,13 @@ To regenerate auto generated `elm-graphql` source and build frontend use `make`
 # TODO
 - [x] Trading partners adding and view
 - [ ] Trading partners editing
-- [ ] Inbound and outbound invoices adding and view
-- [ ] Invoices editing
+- [ ] Deleting trading partners
+- [x] View all invoices
+- [ ] Add invoice
+- [ ] Delete invoice
+- [ ] Edit invoice
+- [ ] Register/Login
+- [ ] Company data
 - [ ] Outstanding VAT calculation
 - [ ] Deployment
 - [ ] Automatic calculation of insurance payments (ZUS)

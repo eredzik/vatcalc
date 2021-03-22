@@ -1,14 +1,11 @@
 module API.FetchTradePartners exposing (getAllPartners, partnersSelection)
 
-import API.GraphQL exposing (makeGraphQLQuery)
 import API.Objects exposing (TradePartner)
 import Backend.Object
 import Backend.Object.TradingPartner as TradingPartner
 import Backend.Query as Query
-import Graphql.Http
 import Graphql.Operation exposing (RootQuery)
-import Graphql.SelectionSet exposing (SelectionSet, map4, with)
-import Json.Decode as Decode exposing (Decoder)
+import Graphql.SelectionSet exposing (SelectionSet, map4)
 
 
 partnersSelection : SelectionSet TradePartner Backend.Object.TradingPartner

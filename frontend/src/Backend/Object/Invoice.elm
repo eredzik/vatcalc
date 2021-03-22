@@ -4,6 +4,7 @@
 
 module Backend.Object.Invoice exposing (..)
 
+import Backend.Enum.InvoiceType
 import Backend.InputObject
 import Backend.Interface
 import Backend.Object
@@ -32,3 +33,22 @@ invoiceId =
 invoiceDate : SelectionSet Backend.ScalarCodecs.Date Backend.Object.Invoice
 invoiceDate =
     Object.selectionForField "ScalarCodecs.Date" "invoiceDate" [] (Backend.ScalarCodecs.codecs |> Backend.Scalar.unwrapCodecs |> .codecDate |> .decoder)
+
+
+invoiceType : SelectionSet Backend.Enum.InvoiceType.InvoiceType Backend.Object.Invoice
+invoiceType =
+    Object.selectionForField "Enum.InvoiceType.InvoiceType" "invoiceType" [] Backend.Enum.InvoiceType.decoder
+
+
+partner :
+    SelectionSet decodesTo Backend.Object.TradingPartner
+    -> SelectionSet decodesTo Backend.Object.Invoice
+partner object____ =
+    Object.selectionForCompositeField "partner" [] object____ identity
+
+
+invoicePositions :
+    SelectionSet decodesTo Backend.Object.InvoicePosition
+    -> SelectionSet (List decodesTo) Backend.Object.Invoice
+invoicePositions object____ =
+    Object.selectionForCompositeField "invoicePositions" [] object____ (identity >> Decode.list)

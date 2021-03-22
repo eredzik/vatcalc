@@ -2,7 +2,7 @@ module API.GraphQL exposing (makeGraphQLMutation, makeGraphQLQuery)
 
 import Graphql.Http
 import Graphql.Operation exposing (RootMutation, RootQuery)
-import Graphql.SelectionSet exposing (SelectionSet, map4, with)
+import Graphql.SelectionSet exposing (SelectionSet)
 
 
 graphql_url : String

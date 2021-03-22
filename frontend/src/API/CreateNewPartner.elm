@@ -2,15 +2,13 @@ module API.CreateNewPartner exposing (..)
 
 import API.FetchTradePartners exposing (partnersSelection)
 import API.Objects exposing (TradePartner, TradePartnerNew, TradePartnerResponse)
-import Backend.Mutation as Mutation exposing (createTradingPartner)
-import Backend.Object exposing (TradingPartner)
+import Backend.Mutation as Mutation
+import Backend.Object
 import Backend.Object.CreateTradingPartner
 import Backend.Object.TradingPartner
-import Graphql.Http
 import Graphql.Operation exposing (RootMutation)
 import Graphql.OptionalArgument
-import Graphql.SelectionSet exposing (SelectionSet, map2, map4, with)
-import Html exposing (address)
+import Graphql.SelectionSet exposing (SelectionSet, map2, map4)
 
 
 

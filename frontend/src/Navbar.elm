@@ -3,9 +3,7 @@ module Navbar exposing (..)
 import Bootstrap.Navbar
 import Html exposing (Html)
 import Html.Attributes
-import Html.Events
 import Route
-import Task
 
 
 type Msg

@@ -28,11 +28,11 @@ class InvoicePositionInput(graphene.InputObjectType):
 
 
 class InvoicePosition(graphene.ObjectType):
-    uuid = graphene.Int()
+    uuid = graphene.NonNull(graphene.Int)
     name = graphene.String()
-    vat_rate = VatRates()
-    num_items = graphene.Float()
-    price_net = graphene.Float()
+    vat_rate = graphene.NonNull(VatRates)
+    num_items = graphene.NonNull(graphene.Float)
+    price_net = graphene.NonNull(graphene.Float)
 
 
 class TradingPartnerSelection(graphene.InputObjectType):
@@ -51,6 +51,8 @@ class Invoice(graphene.ObjectType):
     uuid = graphene.NonNull(graphene.Int)
     invoice_id = graphene.NonNull(graphene.String)
     invoice_date = graphene.NonNull(graphene.Date)
-    # invoice_type = graphene.NonNull(graphene.Field(InvoiceType))
-    # partner = graphene.NonNull(TradingPartner)
-    # invoice_positions = graphene.List(InvoicePosition)
+    invoice_type = graphene.NonNull(InvoiceType)
+    partner = graphene.NonNull(TradingPartner)
+    invoice_positions = graphene.NonNull(
+        graphene.List(graphene.NonNull(InvoicePosition))
+    )

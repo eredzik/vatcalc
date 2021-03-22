@@ -17,5 +17,9 @@ type Invoice
     = Invoice
 
 
+type InvoicePosition
+    = InvoicePosition
+
+
 type TradingPartner
     = TradingPartner
