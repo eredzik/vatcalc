@@ -1,3 +1,3 @@
 frontend/src/API/* linguist-detectable=false
-frontends/src/main.js linguist-detectable=false
-frontends/src/index.html linguist-detectable=false
+frontend/main.js linguist-detectable=false
+frontend/index.html linguist-detectable=false
