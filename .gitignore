@@ -6,4 +6,3 @@ __pycache__/
 node_modules/
 elm-stuff/
 index.html
-build/
