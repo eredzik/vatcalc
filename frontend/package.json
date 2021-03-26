@@ -1,9 +1,9 @@
 {
   "devDependencies": {
-    "@dillonkearns/elm-graphql": "^4.2.0"
+    "@dillonkearns/elm-graphql": "^4.2.0",
+    "elm": "0.19.x"
   },
   "dependencies": {
-    "elm": "0.19.x",
     "elm-graphql": "^1.0.6"
   },
   "scripts": {
