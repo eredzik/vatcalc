@@ -3,6 +3,10 @@
     "@dillonkearns/elm-graphql": "^4.2.0"
   },
   "dependencies": {
-    "elm-graphql": "^1.0.6"
+    "elm-graphql": "^1.0.6",
+    "elm": "0.19.1"
+  },
+  "scripts": {
+    "build": "elm make src/Main.elm --optimize --output build/main.js"
   }
 }
