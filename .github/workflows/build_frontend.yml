@@ -9,12 +9,14 @@ jobs:
       - name : Checkout code
         uses: actions/checkout@v2
       
-      - name: Setup elm
+      - name: Setup python
         uses: actions/setup-python@v2
 
+      - name: Setup elm
+        uses: jorelali/setup-elm@v3
 
 
-      - name: Set up Python
+      - name: Intall Python dependencies
         with:
           python-version: 3.8
         working-directory: backend
@@ -23,7 +25,6 @@ jobs:
           pipenv install
 
       - name : Build frontend
-        uses: jorelali/setup-elm@v3
         with:
           elm-version: 0.19.1
         run:
