@@ -15,7 +15,8 @@ jobs:
           python-version: 3.8
       - name: Setup elm
         uses: jorelali/setup-elm@v3
-
+        with:
+          elm-version: 0.19.1
 
       - name: Intall Python dependencies
         working-directory: backend
@@ -24,7 +25,6 @@ jobs:
           pipenv install
 
       - name : Build frontend
-        with:
-          elm-version: 0.19.1
+        
         run:
           elm make src/Main.elm --output=build/main.js
