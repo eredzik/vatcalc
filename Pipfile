@@ -4,9 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-graphene-sqlalchemy = "*"
-uvicorn = "*"
-fastapi = "*"
 
 [dev-packages]
 

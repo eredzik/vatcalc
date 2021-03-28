@@ -16,10 +16,11 @@ jobs:
         uses: jorelali/setup-elm@v3
         with:
           elm-version: 0.19.1
+      - name: Install pipenv
+        working-directory: backend
+        run: python -m pip install --upgrade pip pipenv
       - name: Intall Python dependencies
         working-directory: backend
-        run: |
-          python -m pip install --upgrade pip pipenv
-          pipenv install
+        run: pipenv install
       - name : Build frontend
         run: ./scripts/build_frontend.sh
