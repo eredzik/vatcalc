@@ -17,10 +17,10 @@ jobs:
         with:
           elm-version: 0.19.1
       - name: Install pipenv
-        working-directory: backend
+        working-directory: ./backend
         run: python -m pip install --upgrade pip pipenv
       - name: Intall Python dependencies
-        working-directory: backend
+        working-directory: ./backend/
         run: pipenv install
       - name : Build frontend
         run: ./scripts/build_frontend.sh
