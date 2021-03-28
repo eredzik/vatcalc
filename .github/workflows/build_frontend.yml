@@ -25,5 +25,3 @@ jobs:
           elm-version: 0.19.1
         run:
           elm make src/Main.elm --output=build/main.js
-
-    - run: elm make src/Main.elm
