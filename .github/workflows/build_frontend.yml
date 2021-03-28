@@ -1,0 +1,29 @@
+name: Build and Deploy to Netlify
+on:
+  push:
+  pull_request:
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+      - name : Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install dependencies
+        working-directory: backend
+        run: |
+          python -m pip install --upgrade pip pipenv
+          pipenv install
+
+      - name : Build frontend
+        uses: jorelali/setup-elm@v3
+        with:
+          elm-version: 0.19.1
+        run:
+          elm make src/Main.elm --output=build/main.js
+
+    - run: elm make src/Main.elm
