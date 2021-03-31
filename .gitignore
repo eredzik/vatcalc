@@ -7,3 +7,4 @@ node_modules/
 elm-stuff/
 index.html
 build/
+.env

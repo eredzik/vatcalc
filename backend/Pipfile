@@ -9,6 +9,7 @@ fastapi = "*"
 sqlalchemy = "*"
 graphene = "*"
 graphene-sqlalchemy = "*"
+alembic = "*"
 
 [dev-packages]
 pytest = "*"

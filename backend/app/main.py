@@ -8,5 +8,4 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-
 app.add_route("/", GraphQLApp(schema=graphql_crud.schema))

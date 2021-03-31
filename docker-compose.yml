@@ -2,8 +2,18 @@ version: "3.3"
 services:
   backend:
     build:
-      context : backend/
+      context: backend/
       dockerfile: "backend.dockerfile"
     ports:
       - "8000:8000"
+    volumes:
+      - ./backend:/usr/src/backend
     # network_mode: "host"
+  db:
+    image: postgres:12
+    volumes:
+      - app-db-data:/var/lib/postgresql/data/pgdata
+    env_file:
+      - .env
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
