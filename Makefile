@@ -3,3 +3,6 @@ frontend/src/Main.elm:
 
 clean :
 	rm frontend/main.js
+
+alembic-revision:
+	docker-compose run backend alembic revision --autogenerate -m "$(COMMENT)"

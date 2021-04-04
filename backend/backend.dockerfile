@@ -6,5 +6,6 @@ COPY Pipfile.lock .
 RUN pip install --no-cache-dir pipenv && \
     pipenv install --system --ignore-pipfile --deploy --clear
 
-CMD [ "pipenv", "run", "uvicorn",  "app.main:app", "--reload", "--host", "0.0.0.0", "--port", "5000"]
+
+CMD ["uvicorn",  "app.main:app", "--reload", "--host", "0.0.0.0", "--port", "5000"]
 

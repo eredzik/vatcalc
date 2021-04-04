@@ -32,8 +32,11 @@ def get_url():
     server = os.getenv("POSTGRES_SERVER", "db")
     db = os.getenv("POSTGRES_DB", "app")
     return f"postgresql://{user}:{password}@{server}/{db}"
-
-
+if os.getenv("USE_POSTGRES"):
+    url= get_url()
+else:
+    url="sqlite:///../sql_app.db"
+config.set_main_option("sqlalchemy.url", url)
 def run_migrations_offline():
     """Run migrations in 'offline' mode.
 
@@ -46,8 +49,8 @@ def run_migrations_offline():
     script output.
 
     """
-    # url = config.get_main_option("sqlalchemy.url")
-    url = get_url()
+    url = config.get_main_option("sqlalchemy.url")
+    
     context.configure(
         url=url,
         target_metadata=target_metadata,
