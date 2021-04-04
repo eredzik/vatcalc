@@ -3,7 +3,8 @@ from sqlalchemy.orm import relationship, scoped_session
 from sqlalchemy.orm.relationships import RelationshipProperty
 
 from .database import Base, SessionLocal
-
+from pydantic import BaseModel
+from datetime import datetime
 
 class Invoice(Base):
     __tablename__ = "invoice"

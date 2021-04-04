@@ -17,6 +17,7 @@ class Query(graphene.ObjectType):
     def resolve_all_invoices(self, info):
         return models.Invoice.query.all()
 
+    
 
 def validate_nip(nip: str):
     if nip:
