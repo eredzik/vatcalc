@@ -1,19 +1,34 @@
 module TradePartners exposing (..)
 
-import API.CreateNewPartner exposing (createNewPartner)
-import API.FetchTradePartners exposing (getAllPartners)
-import API.GraphQL exposing (makeGraphQLMutation, makeGraphQLQuery)
-import API.Objects exposing (TradePartner, TradePartnerNew, TradePartnerResponse)
+-- import Backend.Object.Invoice exposing (partner)
+
 import Bootstrap.Button as Button
 import Bootstrap.Form as Form
 import Bootstrap.Form.Input as Input
 import Bootstrap.Grid
 import Bootstrap.Table
-import Graphql.Http
 import Html exposing (..)
 import Html.Attributes
-import RemoteData exposing (RemoteData)
+import Http
+import Json.Decode as JD
+import Json.Encode as JE
+import RemoteData exposing (WebData)
 import String
+
+
+type alias TradePartnerNew =
+    { name : String
+    , nipNumber : String
+    , adress : String
+    }
+
+
+type alias TradePartner =
+    { id : Int
+    , name : Maybe String
+    , nipNumber : Maybe String
+    , adress : Maybe String
+    }
 
 
 type NipValidity
@@ -67,22 +82,29 @@ validateNIP nip =
 
 type alias Model =
     { newTradePartner : TradePartnerNew
-    , tradePartners : RemoteData (Graphql.Http.Error (List TradePartner)) (List TradePartner)
+    , tradePartners : WebData (List TradePartner)
     }
+
+
+type Msg
+    = AddPartner
+    | UpdateForm TradePartnerNew
+    | GotNewPartnerResult (WebData TradePartner)
+    | GotPartnersList (WebData (List TradePartner))
 
 
 init : Model
 init =
     { newTradePartner =
         { name = ""
-        , nip_number = ""
+        , nipNumber = ""
         , adress = ""
         }
     , tradePartners = RemoteData.Loading
     }
 
 
-viewTradePartners : List API.Objects.TradePartner -> Html a
+viewTradePartners : List TradePartner -> Html a
 viewTradePartners trade_partners =
     Bootstrap.Table.table
         { options = []
@@ -101,28 +123,21 @@ viewTableHeader =
         ]
 
 
-viewTradePartnerRow : API.Objects.TradePartner -> Bootstrap.Table.Row a
+viewTradePartnerRow : TradePartner -> Bootstrap.Table.Row a
 viewTradePartnerRow trade_partner =
     Bootstrap.Table.tr []
         [ Bootstrap.Table.td [] [ text (String.fromInt trade_partner.id) ]
         , Bootstrap.Table.td [] [ text (Maybe.withDefault "Unavailable" trade_partner.name) ]
-        , Bootstrap.Table.td [] [ text (Maybe.withDefault "Unavailable" trade_partner.nip_number) ]
+        , Bootstrap.Table.td [] [ text (Maybe.withDefault "Unavailable" trade_partner.nipNumber) ]
         , Bootstrap.Table.td [] [ text (Maybe.withDefault "Unavailable" trade_partner.adress) ]
         ]
-
-
-type Msg
-    = AddPartner
-    | UpdateForm TradePartnerNew
-    | GotNewPartnerResult (RemoteData (Graphql.Http.Error (Maybe TradePartnerResponse)) (Maybe TradePartnerResponse))
-    | GotPartnersList (RemoteData (Graphql.Http.Error (List TradePartner)) (List TradePartner))
 
 
 viewTradePartnerAdd : TradePartnerNew -> Html Msg
 viewTradePartnerAdd newTradePartner =
     let
         nip_validity =
-            case validateNIP newTradePartner.nip_number of
+            case validateNIP newTradePartner.nipNumber of
                 Valid ->
                     [ Input.success ]
 
@@ -143,8 +158,8 @@ viewTradePartnerAdd newTradePartner =
             , Input.text
                 ([ Input.id "nip"
                  , Input.attrs [ Html.Attributes.maxlength 10 ]
-                 , Input.onInput (\value -> UpdateForm { trade_partner_data | nip_number = value })
-                 , Input.value newTradePartner.nip_number
+                 , Input.onInput (\value -> UpdateForm { trade_partner_data | nipNumber = value })
+                 , Input.value newTradePartner.nipNumber
                  ]
                     ++ nip_validity
                 )
@@ -176,16 +191,57 @@ viewTradePartnerAdd newTradePartner =
         ]
 
 
+
+-- fetchAllPartners : Cmd Msg
+-- fetchAllPartners =
+--     makeGraphQLQuery getAllPartners (RemoteData.fromResult >> GotPartnersList)
+
+
+partnerDecoder : JD.Decoder TradePartner
+partnerDecoder =
+    JD.map4 TradePartner
+        (JD.at [ "id" ] JD.int)
+        (JD.maybe (JD.at [ "nip_number" ] JD.string))
+        (JD.maybe (JD.at [ "name" ] JD.string))
+        (JD.maybe (JD.at [ "adress" ] JD.string))
+
+
+partnersDecoder : JD.Decoder (List TradePartner)
+partnersDecoder =
+    JD.list partnerDecoder
+
+
 fetchAllPartners : Cmd Msg
 fetchAllPartners =
-    makeGraphQLQuery getAllPartners (RemoteData.fromResult >> GotPartnersList)
+    Http.get
+        { url = "/api/trading_partner"
+        , expect = Http.expectJson (RemoteData.fromResult >> GotPartnersList) partnersDecoder
+        }
+
+
+
+-- addNewPartner : TradePartnerNew -> Cmd Msg
+-- addNewPartner trade_partner_data =
+--     makeGraphQLMutation
+--         (createNewPartner trade_partner_data)
+--         (RemoteData.fromResult >> GotNewPartnerResult)
 
 
 addNewPartner : TradePartnerNew -> Cmd Msg
-addNewPartner trade_partner_data =
-    makeGraphQLMutation
-        (createNewPartner trade_partner_data)
-        (RemoteData.fromResult >> GotNewPartnerResult)
+addNewPartner partner_data =
+    let
+        body =
+            JE.object
+                [ ( "name", JE.string partner_data.name )
+                , ( "nip_number", JE.string partner_data.name )
+                , ( "adress", JE.string partner_data.adress )
+                ]
+    in
+    Http.post
+        { url = "/api/trading_partner"
+        , body = Http.jsonBody body
+        , expect = Http.expectJson (RemoteData.fromResult >> GotNewPartnerResult) partnerDecoder
+        }
 
 
 viewTradePartnersTable : Model -> Html a

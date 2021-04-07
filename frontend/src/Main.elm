@@ -155,6 +155,7 @@ view model =
                 Just Route.Invoices ->
                     viewInvoices
 
+                -- viewTradePartners
                 Just Route.TradePartner ->
                     viewTradePartners
     in

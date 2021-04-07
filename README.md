@@ -3,11 +3,10 @@ Application for vat and small entity tax calculations together with sending JPK_
 Frontend part is written in Elm and backend in Python with use of Fastapi. All parts are connected with docker and docker-compose.
 
 # How to run
-Backend : use `docker-compose up` or `run_backend_dev` from `scripts` directory.
-Frontend : use `elm reactor` in `frontend` directory.
+Use `docker-compose up` or `run_backend_dev` from `scripts` directory.
 
 # How to build
-To regenerate auto generated `elm-graphql` source and build frontend use `make`
+To regenerate auto generated `elm-graphql` source and build frontend use `./scripts/build_frontend.sh`
 
 
 
@@ -16,10 +15,10 @@ To regenerate auto generated `elm-graphql` source and build frontend use `make`
 - [ ] Trading partners editing
 - [ ] Deleting trading partners
 - [x] View all invoices
-- [ ] Add invoice
+- [x] Add invoice
 - [ ] Delete invoice
 - [ ] Edit invoice
-- [ ] Register/Login
+- [x] Register/Login
 - [ ] Company data
 - [ ] Outstanding VAT calculation
 - [ ] Deployment

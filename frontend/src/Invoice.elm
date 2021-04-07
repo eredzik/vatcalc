@@ -1,20 +1,41 @@
 module Invoice exposing (Model, Msg(..), fetchAllInvoices, init, update, view)
 
-import API.FetchInvoices
-import API.GraphQL
-import API.Objects exposing (Invoice, InvoicePosition, TradePartner)
-import Backend.Enum.InvoiceType exposing (InvoiceType(..))
-import Backend.Enum.VatRates exposing (VatRates(..))
-import Backend.Scalar exposing (Date(..))
 import Bootstrap.Grid
 import Bootstrap.Table
-import Graphql.Http
 import Html
-import RemoteData exposing (RemoteData)
+import Http
+import Json.Decode as JD
+import Json.Encode as JE
+import RemoteData exposing (WebData)
+import TradePartners exposing (TradePartner)
+
+
+type InvoiceType
+    = Received
+    | Issued
+
+
+type alias Invoice =
+    { id : Int
+    , invoiceId : String
+    , date : String
+    , invoiceType : InvoiceType
+    , positions : List InvoicePosition
+    , partner : TradePartner
+    }
+
+
+type alias InvoicePosition =
+    { id : Int
+    , name : String
+    , vatRate : Float
+    , numItems : Float
+    , priceNet : Float
+    }
 
 
 type alias Model =
-    { allInvoices : RemoteData (Graphql.Http.Error (Maybe (List Invoice))) (Maybe (List Invoice))
+    { allInvoices : WebData (List Invoice)
     }
 
 
@@ -24,12 +45,58 @@ init =
 
 
 type Msg
-    = GotAllInvoices (RemoteData (Graphql.Http.Error (Maybe (List Invoice))) (Maybe (List Invoice)))
+    = GotAllInvoices (WebData (List Invoice))
+
+
+invoiceTypeDecoder : JD.Decoder InvoiceType
+invoiceTypeDecoder =
+    JD.string
+        |> JD.andThen
+            (\str ->
+                case str of
+                    "IN" ->
+                        JD.succeed Received
+
+                    "OUT" ->
+                        JD.succeed Issued
+
+                    somethingElse ->
+                        JD.fail <| "Unknown invoice type: " ++ somethingElse
+            )
+
+
+positionDecoder : JD.Decoder InvoicePosition
+positionDecoder =
+    JD.map5 InvoicePosition
+        (JD.at [ "id" ] JD.int)
+        (JD.at [ "name" ] JD.string)
+        (JD.at [ "vatRate" ] JD.float)
+        (JD.at [ "numItems" ] JD.float)
+        (JD.at [ "priceNet" ] JD.float)
+
+
+invoiceDecoder : JD.Decoder Invoice
+invoiceDecoder =
+    JD.map6 Invoice
+        (JD.at [ "id" ] JD.int)
+        (JD.at [ "invoice_id" ] JD.string)
+        (JD.at [ "invoice_date" ] JD.string)
+        (JD.at [ "invoice_type" ] invoiceTypeDecoder)
+        (JD.at [ "invoice_positions" ] (JD.list positionDecoder))
+        (JD.at [ "partner" ] TradePartners.partnerDecoder)
+
+
+invoicesDecoder : JD.Decoder (List Invoice)
+invoicesDecoder =
+    JD.list invoiceDecoder
 
 
 fetchAllInvoices : Cmd Msg
 fetchAllInvoices =
-    API.GraphQL.makeGraphQLQuery API.FetchInvoices.getAllInvoices (RemoteData.fromResult >> GotAllInvoices)
+    Http.get
+        { url = "/api/invoice"
+        , expect = Http.expectJson (RemoteData.fromResult >> GotAllInvoices) invoicesDecoder
+        }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -57,7 +124,7 @@ sumNetPositions : List InvoicePosition -> Float
 sumNetPositions positions =
     let
         sumofposition position =
-            position.num_items * position.price_net
+            position.numItems * position.priceNet
     in
     List.map sumofposition positions |> List.sum
 
@@ -74,14 +141,7 @@ invoiceTypeToString invtype =
 
 partnerToString : TradePartner -> String
 partnerToString partner =
-    Maybe.withDefault "" partner.name ++ " | " ++ Maybe.withDefault "" partner.nip_number
-
-
-dateToString : Date -> String
-dateToString date =
-    case date of
-        Date payload ->
-            payload
+    Maybe.withDefault "" partner.name ++ " | " ++ Maybe.withDefault "" partner.nipNumber
 
 
 viewInvoiceRow : Invoice -> Bootstrap.Table.Row a
@@ -92,17 +152,18 @@ viewInvoiceRow invoice =
     --     Just invoice ->
     Bootstrap.Table.tr []
         [ Bootstrap.Table.td [] [ Html.text (Maybe.withDefault "Unavailable" invoice.partner.name) ]
-        , Bootstrap.Table.td [] [ Html.text invoice.invoice_id ]
-        , Bootstrap.Table.td [] [ Html.text <| dateToString invoice.invoice_date ]
-        , Bootstrap.Table.td [] [ Html.text <| invoiceTypeToString invoice.invoice_type ]
+        , Bootstrap.Table.td [] [ Html.text invoice.invoiceId ]
+        , Bootstrap.Table.td [] [ Html.text invoice.date ]
+        , Bootstrap.Table.td [] [ Html.text <| invoiceTypeToString invoice.invoiceType ]
         , Bootstrap.Table.td [] [ Html.text <| partnerToString invoice.partner ]
-        , Bootstrap.Table.td [] [ Html.text <| String.fromFloat <| sumNetPositions invoice.invoiceposition ]
+        , Bootstrap.Table.td [] [ Html.text <| String.fromFloat <| sumNetPositions invoice.positions ]
         ]
 
 
-viewEmptyRow : Bootstrap.Table.Row a
-viewEmptyRow =
-    Bootstrap.Table.tr [] [ Bootstrap.Table.td [] [ Html.text "Brak faktur" ] ]
+
+-- viewEmptyRow : Bootstrap.Table.Row a
+-- viewEmptyRow =
+-- Bootstrap.Table.tr [] [ Bootstrap.Table.td [] [ Html.text "Brak faktur" ] ]
 
 
 view : Model -> Bootstrap.Grid.Column msg
@@ -116,12 +177,7 @@ view model =
                 RemoteData.Success data ->
                     let
                         rows_data =
-                            case data of
-                                Nothing ->
-                                    [ viewEmptyRow ]
-
-                                Just datanonmiss ->
-                                    List.map viewInvoiceRow datanonmiss
+                            List.map viewInvoiceRow data
                     in
                     Bootstrap.Table.table
                         { options = []
