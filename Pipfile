@@ -1,0 +1,27 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+uvicorn = "*"
+fastapi = "*"
+tortoise-orm = "*"
+pydantic = "*"
+aerich = "*"
+asyncpg = "*"
+passlib = "*"
+python-multipart = "*"
+pyjwt = "*"
+aiofiles = "*"
+jinja2 = "*"
+
+[dev-packages]
+pytest = "*"
+sqlalchemy-stubs = "*"
+mypy = "*"
+black = "==20.8b1"
+python-dotenv = "*"
+
+[requires]
+python_version = "3.8"
