@@ -6314,7 +6314,7 @@ var $author$project$TradePartners$fetchAllPartners = $elm$http$Http$get(
 			$elm$http$Http$expectJson,
 			A2($elm$core$Basics$composeR, $krisajenkins$remotedata$RemoteData$fromResult, $author$project$TradePartners$GotPartnersList),
 			$author$project$TradePartners$partnersDecoder),
-		url: '/api/trading_partners'
+		url: '/api/trading_partner'
 	});
 var $krisajenkins$remotedata$RemoteData$Loading = {$: 'Loading'};
 var $author$project$Invoice$init = {allInvoices: $krisajenkins$remotedata$RemoteData$Loading};
@@ -6501,7 +6501,7 @@ var $author$project$TradePartners$addNewPartner = function (partner_data) {
 				$elm$http$Http$expectJson,
 				A2($elm$core$Basics$composeR, $krisajenkins$remotedata$RemoteData$fromResult, $author$project$TradePartners$GotNewPartnerResult),
 				$author$project$TradePartners$partnerDecoder),
-			url: '/api/trading_partners'
+			url: '/api/trading_partner'
 		});
 };
 var $author$project$TradePartners$update = F2(
