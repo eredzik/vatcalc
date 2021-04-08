@@ -30,7 +30,7 @@ jobs:
       - name: Install pipenv
         run: python -m pip install --upgrade pip pipenv
       - name: Intall Python dependencies
-        run: pipenv install
+        run: pipenv install --dev
       - name: Build coverage file
         run: |
           pytest --cache-clear --cov=app > pytest-coverage.txt
