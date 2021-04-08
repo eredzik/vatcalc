@@ -10128,7 +10128,7 @@ var $author$project$Main$view = function (model) {
 						view_all
 					]))
 			]),
-		dh: 'Site1'
+		dh: 'VatCalc'
 	};
 };
 var $author$project$Main$main = $elm$browser$Browser$application(

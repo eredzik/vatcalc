@@ -1,13 +1,20 @@
 # About
 Application for vat and small entity tax calculations together with sending JPK_VAT files.
-Frontend part is written in Elm and backend in Python with use of Fastapi. All parts are connected with docker and docker-compose.
+Frontend part is written in Elm and backend in Python with use of Fastapi.
+Currently deployed [here](https://vatcalc-prod.herokuapp.com/).
 
-# How to run
-Use `docker-compose up` or `run_backend_dev` from `scripts` directory.
+# How to run local development
+For development purposes uses docker and docker-compose.
+Use `docker-compose up` from `scripts` directory.
 
 # How to build
-To regenerate auto generated `elm-graphql` source and build frontend use `./scripts/build_frontend.sh`
+To regenerate frontend js use `./scripts/build_frontend.sh`
 
+# Deployment
+It is currently deployed on heroku.
+Deployment requires setting following environment variables:
+- `DB_URL`
+- `JWT_TOKEN`
 
 
 # TODO

@@ -159,7 +159,7 @@ view model =
                 Just Route.TradePartner ->
                     viewTradePartners
     in
-    { title = "Site1"
+    { title = "VatCalc"
     , body =
         [ Grid.containerFluid []
             [ CDN.stylesheet

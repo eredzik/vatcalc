@@ -10,5 +10,5 @@ ENV WAIT_VERSION 2.7.2
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait /wait
 RUN chmod +x /wait
 
-CMD /wait && aerich init-db && aerich upgrade && uvicorn app.main:app --reload --host 0.0.0.0 --port 5000
+CMD /wait && aerich upgrade && uvicorn app.main:app --reload --host 0.0.0.0 --port 5000
 
