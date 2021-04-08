@@ -24,6 +24,7 @@ black = "==20.8b1"
 python-dotenv = "*"
 asynctest = "*"
 pytest-cov = "*"
+requests = "*"
 
 [requires]
 python_version = "3.8"

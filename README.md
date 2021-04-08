@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/eredzik/vatcalc/branch/master/graph/badge.svg?token=BMMQFHBVRC)](https://codecov.io/gh/eredzik/vatcalc)
+
 # About
 Application for vat and small entity tax calculations together with sending JPK_VAT files.
 Frontend part is written in Elm and backend in Python with use of Fastapi.
