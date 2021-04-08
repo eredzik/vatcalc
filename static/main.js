@@ -77,7 +77,7 @@ function A9(fun, a, b, c, d, e, f, g, h, i) {
   return fun.a === 9 ? fun.f(a, b, c, d, e, f, g, h, i) : fun(a)(b)(c)(d)(e)(f)(g)(h)(i);
 }
 
-console.warn('Compiled in DEV mode. Follow the advice at https://elm-lang.org/0.19.1/optimize for better performance and smaller assets.');
+
 
 
 // EQUALITY
@@ -113,7 +113,7 @@ function _Utils_eqHelp(x, y, depth, stack)
 		return true;
 	}
 
-	/**/
+	/**_UNUSED/
 	if (x.$ === 'Set_elm_builtin')
 	{
 		x = $elm$core$Set$toList(x);
@@ -126,7 +126,7 @@ function _Utils_eqHelp(x, y, depth, stack)
 	}
 	//*/
 
-	/**_UNUSED/
+	/**/
 	if (x.$ < 0)
 	{
 		x = $elm$core$Dict$toList(x);
@@ -161,7 +161,7 @@ function _Utils_cmp(x, y, ord)
 		return x === y ? /*EQ*/ 0 : x < y ? /*LT*/ -1 : /*GT*/ 1;
 	}
 
-	/**/
+	/**_UNUSED/
 	if (x instanceof String)
 	{
 		var a = x.valueOf();
@@ -170,10 +170,10 @@ function _Utils_cmp(x, y, ord)
 	}
 	//*/
 
-	/**_UNUSED/
+	/**/
 	if (typeof x.$ === 'undefined')
 	//*/
-	/**/
+	/**_UNUSED/
 	if (x.$[0] === '#')
 	//*/
 	{
@@ -203,17 +203,17 @@ var _Utils_compare = F2(function(x, y)
 
 // COMMON VALUES
 
-var _Utils_Tuple0_UNUSED = 0;
-var _Utils_Tuple0 = { $: '#0' };
+var _Utils_Tuple0 = 0;
+var _Utils_Tuple0_UNUSED = { $: '#0' };
 
-function _Utils_Tuple2_UNUSED(a, b) { return { a: a, b: b }; }
-function _Utils_Tuple2(a, b) { return { $: '#2', a: a, b: b }; }
+function _Utils_Tuple2(a, b) { return { a: a, b: b }; }
+function _Utils_Tuple2_UNUSED(a, b) { return { $: '#2', a: a, b: b }; }
 
-function _Utils_Tuple3_UNUSED(a, b, c) { return { a: a, b: b, c: c }; }
-function _Utils_Tuple3(a, b, c) { return { $: '#3', a: a, b: b, c: c }; }
+function _Utils_Tuple3(a, b, c) { return { a: a, b: b, c: c }; }
+function _Utils_Tuple3_UNUSED(a, b, c) { return { $: '#3', a: a, b: b, c: c }; }
 
-function _Utils_chr_UNUSED(c) { return c; }
-function _Utils_chr(c) { return new String(c); }
+function _Utils_chr(c) { return c; }
+function _Utils_chr_UNUSED(c) { return new String(c); }
 
 
 // RECORDS
@@ -264,11 +264,11 @@ function _Utils_ap(xs, ys)
 
 
 
-var _List_Nil_UNUSED = { $: 0 };
-var _List_Nil = { $: '[]' };
+var _List_Nil = { $: 0 };
+var _List_Nil_UNUSED = { $: '[]' };
 
-function _List_Cons_UNUSED(hd, tl) { return { $: 1, a: hd, b: tl }; }
-function _List_Cons(hd, tl) { return { $: '::', a: hd, b: tl }; }
+function _List_Cons(hd, tl) { return { $: 1, a: hd, b: tl }; }
+function _List_Cons_UNUSED(hd, tl) { return { $: '::', a: hd, b: tl }; }
 
 
 var _List_cons = F2(_List_Cons);
@@ -499,12 +499,12 @@ var _JsArray_appendN = F3(function(n, dest, source)
 
 // LOG
 
-var _Debug_log_UNUSED = F2(function(tag, value)
+var _Debug_log = F2(function(tag, value)
 {
 	return value;
 });
 
-var _Debug_log = F2(function(tag, value)
+var _Debug_log_UNUSED = F2(function(tag, value)
 {
 	console.log(tag + ': ' + _Debug_toString(value));
 	return value;
@@ -530,12 +530,12 @@ function _Debug_todoCase(moduleName, region, value)
 
 // TO STRING
 
-function _Debug_toString_UNUSED(value)
+function _Debug_toString(value)
 {
 	return '<internals>';
 }
 
-function _Debug_toString(value)
+function _Debug_toString_UNUSED(value)
 {
 	return _Debug_toAnsiString(false, value);
 }
@@ -720,13 +720,13 @@ function _Debug_toHexDigit(n)
 // CRASH
 
 
-function _Debug_crash_UNUSED(identifier)
+function _Debug_crash(identifier)
 {
 	throw new Error('https://github.com/elm/core/blob/1.0.0/hints/' + identifier + '.md');
 }
 
 
-function _Debug_crash(identifier, fact1, fact2, fact3, fact4)
+function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 {
 	switch(identifier)
 	{
@@ -784,11 +784,11 @@ function _Debug_crash(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.start.line === region.end.line)
+	if (region.co.dN === region.cG.dN)
 	{
-		return 'on line ' + region.start.line;
+		return 'on line ' + region.co.dN;
 	}
-	return 'on lines ' + region.start.line + ' through ' + region.end.line;
+	return 'on lines ' + region.co.dN + ' through ' + region.cG.dN;
 }
 
 
@@ -1212,7 +1212,7 @@ function _Char_toLocaleLower(char)
 
 
 
-/**/
+/**_UNUSED/
 function _Json_errorToString(error)
 {
 	return $elm$json$Json$Decode$errorToString(error);
@@ -1616,11 +1616,11 @@ var _Json_encode = F2(function(indentLevel, value)
 	return JSON.stringify(_Json_unwrap(value), null, indentLevel) + '';
 });
 
-function _Json_wrap(value) { return { $: 0, a: value }; }
-function _Json_unwrap(value) { return value.a; }
+function _Json_wrap_UNUSED(value) { return { $: 0, a: value }; }
+function _Json_unwrap_UNUSED(value) { return value.a; }
 
-function _Json_wrap_UNUSED(value) { return value; }
-function _Json_unwrap_UNUSED(value) { return value; }
+function _Json_wrap(value) { return value; }
+function _Json_unwrap(value) { return value; }
 
 function _Json_emptyArray() { return []; }
 function _Json_emptyObject() { return {}; }
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.init,
-		impl.update,
-		impl.subscriptions,
+		impl.dM,
+		impl.eb,
+		impl.d7,
 		function() { return function() {} }
 	);
 });
@@ -1872,7 +1872,7 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 function _Platform_initialize(flagDecoder, args, init, update, subscriptions, stepperBuilder)
 {
 	var result = A2(_Json_run, flagDecoder, _Json_wrap(args ? args['flags'] : undefined));
-	$elm$core$Result$isOk(result) || _Debug_crash(2 /**/, _Json_errorToString(result.a) /**/);
+	$elm$core$Result$isOk(result) || _Debug_crash(2 /**_UNUSED/, _Json_errorToString(result.a) /**/);
 	var managers = {};
 	var initPair = init(result.a);
 	var model = initPair.a;
@@ -2316,7 +2316,7 @@ function _Platform_setupIncomingPort(name, sendToApp)
 //
 
 
-function _Platform_export_UNUSED(exports)
+function _Platform_export(exports)
 {
 	scope['Elm']
 		? _Platform_mergeExportsProd(scope['Elm'], exports)
@@ -2337,7 +2337,7 @@ function _Platform_mergeExportsProd(obj, exports)
 }
 
 
-function _Platform_export(exports)
+function _Platform_export_UNUSED(exports)
 {
 	scope['Elm']
 		? _Platform_mergeExportsDebug('Elm', scope['Elm'], exports)
@@ -2377,10 +2377,10 @@ var _VirtualDom_init = F4(function(virtualNode, flagDecoder, debugMetadata, args
 {
 	// NOTE: this function needs _Platform_export available to work
 
-	/**_UNUSED/
+	/**/
 	var node = args['node'];
 	//*/
-	/**/
+	/**_UNUSED/
 	var node = args && args['node'] ? args['node'] : _Debug_crash(0);
 	//*/
 
@@ -2635,24 +2635,24 @@ function _VirtualDom_noInnerHtmlOrFormAction(key)
 	return key == 'innerHTML' || key == 'formAction' ? 'data-' + key : key;
 }
 
-function _VirtualDom_noJavaScriptUri_UNUSED(value)
+function _VirtualDom_noJavaScriptUri(value)
 {
 	return /^javascript:/i.test(value.replace(/\s/g,'')) ? '' : value;
 }
 
-function _VirtualDom_noJavaScriptUri(value)
+function _VirtualDom_noJavaScriptUri_UNUSED(value)
 {
 	return /^javascript:/i.test(value.replace(/\s/g,''))
 		? 'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'
 		: value;
 }
 
-function _VirtualDom_noJavaScriptOrHtmlUri_UNUSED(value)
+function _VirtualDom_noJavaScriptOrHtmlUri(value)
 {
 	return /^\s*(javascript:|data:text\/html)/i.test(value) ? '' : value;
 }
 
-function _VirtualDom_noJavaScriptOrHtmlUri(value)
+function _VirtualDom_noJavaScriptOrHtmlUri_UNUSED(value)
 {
 	return /^\s*(javascript:|data:text\/html)/i.test(value)
 		? 'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'
@@ -2704,9 +2704,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		message: func(record.message),
-		stopPropagation: record.stopPropagation,
-		preventDefault: record.preventDefault
+		dR: func(record.dR),
+		cq: record.cq,
+		ck: record.ck
 	}
 });
 
@@ -2974,11 +2974,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.message;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.stopPropagation;
+		var message = !tag ? value : tag < 3 ? value.a : value.dR;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.cq;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.preventDefault) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.ck) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,15 +3928,15 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.init,
-		impl.update,
-		impl.subscriptions,
+		impl.dM,
+		impl.eb,
+		impl.d7,
 		function(sendToApp, initialModel) {
-			var view = impl.view;
-			/**_UNUSED/
+			var view = impl.ee;
+			/**/
 			var domNode = args['node'];
 			//*/
-			/**/
+			/**_UNUSED/
 			var domNode = args && args['node'] ? args['node'] : _Debug_crash(0);
 			//*/
 			var currNode = _VirtualDom_virtualize(domNode);
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.init,
-		impl.update,
-		impl.subscriptions,
+		impl.dM,
+		impl.eb,
+		impl.d7,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.setup && impl.setup(sendToApp)
-			var view = impl.view;
+			var divertHrefToApp = impl.cn && impl.cn(sendToApp)
+			var view = impl.ee;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.body);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.cx);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.title) && (_VirtualDom_doc.title = title = doc.title);
+				(title !== doc.dh) && (_VirtualDom_doc.title = title = doc.dh);
 			});
 		}
 	);
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.onUrlChange;
-	var onUrlRequest = impl.onUrlRequest;
+	var onUrlChange = impl.dV;
+	var onUrlRequest = impl.dW;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		setup: function(sendToApp)
+		cn: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.protocol === next.protocol
-							&& curr.host === next.host
-							&& curr.port_.a === next.port_.a
+							&& curr.c6 === next.c6
+							&& curr.cL === next.cL
+							&& curr.c0.a === next.c0.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		init: function(flags)
+		dM: function(flags)
 		{
-			return A3(impl.init, flags, _Browser_getUrl(), key);
+			return A3(impl.dM, flags, _Browser_getUrl(), key);
 		},
-		view: impl.view,
-		update: impl.update,
-		subscriptions: impl.subscriptions
+		ee: impl.ee,
+		eb: impl.eb,
+		d7: impl.d7
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { hidden: 'hidden', change: 'visibilitychange' }
+		? { dI: 'hidden', dw: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { hidden: 'mozHidden', change: 'mozvisibilitychange' }
+		? { dI: 'mozHidden', dw: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { hidden: 'msHidden', change: 'msvisibilitychange' }
+		? { dI: 'msHidden', dw: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { hidden: 'webkitHidden', change: 'webkitvisibilitychange' }
-		: { hidden: 'hidden', change: 'visibilitychange' };
+		? { dI: 'webkitHidden', dw: 'webkitvisibilitychange' }
+		: { dI: 'hidden', dw: 'visibilitychange' };
 }
 
 
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		scene: _Browser_getScene(),
-		viewport: {
-			x: _Browser_window.pageXOffset,
-			y: _Browser_window.pageYOffset,
-			width: _Browser_doc.documentElement.clientWidth,
-			height: _Browser_doc.documentElement.clientHeight
+		dc: _Browser_getScene(),
+		$7: {
+			dq: _Browser_window.pageXOffset,
+			dr: _Browser_window.pageYOffset,
+			dp: _Browser_doc.documentElement.clientWidth,
+			cK: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4247,8 +4247,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		width: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		height: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		dp: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		cK: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			scene: {
-				width: node.scrollWidth,
-				height: node.scrollHeight
+			dc: {
+				dp: node.scrollWidth,
+				cK: node.scrollHeight
 			},
-			viewport: {
-				x: node.scrollLeft,
-				y: node.scrollTop,
-				width: node.clientWidth,
-				height: node.clientHeight
+			$7: {
+				dq: node.scrollLeft,
+				dr: node.scrollTop,
+				dp: node.clientWidth,
+				cK: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			scene: _Browser_getScene(),
-			viewport: {
-				x: x,
-				y: y,
-				width: _Browser_doc.documentElement.clientWidth,
-				height: _Browser_doc.documentElement.clientHeight
+			dc: _Browser_getScene(),
+			$7: {
+				dq: x,
+				dr: y,
+				dp: _Browser_doc.documentElement.clientWidth,
+				cK: _Browser_doc.documentElement.clientHeight
 			},
-			element: {
-				x: x + rect.left,
-				y: y + rect.top,
-				width: rect.width,
-				height: rect.height
+			dC: {
+				dq: x + rect.left,
+				dr: y + rect.top,
+				dp: rect.width,
+				cK: rect.height
 			}
 		};
 	});
@@ -4365,25 +4365,25 @@ var _Http_toTask = F3(function(router, toTask, request)
 	return _Scheduler_binding(function(callback)
 	{
 		function done(response) {
-			callback(toTask(request.expect.a(response)));
+			callback(toTask(request.dE.a(response)));
 		}
 
 		var xhr = new XMLHttpRequest();
 		xhr.addEventListener('error', function() { done($elm$http$Http$NetworkError_); });
 		xhr.addEventListener('timeout', function() { done($elm$http$Http$Timeout_); });
-		xhr.addEventListener('load', function() { done(_Http_toResponse(request.expect.b, xhr)); });
-		$elm$core$Maybe$isJust(request.tracker) && _Http_track(router, xhr, request.tracker.a);
+		xhr.addEventListener('load', function() { done(_Http_toResponse(request.dE.b, xhr)); });
+		$elm$core$Maybe$isJust(request.dm) && _Http_track(router, xhr, request.dm.a);
 
 		try {
-			xhr.open(request.method, request.url, true);
+			xhr.open(request.y, request.ec, true);
 		} catch (e) {
-			return done($elm$http$Http$BadUrl_(request.url));
+			return done($elm$http$Http$BadUrl_(request.ec));
 		}
 
 		_Http_configureRequest(xhr, request);
 
-		request.body.a && xhr.setRequestHeader('Content-Type', request.body.a);
-		xhr.send(request.body.b);
+		request.cx.a && xhr.setRequestHeader('Content-Type', request.cx.a);
+		xhr.send(request.cx.b);
 
 		return function() { xhr.c = true; xhr.abort(); };
 	});
@@ -4394,13 +4394,13 @@ var _Http_toTask = F3(function(router, toTask, request)
 
 function _Http_configureRequest(xhr, request)
 {
-	for (var headers = request.headers; headers.b; headers = headers.b) // WHILE_CONS
+	for (var headers = request.f; headers.b; headers = headers.b) // WHILE_CONS
 	{
 		xhr.setRequestHeader(headers.a.a, headers.a.b);
 	}
-	xhr.timeout = request.timeout.a || 0;
-	xhr.responseType = request.expect.d;
-	xhr.withCredentials = request.allowCookiesFromOtherDomains;
+	xhr.timeout = request.i.a || 0;
+	xhr.responseType = request.dE.d;
+	xhr.withCredentials = request.dt;
 }
 
 
@@ -4421,10 +4421,10 @@ function _Http_toResponse(toBody, xhr)
 function _Http_toMetadata(xhr)
 {
 	return {
-		url: xhr.responseURL,
-		statusCode: xhr.status,
-		statusText: xhr.statusText,
-		headers: _Http_parseHeaders(xhr.getAllResponseHeaders())
+		ec: xhr.responseURL,
+		d4: xhr.status,
+		d5: xhr.statusText,
+		f: _Http_parseHeaders(xhr.getAllResponseHeaders())
 	};
 }
 
@@ -4519,15 +4519,15 @@ function _Http_track(router, xhr, tracker)
 	xhr.upload.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Sending({
-			sent: event.loaded,
-			size: event.total
+			d2: event.loaded,
+			de: event.total
 		}))));
 	});
 	xhr.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Receiving({
-			received: event.loaded,
-			size: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
+			d_: event.loaded,
+			de: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
 		}))));
 	});
 }
@@ -4548,20 +4548,20 @@ function _Url_percentDecode(string)
 		return $elm$core$Maybe$Nothing;
 	}
 }var $author$project$Main$UrlChange = function (a) {
-	return {$: 'UrlChange', a: a};
+	return {$: 1, a: a};
 };
 var $author$project$Main$UrlRequest = function (a) {
-	return {$: 'UrlRequest', a: a};
+	return {$: 0, a: a};
 };
-var $elm$core$Basics$EQ = {$: 'EQ'};
-var $elm$core$Basics$GT = {$: 'GT'};
-var $elm$core$Basics$LT = {$: 'LT'};
+var $elm$core$Basics$EQ = 1;
+var $elm$core$Basics$GT = 2;
+var $elm$core$Basics$LT = 0;
 var $elm$core$List$cons = _List_cons;
 var $elm$core$Dict$foldr = F3(
 	function (func, acc, t) {
 		foldr:
 		while (true) {
-			if (t.$ === 'RBEmpty_elm_builtin') {
+			if (t.$ === -2) {
 				return acc;
 			} else {
 				var key = t.b;
@@ -4606,7 +4606,7 @@ var $elm$core$Dict$keys = function (dict) {
 		dict);
 };
 var $elm$core$Set$toList = function (_v0) {
-	var dict = _v0.a;
+	var dict = _v0;
 	return $elm$core$Dict$keys(dict);
 };
 var $elm$core$Elm$JsArray$foldr = _JsArray_foldr;
@@ -4616,7 +4616,7 @@ var $elm$core$Array$foldr = F3(
 		var tail = _v0.d;
 		var helper = F2(
 			function (node, acc) {
-				if (node.$ === 'SubTree') {
+				if (!node.$) {
 					var subTree = node.a;
 					return A3($elm$core$Elm$JsArray$foldr, helper, acc, subTree);
 				} else {
@@ -4634,32 +4634,32 @@ var $elm$core$Array$toList = function (array) {
 	return A3($elm$core$Array$foldr, $elm$core$List$cons, _List_Nil, array);
 };
 var $elm$core$Result$Err = function (a) {
-	return {$: 'Err', a: a};
+	return {$: 1, a: a};
 };
 var $elm$json$Json$Decode$Failure = F2(
 	function (a, b) {
-		return {$: 'Failure', a: a, b: b};
+		return {$: 3, a: a, b: b};
 	});
 var $elm$json$Json$Decode$Field = F2(
 	function (a, b) {
-		return {$: 'Field', a: a, b: b};
+		return {$: 0, a: a, b: b};
 	});
 var $elm$json$Json$Decode$Index = F2(
 	function (a, b) {
-		return {$: 'Index', a: a, b: b};
+		return {$: 1, a: a, b: b};
 	});
 var $elm$core$Result$Ok = function (a) {
-	return {$: 'Ok', a: a};
+	return {$: 0, a: a};
 };
 var $elm$json$Json$Decode$OneOf = function (a) {
-	return {$: 'OneOf', a: a};
+	return {$: 2, a: a};
 };
-var $elm$core$Basics$False = {$: 'False'};
+var $elm$core$Basics$False = 1;
 var $elm$core$Basics$add = _Basics_add;
 var $elm$core$Maybe$Just = function (a) {
-	return {$: 'Just', a: a};
+	return {$: 0, a: a};
 };
-var $elm$core$Maybe$Nothing = {$: 'Nothing'};
+var $elm$core$Maybe$Nothing = {$: 1};
 var $elm$core$String$all = _String_all;
 var $elm$core$Basics$and = _Basics_and;
 var $elm$core$Basics$append = _Utils_append;
@@ -4784,12 +4784,12 @@ var $elm$json$Json$Decode$errorToStringHelp = F2(
 		errorToStringHelp:
 		while (true) {
 			switch (error.$) {
-				case 'Field':
+				case 0:
 					var f = error.a;
 					var err = error.b;
 					var isSimple = function () {
 						var _v1 = $elm$core$String$uncons(f);
-						if (_v1.$ === 'Nothing') {
+						if (_v1.$ === 1) {
 							return false;
 						} else {
 							var _v2 = _v1.a;
@@ -4804,7 +4804,7 @@ var $elm$json$Json$Decode$errorToStringHelp = F2(
 					error = $temp$error;
 					context = $temp$context;
 					continue errorToStringHelp;
-				case 'Index':
+				case 1:
 					var i = error.a;
 					var err = error.b;
 					var indexName = '[' + ($elm$core$String$fromInt(i) + ']');
@@ -4813,7 +4813,7 @@ var $elm$json$Json$Decode$errorToStringHelp = F2(
 					error = $temp$error;
 					context = $temp$context;
 					continue errorToStringHelp;
-				case 'OneOf':
+				case 2:
 					var errors = error.a;
 					if (!errors.b) {
 						return 'Ran into a Json.Decode.oneOf with no possibilities' + function () {
@@ -4877,7 +4877,7 @@ var $elm$json$Json$Decode$errorToStringHelp = F2(
 var $elm$core$Array$branchFactor = 32;
 var $elm$core$Array$Array_elm_builtin = F4(
 	function (a, b, c, d) {
-		return {$: 'Array_elm_builtin', a: a, b: b, c: c, d: d};
+		return {$: 0, a: a, b: b, c: c, d: d};
 	});
 var $elm$core$Elm$JsArray$empty = _JsArray_empty;
 var $elm$core$Basics$ceiling = _Basics_ceiling;
@@ -4892,7 +4892,7 @@ var $elm$core$Array$shiftStep = $elm$core$Basics$ceiling(
 var $elm$core$Array$empty = A4($elm$core$Array$Array_elm_builtin, 0, $elm$core$Array$shiftStep, $elm$core$Elm$JsArray$empty, $elm$core$Elm$JsArray$empty);
 var $elm$core$Elm$JsArray$initialize = _JsArray_initialize;
 var $elm$core$Array$Leaf = function (a) {
-	return {$: 'Leaf', a: a};
+	return {$: 1, a: a};
 };
 var $elm$core$Basics$apL = F2(
 	function (f, x) {
@@ -4912,7 +4912,7 @@ var $elm$core$Basics$max = F2(
 	});
 var $elm$core$Basics$mul = _Basics_mul;
 var $elm$core$Array$SubTree = function (a) {
-	return {$: 'SubTree', a: a};
+	return {$: 0, a: a};
 };
 var $elm$core$Elm$JsArray$initializeFromList = _JsArray_initializeFromList;
 var $elm$core$Array$compressNodes = F2(
@@ -4959,25 +4959,25 @@ var $elm$core$Array$treeFromBuilder = F2(
 	});
 var $elm$core$Array$builderToArray = F2(
 	function (reverseNodeList, builder) {
-		if (!builder.nodeListSize) {
+		if (!builder.a) {
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.tail),
+				$elm$core$Elm$JsArray$length(builder.b),
 				$elm$core$Array$shiftStep,
 				$elm$core$Elm$JsArray$empty,
-				builder.tail);
+				builder.b);
 		} else {
-			var treeLen = builder.nodeListSize * $elm$core$Array$branchFactor;
+			var treeLen = builder.a * $elm$core$Array$branchFactor;
 			var depth = $elm$core$Basics$floor(
 				A2($elm$core$Basics$logBase, $elm$core$Array$branchFactor, treeLen - 1));
-			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.nodeList) : builder.nodeList;
-			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.nodeListSize);
+			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.c) : builder.c;
+			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.a);
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.tail) + treeLen,
+				$elm$core$Elm$JsArray$length(builder.b) + treeLen,
 				A2($elm$core$Basics$max, 5, depth * $elm$core$Array$shiftStep),
 				tree,
-				builder.tail);
+				builder.b);
 		}
 	});
 var $elm$core$Basics$idiv = _Basics_idiv;
@@ -4990,7 +4990,7 @@ var $elm$core$Array$initializeHelp = F5(
 				return A2(
 					$elm$core$Array$builderToArray,
 					false,
-					{nodeList: nodeList, nodeListSize: (len / $elm$core$Array$branchFactor) | 0, tail: tail});
+					{c: nodeList, a: (len / $elm$core$Array$branchFactor) | 0, b: tail});
 			} else {
 				var leaf = $elm$core$Array$Leaf(
 					A3($elm$core$Elm$JsArray$initialize, $elm$core$Array$branchFactor, fromIndex, fn));
@@ -5020,9 +5020,9 @@ var $elm$core$Array$initialize = F2(
 			return A5($elm$core$Array$initializeHelp, fn, initialFromIndex, len, _List_Nil, tail);
 		}
 	});
-var $elm$core$Basics$True = {$: 'True'};
+var $elm$core$Basics$True = 0;
 var $elm$core$Result$isOk = function (result) {
-	if (result.$ === 'Ok') {
+	if (!result.$) {
 		return true;
 	} else {
 		return false;
@@ -5033,33 +5033,31 @@ var $elm$json$Json$Decode$map2 = _Json_map2;
 var $elm$json$Json$Decode$succeed = _Json_succeed;
 var $elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 	switch (handler.$) {
-		case 'Normal':
+		case 0:
 			return 0;
-		case 'MayStopPropagation':
+		case 1:
 			return 1;
-		case 'MayPreventDefault':
+		case 2:
 			return 2;
 		default:
 			return 3;
 	}
 };
 var $elm$browser$Browser$External = function (a) {
-	return {$: 'External', a: a};
+	return {$: 1, a: a};
 };
 var $elm$browser$Browser$Internal = function (a) {
-	return {$: 'Internal', a: a};
+	return {$: 0, a: a};
 };
 var $elm$core$Basics$identity = function (x) {
 	return x;
 };
-var $elm$browser$Browser$Dom$NotFound = function (a) {
-	return {$: 'NotFound', a: a};
-};
-var $elm$url$Url$Http = {$: 'Http'};
-var $elm$url$Url$Https = {$: 'Https'};
+var $elm$browser$Browser$Dom$NotFound = $elm$core$Basics$identity;
+var $elm$url$Url$Http = 0;
+var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {fragment: fragment, host: host, path: path, port_: port_, protocol: protocol, query: query};
+		return {cJ: fragment, cL: host, dZ: path, c0: port_, c6: protocol, c7: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5095,7 +5093,7 @@ var $elm$url$Url$chompBeforePath = F5(
 					var i = _v0.a;
 					var _v1 = $elm$core$String$toInt(
 						A2($elm$core$String$dropLeft, i + 1, str));
-					if (_v1.$ === 'Nothing') {
+					if (_v1.$ === 1) {
 						return $elm$core$Maybe$Nothing;
 					} else {
 						var port_ = _v1;
@@ -5178,26 +5176,24 @@ var $elm$core$String$startsWith = _String_startsWith;
 var $elm$url$Url$fromString = function (str) {
 	return A2($elm$core$String$startsWith, 'http://', str) ? A2(
 		$elm$url$Url$chompAfterProtocol,
-		$elm$url$Url$Http,
+		0,
 		A2($elm$core$String$dropLeft, 7, str)) : (A2($elm$core$String$startsWith, 'https://', str) ? A2(
 		$elm$url$Url$chompAfterProtocol,
-		$elm$url$Url$Https,
+		1,
 		A2($elm$core$String$dropLeft, 8, str)) : $elm$core$Maybe$Nothing);
 };
 var $elm$core$Basics$never = function (_v0) {
 	never:
 	while (true) {
-		var nvr = _v0.a;
+		var nvr = _v0;
 		var $temp$_v0 = nvr;
 		_v0 = $temp$_v0;
 		continue never;
 	}
 };
-var $elm$core$Task$Perform = function (a) {
-	return {$: 'Perform', a: a};
-};
+var $elm$core$Task$Perform = $elm$core$Basics$identity;
 var $elm$core$Task$succeed = _Scheduler_succeed;
-var $elm$core$Task$init = $elm$core$Task$succeed(_Utils_Tuple0);
+var $elm$core$Task$init = $elm$core$Task$succeed(0);
 var $elm$core$List$foldrHelper = F4(
 	function (fn, acc, ctr, ls) {
 		if (!ls.b) {
@@ -5303,7 +5299,7 @@ var $elm$core$Task$sequence = function (tasks) {
 var $elm$core$Platform$sendToApp = _Platform_sendToApp;
 var $elm$core$Task$spawnCmd = F2(
 	function (router, _v0) {
-		var task = _v0.a;
+		var task = _v0;
 		return _Scheduler_spawn(
 			A2(
 				$elm$core$Task$andThen,
@@ -5315,7 +5311,7 @@ var $elm$core$Task$onEffects = F3(
 		return A2(
 			$elm$core$Task$map,
 			function (_v0) {
-				return _Utils_Tuple0;
+				return 0;
 			},
 			$elm$core$Task$sequence(
 				A2(
@@ -5325,36 +5321,32 @@ var $elm$core$Task$onEffects = F3(
 	});
 var $elm$core$Task$onSelfMsg = F3(
 	function (_v0, _v1, _v2) {
-		return $elm$core$Task$succeed(_Utils_Tuple0);
+		return $elm$core$Task$succeed(0);
 	});
 var $elm$core$Task$cmdMap = F2(
 	function (tagger, _v0) {
-		var task = _v0.a;
-		return $elm$core$Task$Perform(
-			A2($elm$core$Task$map, tagger, task));
+		var task = _v0;
+		return A2($elm$core$Task$map, tagger, task);
 	});
 _Platform_effectManagers['Task'] = _Platform_createManager($elm$core$Task$init, $elm$core$Task$onEffects, $elm$core$Task$onSelfMsg, $elm$core$Task$cmdMap);
 var $elm$core$Task$command = _Platform_leaf('Task');
 var $elm$core$Task$perform = F2(
 	function (toMessage, task) {
 		return $elm$core$Task$command(
-			$elm$core$Task$Perform(
-				A2($elm$core$Task$map, toMessage, task)));
+			A2($elm$core$Task$map, toMessage, task));
 	});
 var $elm$browser$Browser$application = _Browser_application;
 var $author$project$Main$InvoiceMsg = function (a) {
-	return {$: 'InvoiceMsg', a: a};
+	return {$: 4, a: a};
 };
 var $author$project$Main$NavbarMsg = function (a) {
-	return {$: 'NavbarMsg', a: a};
+	return {$: 2, a: a};
 };
 var $author$project$Main$TradePartnersMsg = function (a) {
-	return {$: 'TradePartnersMsg', a: a};
+	return {$: 3, a: a};
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
-var $author$project$Invoice$GotAllInvoices = function (a) {
-	return {$: 'GotAllInvoices', a: a};
-};
+var $author$project$Invoice$GotAllInvoices = $elm$core$Basics$identity;
 var $elm$core$Basics$composeR = F3(
 	function (f, g, x) {
 		return g(
@@ -5363,27 +5355,27 @@ var $elm$core$Basics$composeR = F3(
 var $elm$json$Json$Decode$decodeString = _Json_runOnString;
 var $elm$http$Http$BadStatus_ = F2(
 	function (a, b) {
-		return {$: 'BadStatus_', a: a, b: b};
+		return {$: 3, a: a, b: b};
 	});
 var $elm$http$Http$BadUrl_ = function (a) {
-	return {$: 'BadUrl_', a: a};
+	return {$: 0, a: a};
 };
 var $elm$http$Http$GoodStatus_ = F2(
 	function (a, b) {
-		return {$: 'GoodStatus_', a: a, b: b};
+		return {$: 4, a: a, b: b};
 	});
-var $elm$http$Http$NetworkError_ = {$: 'NetworkError_'};
+var $elm$http$Http$NetworkError_ = {$: 2};
 var $elm$http$Http$Receiving = function (a) {
-	return {$: 'Receiving', a: a};
+	return {$: 1, a: a};
 };
 var $elm$http$Http$Sending = function (a) {
-	return {$: 'Sending', a: a};
+	return {$: 0, a: a};
 };
-var $elm$http$Http$Timeout_ = {$: 'Timeout_'};
-var $elm$core$Dict$RBEmpty_elm_builtin = {$: 'RBEmpty_elm_builtin'};
+var $elm$http$Http$Timeout_ = {$: 1};
+var $elm$core$Dict$RBEmpty_elm_builtin = {$: -2};
 var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
 var $elm$core$Maybe$isJust = function (maybe) {
-	if (maybe.$ === 'Just') {
+	if (!maybe.$) {
 		return true;
 	} else {
 		return false;
@@ -5395,7 +5387,7 @@ var $elm$core$Dict$get = F2(
 	function (targetKey, dict) {
 		get:
 		while (true) {
-			if (dict.$ === 'RBEmpty_elm_builtin') {
+			if (dict.$ === -2) {
 				return $elm$core$Maybe$Nothing;
 			} else {
 				var key = dict.b;
@@ -5403,14 +5395,14 @@ var $elm$core$Dict$get = F2(
 				var left = dict.d;
 				var right = dict.e;
 				var _v1 = A2($elm$core$Basics$compare, targetKey, key);
-				switch (_v1.$) {
-					case 'LT':
+				switch (_v1) {
+					case 0:
 						var $temp$targetKey = targetKey,
 							$temp$dict = left;
 						targetKey = $temp$targetKey;
 						dict = $temp$dict;
 						continue get;
-					case 'EQ':
+					case 1:
 						return $elm$core$Maybe$Just(value);
 					default:
 						var $temp$targetKey = targetKey,
@@ -5422,21 +5414,21 @@ var $elm$core$Dict$get = F2(
 			}
 		}
 	});
-var $elm$core$Dict$Black = {$: 'Black'};
+var $elm$core$Dict$Black = 1;
 var $elm$core$Dict$RBNode_elm_builtin = F5(
 	function (a, b, c, d, e) {
-		return {$: 'RBNode_elm_builtin', a: a, b: b, c: c, d: d, e: e};
+		return {$: -1, a: a, b: b, c: c, d: d, e: e};
 	});
-var $elm$core$Dict$Red = {$: 'Red'};
+var $elm$core$Dict$Red = 0;
 var $elm$core$Dict$balance = F5(
 	function (color, key, value, left, right) {
-		if ((right.$ === 'RBNode_elm_builtin') && (right.a.$ === 'Red')) {
+		if ((right.$ === -1) && (!right.a)) {
 			var _v1 = right.a;
 			var rK = right.b;
 			var rV = right.c;
 			var rLeft = right.d;
 			var rRight = right.e;
-			if ((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Red')) {
+			if ((left.$ === -1) && (!left.a)) {
 				var _v3 = left.a;
 				var lK = left.b;
 				var lV = left.c;
@@ -5444,22 +5436,22 @@ var $elm$core$Dict$balance = F5(
 				var lRight = left.e;
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					$elm$core$Dict$Red,
+					0,
 					key,
 					value,
-					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, lK, lV, lLeft, lRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, rK, rV, rLeft, rRight));
+					A5($elm$core$Dict$RBNode_elm_builtin, 1, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, 1, rK, rV, rLeft, rRight));
 			} else {
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
 					color,
 					rK,
 					rV,
-					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, key, value, left, rLeft),
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, key, value, left, rLeft),
 					rRight);
 			}
 		} else {
-			if ((((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Red')) && (left.d.$ === 'RBNode_elm_builtin')) && (left.d.a.$ === 'Red')) {
+			if ((((left.$ === -1) && (!left.a)) && (left.d.$ === -1)) && (!left.d.a)) {
 				var _v5 = left.a;
 				var lK = left.b;
 				var lV = left.c;
@@ -5472,11 +5464,11 @@ var $elm$core$Dict$balance = F5(
 				var lRight = left.e;
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					$elm$core$Dict$Red,
+					0,
 					lK,
 					lV,
-					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, llK, llV, llLeft, llRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, key, value, lRight, right));
+					A5($elm$core$Dict$RBNode_elm_builtin, 1, llK, llV, llLeft, llRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, 1, key, value, lRight, right));
 			} else {
 				return A5($elm$core$Dict$RBNode_elm_builtin, color, key, value, left, right);
 			}
@@ -5484,8 +5476,8 @@ var $elm$core$Dict$balance = F5(
 	});
 var $elm$core$Dict$insertHelp = F3(
 	function (key, value, dict) {
-		if (dict.$ === 'RBEmpty_elm_builtin') {
-			return A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, key, value, $elm$core$Dict$RBEmpty_elm_builtin, $elm$core$Dict$RBEmpty_elm_builtin);
+		if (dict.$ === -2) {
+			return A5($elm$core$Dict$RBNode_elm_builtin, 0, key, value, $elm$core$Dict$RBEmpty_elm_builtin, $elm$core$Dict$RBEmpty_elm_builtin);
 		} else {
 			var nColor = dict.a;
 			var nKey = dict.b;
@@ -5493,8 +5485,8 @@ var $elm$core$Dict$insertHelp = F3(
 			var nLeft = dict.d;
 			var nRight = dict.e;
 			var _v1 = A2($elm$core$Basics$compare, key, nKey);
-			switch (_v1.$) {
-				case 'LT':
+			switch (_v1) {
+				case 0:
 					return A5(
 						$elm$core$Dict$balance,
 						nColor,
@@ -5502,7 +5494,7 @@ var $elm$core$Dict$insertHelp = F3(
 						nValue,
 						A3($elm$core$Dict$insertHelp, key, value, nLeft),
 						nRight);
-				case 'EQ':
+				case 1:
 					return A5($elm$core$Dict$RBNode_elm_builtin, nColor, nKey, value, nLeft, nRight);
 				default:
 					return A5(
@@ -5518,13 +5510,13 @@ var $elm$core$Dict$insertHelp = F3(
 var $elm$core$Dict$insert = F3(
 	function (key, value, dict) {
 		var _v0 = A3($elm$core$Dict$insertHelp, key, value, dict);
-		if ((_v0.$ === 'RBNode_elm_builtin') && (_v0.a.$ === 'Red')) {
+		if ((_v0.$ === -1) && (!_v0.a)) {
 			var _v1 = _v0.a;
 			var k = _v0.b;
 			var v = _v0.c;
 			var l = _v0.d;
 			var r = _v0.e;
-			return A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, k, v, l, r);
+			return A5($elm$core$Dict$RBNode_elm_builtin, 1, k, v, l, r);
 		} else {
 			var x = _v0;
 			return x;
@@ -5533,7 +5525,7 @@ var $elm$core$Dict$insert = F3(
 var $elm$core$Dict$getMin = function (dict) {
 	getMin:
 	while (true) {
-		if ((dict.$ === 'RBNode_elm_builtin') && (dict.d.$ === 'RBNode_elm_builtin')) {
+		if ((dict.$ === -1) && (dict.d.$ === -1)) {
 			var left = dict.d;
 			var $temp$dict = left;
 			dict = $temp$dict;
@@ -5544,8 +5536,8 @@ var $elm$core$Dict$getMin = function (dict) {
 	}
 };
 var $elm$core$Dict$moveRedLeft = function (dict) {
-	if (((dict.$ === 'RBNode_elm_builtin') && (dict.d.$ === 'RBNode_elm_builtin')) && (dict.e.$ === 'RBNode_elm_builtin')) {
-		if ((dict.e.d.$ === 'RBNode_elm_builtin') && (dict.e.d.a.$ === 'Red')) {
+	if (((dict.$ === -1) && (dict.d.$ === -1)) && (dict.e.$ === -1)) {
+		if ((dict.e.d.$ === -1) && (!dict.e.d.a)) {
 			var clr = dict.a;
 			var k = dict.b;
 			var v = dict.c;
@@ -5568,17 +5560,17 @@ var $elm$core$Dict$moveRedLeft = function (dict) {
 			var rRight = _v2.e;
 			return A5(
 				$elm$core$Dict$RBNode_elm_builtin,
-				$elm$core$Dict$Red,
+				0,
 				rlK,
 				rlV,
 				A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					$elm$core$Dict$Black,
+					1,
 					k,
 					v,
-					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
 					rlL),
-				A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, rK, rV, rlR, rRight));
+				A5($elm$core$Dict$RBNode_elm_builtin, 1, rK, rV, rlR, rRight));
 		} else {
 			var clr = dict.a;
 			var k = dict.b;
@@ -5595,22 +5587,22 @@ var $elm$core$Dict$moveRedLeft = function (dict) {
 			var rV = _v5.c;
 			var rLeft = _v5.d;
 			var rRight = _v5.e;
-			if (clr.$ === 'Black') {
+			if (clr === 1) {
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					$elm$core$Dict$Black,
+					1,
 					k,
 					v,
-					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, lK, lV, lLeft, lRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, rK, rV, rLeft, rRight));
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
 			} else {
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					$elm$core$Dict$Black,
+					1,
 					k,
 					v,
-					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, lK, lV, lLeft, lRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, rK, rV, rLeft, rRight));
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
 			}
 		}
 	} else {
@@ -5618,8 +5610,8 @@ var $elm$core$Dict$moveRedLeft = function (dict) {
 	}
 };
 var $elm$core$Dict$moveRedRight = function (dict) {
-	if (((dict.$ === 'RBNode_elm_builtin') && (dict.d.$ === 'RBNode_elm_builtin')) && (dict.e.$ === 'RBNode_elm_builtin')) {
-		if ((dict.d.d.$ === 'RBNode_elm_builtin') && (dict.d.d.a.$ === 'Red')) {
+	if (((dict.$ === -1) && (dict.d.$ === -1)) && (dict.e.$ === -1)) {
+		if ((dict.d.d.$ === -1) && (!dict.d.d.a)) {
 			var clr = dict.a;
 			var k = dict.b;
 			var v = dict.c;
@@ -5642,17 +5634,17 @@ var $elm$core$Dict$moveRedRight = function (dict) {
 			var rRight = _v4.e;
 			return A5(
 				$elm$core$Dict$RBNode_elm_builtin,
-				$elm$core$Dict$Red,
+				0,
 				lK,
 				lV,
-				A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, llK, llV, llLeft, llRight),
+				A5($elm$core$Dict$RBNode_elm_builtin, 1, llK, llV, llLeft, llRight),
 				A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					$elm$core$Dict$Black,
+					1,
 					k,
 					v,
 					lRight,
-					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, rK, rV, rLeft, rRight)));
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight)));
 		} else {
 			var clr = dict.a;
 			var k = dict.b;
@@ -5669,22 +5661,22 @@ var $elm$core$Dict$moveRedRight = function (dict) {
 			var rV = _v6.c;
 			var rLeft = _v6.d;
 			var rRight = _v6.e;
-			if (clr.$ === 'Black') {
+			if (clr === 1) {
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					$elm$core$Dict$Black,
+					1,
 					k,
 					v,
-					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, lK, lV, lLeft, lRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, rK, rV, rLeft, rRight));
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
 			} else {
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					$elm$core$Dict$Black,
+					1,
 					k,
 					v,
-					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, lK, lV, lLeft, lRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, rK, rV, rLeft, rRight));
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
 			}
 		}
 	} else {
@@ -5693,7 +5685,7 @@ var $elm$core$Dict$moveRedRight = function (dict) {
 };
 var $elm$core$Dict$removeHelpPrepEQGT = F7(
 	function (targetKey, dict, color, key, value, left, right) {
-		if ((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Red')) {
+		if ((left.$ === -1) && (!left.a)) {
 			var _v1 = left.a;
 			var lK = left.b;
 			var lV = left.c;
@@ -5705,13 +5697,13 @@ var $elm$core$Dict$removeHelpPrepEQGT = F7(
 				lK,
 				lV,
 				lLeft,
-				A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, key, value, lRight, right));
+				A5($elm$core$Dict$RBNode_elm_builtin, 0, key, value, lRight, right));
 		} else {
 			_v2$2:
 			while (true) {
-				if ((right.$ === 'RBNode_elm_builtin') && (right.a.$ === 'Black')) {
-					if (right.d.$ === 'RBNode_elm_builtin') {
-						if (right.d.a.$ === 'Black') {
+				if ((right.$ === -1) && (right.a === 1)) {
+					if (right.d.$ === -1) {
+						if (right.d.a === 1) {
 							var _v3 = right.a;
 							var _v4 = right.d;
 							var _v5 = _v4.a;
@@ -5732,7 +5724,7 @@ var $elm$core$Dict$removeHelpPrepEQGT = F7(
 		}
 	});
 var $elm$core$Dict$removeMin = function (dict) {
-	if ((dict.$ === 'RBNode_elm_builtin') && (dict.d.$ === 'RBNode_elm_builtin')) {
+	if ((dict.$ === -1) && (dict.d.$ === -1)) {
 		var color = dict.a;
 		var key = dict.b;
 		var value = dict.c;
@@ -5740,8 +5732,8 @@ var $elm$core$Dict$removeMin = function (dict) {
 		var lColor = left.a;
 		var lLeft = left.d;
 		var right = dict.e;
-		if (lColor.$ === 'Black') {
-			if ((lLeft.$ === 'RBNode_elm_builtin') && (lLeft.a.$ === 'Red')) {
+		if (lColor === 1) {
+			if ((lLeft.$ === -1) && (!lLeft.a)) {
 				var _v3 = lLeft.a;
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
@@ -5752,7 +5744,7 @@ var $elm$core$Dict$removeMin = function (dict) {
 					right);
 			} else {
 				var _v4 = $elm$core$Dict$moveRedLeft(dict);
-				if (_v4.$ === 'RBNode_elm_builtin') {
+				if (_v4.$ === -1) {
 					var nColor = _v4.a;
 					var nKey = _v4.b;
 					var nValue = _v4.c;
@@ -5784,7 +5776,7 @@ var $elm$core$Dict$removeMin = function (dict) {
 };
 var $elm$core$Dict$removeHelp = F2(
 	function (targetKey, dict) {
-		if (dict.$ === 'RBEmpty_elm_builtin') {
+		if (dict.$ === -2) {
 			return $elm$core$Dict$RBEmpty_elm_builtin;
 		} else {
 			var color = dict.a;
@@ -5793,10 +5785,10 @@ var $elm$core$Dict$removeHelp = F2(
 			var left = dict.d;
 			var right = dict.e;
 			if (_Utils_cmp(targetKey, key) < 0) {
-				if ((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Black')) {
+				if ((left.$ === -1) && (left.a === 1)) {
 					var _v4 = left.a;
 					var lLeft = left.d;
-					if ((lLeft.$ === 'RBNode_elm_builtin') && (lLeft.a.$ === 'Red')) {
+					if ((lLeft.$ === -1) && (!lLeft.a)) {
 						var _v6 = lLeft.a;
 						return A5(
 							$elm$core$Dict$RBNode_elm_builtin,
@@ -5807,7 +5799,7 @@ var $elm$core$Dict$removeHelp = F2(
 							right);
 					} else {
 						var _v7 = $elm$core$Dict$moveRedLeft(dict);
-						if (_v7.$ === 'RBNode_elm_builtin') {
+						if (_v7.$ === -1) {
 							var nColor = _v7.a;
 							var nKey = _v7.b;
 							var nValue = _v7.c;
@@ -5843,7 +5835,7 @@ var $elm$core$Dict$removeHelp = F2(
 	});
 var $elm$core$Dict$removeHelpEQGT = F2(
 	function (targetKey, dict) {
-		if (dict.$ === 'RBNode_elm_builtin') {
+		if (dict.$ === -1) {
 			var color = dict.a;
 			var key = dict.b;
 			var value = dict.c;
@@ -5851,7 +5843,7 @@ var $elm$core$Dict$removeHelpEQGT = F2(
 			var right = dict.e;
 			if (_Utils_eq(targetKey, key)) {
 				var _v1 = $elm$core$Dict$getMin(right);
-				if (_v1.$ === 'RBNode_elm_builtin') {
+				if (_v1.$ === -1) {
 					var minKey = _v1.b;
 					var minValue = _v1.c;
 					return A5(
@@ -5880,13 +5872,13 @@ var $elm$core$Dict$removeHelpEQGT = F2(
 var $elm$core$Dict$remove = F2(
 	function (key, dict) {
 		var _v0 = A2($elm$core$Dict$removeHelp, key, dict);
-		if ((_v0.$ === 'RBNode_elm_builtin') && (_v0.a.$ === 'Red')) {
+		if ((_v0.$ === -1) && (!_v0.a)) {
 			var _v1 = _v0.a;
 			var k = _v0.b;
 			var v = _v0.c;
 			var l = _v0.d;
 			var r = _v0.e;
-			return A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, k, v, l, r);
+			return A5($elm$core$Dict$RBNode_elm_builtin, 1, k, v, l, r);
 		} else {
 			var x = _v0;
 			return x;
@@ -5896,7 +5888,7 @@ var $elm$core$Dict$update = F3(
 	function (targetKey, alter, dictionary) {
 		var _v0 = alter(
 			A2($elm$core$Dict$get, targetKey, dictionary));
-		if (_v0.$ === 'Just') {
+		if (!_v0.$) {
 			var value = _v0.a;
 			return A3($elm$core$Dict$insert, targetKey, value, dictionary);
 		} else {
@@ -5913,7 +5905,7 @@ var $elm$http$Http$expectStringResponse = F2(
 	});
 var $elm$core$Result$mapError = F2(
 	function (f, result) {
-		if (result.$ === 'Ok') {
+		if (!result.$) {
 			var v = result.a;
 			return $elm$core$Result$Ok(v);
 		} else {
@@ -5923,31 +5915,31 @@ var $elm$core$Result$mapError = F2(
 		}
 	});
 var $elm$http$Http$BadBody = function (a) {
-	return {$: 'BadBody', a: a};
+	return {$: 4, a: a};
 };
 var $elm$http$Http$BadStatus = function (a) {
-	return {$: 'BadStatus', a: a};
+	return {$: 3, a: a};
 };
 var $elm$http$Http$BadUrl = function (a) {
-	return {$: 'BadUrl', a: a};
+	return {$: 0, a: a};
 };
-var $elm$http$Http$NetworkError = {$: 'NetworkError'};
-var $elm$http$Http$Timeout = {$: 'Timeout'};
+var $elm$http$Http$NetworkError = {$: 2};
+var $elm$http$Http$Timeout = {$: 1};
 var $elm$http$Http$resolve = F2(
 	function (toResult, response) {
 		switch (response.$) {
-			case 'BadUrl_':
+			case 0:
 				var url = response.a;
 				return $elm$core$Result$Err(
 					$elm$http$Http$BadUrl(url));
-			case 'Timeout_':
+			case 1:
 				return $elm$core$Result$Err($elm$http$Http$Timeout);
-			case 'NetworkError_':
+			case 2:
 				return $elm$core$Result$Err($elm$http$Http$NetworkError);
-			case 'BadStatus_':
+			case 3:
 				var metadata = response.a;
 				return $elm$core$Result$Err(
-					$elm$http$Http$BadStatus(metadata.statusCode));
+					$elm$http$Http$BadStatus(metadata.d4));
 			default:
 				var body = response.b;
 				return A2(
@@ -5970,13 +5962,13 @@ var $elm$http$Http$expectJson = F2(
 				}));
 	});
 var $krisajenkins$remotedata$RemoteData$Failure = function (a) {
-	return {$: 'Failure', a: a};
+	return {$: 2, a: a};
 };
 var $krisajenkins$remotedata$RemoteData$Success = function (a) {
-	return {$: 'Success', a: a};
+	return {$: 3, a: a};
 };
 var $krisajenkins$remotedata$RemoteData$fromResult = function (result) {
-	if (result.$ === 'Err') {
+	if (result.$ === 1) {
 		var e = result.a;
 		return $krisajenkins$remotedata$RemoteData$Failure(e);
 	} else {
@@ -5986,11 +5978,11 @@ var $krisajenkins$remotedata$RemoteData$fromResult = function (result) {
 };
 var $elm$http$Http$emptyBody = _Http_emptyBody;
 var $elm$http$Http$Request = function (a) {
-	return {$: 'Request', a: a};
+	return {$: 1, a: a};
 };
 var $elm$http$Http$State = F2(
 	function (reqs, subs) {
-		return {reqs: reqs, subs: subs};
+		return {c9: reqs, df: subs};
 	});
 var $elm$http$Http$init = $elm$core$Task$succeed(
 	A2($elm$http$Http$State, $elm$core$Dict$empty, _List_Nil));
@@ -6005,10 +5997,10 @@ var $elm$http$Http$updateReqs = F3(
 			} else {
 				var cmd = cmds.a;
 				var otherCmds = cmds.b;
-				if (cmd.$ === 'Cancel') {
+				if (!cmd.$) {
 					var tracker = cmd.a;
 					var _v2 = A2($elm$core$Dict$get, tracker, reqs);
-					if (_v2.$ === 'Nothing') {
+					if (_v2.$ === 1) {
 						var $temp$router = router,
 							$temp$cmds = otherCmds,
 							$temp$reqs = reqs;
@@ -6034,8 +6026,8 @@ var $elm$http$Http$updateReqs = F3(
 					return A2(
 						$elm$core$Task$andThen,
 						function (pid) {
-							var _v4 = req.tracker;
-							if (_v4.$ === 'Nothing') {
+							var _v4 = req.dm;
+							if (_v4.$ === 1) {
 								return A3($elm$http$Http$updateReqs, router, otherCmds, reqs);
 							} else {
 								var tracker = _v4.a;
@@ -6064,12 +6056,12 @@ var $elm$http$Http$onEffects = F4(
 				return $elm$core$Task$succeed(
 					A2($elm$http$Http$State, reqs, subs));
 			},
-			A3($elm$http$Http$updateReqs, router, cmds, state.reqs));
+			A3($elm$http$Http$updateReqs, router, cmds, state.c9));
 	});
 var $elm$core$List$maybeCons = F3(
 	function (f, mx, xs) {
 		var _v0 = f(mx);
-		if (_v0.$ === 'Just') {
+		if (!_v0.$) {
 			var x = _v0.a;
 			return A2($elm$core$List$cons, x, xs);
 		} else {
@@ -6107,34 +6099,34 @@ var $elm$http$Http$onSelfMsg = F3(
 				A2(
 					$elm$core$List$filterMap,
 					A3($elm$http$Http$maybeSend, router, tracker, progress),
-					state.subs)));
+					state.df)));
 	});
 var $elm$http$Http$Cancel = function (a) {
-	return {$: 'Cancel', a: a};
+	return {$: 0, a: a};
 };
 var $elm$http$Http$cmdMap = F2(
 	function (func, cmd) {
-		if (cmd.$ === 'Cancel') {
+		if (!cmd.$) {
 			var tracker = cmd.a;
 			return $elm$http$Http$Cancel(tracker);
 		} else {
 			var r = cmd.a;
 			return $elm$http$Http$Request(
 				{
-					allowCookiesFromOtherDomains: r.allowCookiesFromOtherDomains,
-					body: r.body,
-					expect: A2(_Http_mapExpect, func, r.expect),
-					headers: r.headers,
-					method: r.method,
-					timeout: r.timeout,
-					tracker: r.tracker,
-					url: r.url
+					dt: r.dt,
+					cx: r.cx,
+					dE: A2(_Http_mapExpect, func, r.dE),
+					f: r.f,
+					y: r.y,
+					i: r.i,
+					dm: r.dm,
+					ec: r.ec
 				});
 		}
 	});
 var $elm$http$Http$MySub = F2(
 	function (a, b) {
-		return {$: 'MySub', a: a, b: b};
+		return {$: 0, a: a, b: b};
 	});
 var $elm$http$Http$subMap = F2(
 	function (func, _v0) {
@@ -6151,15 +6143,15 @@ var $elm$http$Http$subscription = _Platform_leaf('Http');
 var $elm$http$Http$request = function (r) {
 	return $elm$http$Http$command(
 		$elm$http$Http$Request(
-			{allowCookiesFromOtherDomains: false, body: r.body, expect: r.expect, headers: r.headers, method: r.method, timeout: r.timeout, tracker: r.tracker, url: r.url}));
+			{dt: false, cx: r.cx, dE: r.dE, f: r.f, y: r.y, i: r.i, dm: r.dm, ec: r.ec}));
 };
 var $elm$http$Http$get = function (r) {
 	return $elm$http$Http$request(
-		{body: $elm$http$Http$emptyBody, expect: r.expect, headers: _List_Nil, method: 'GET', timeout: $elm$core$Maybe$Nothing, tracker: $elm$core$Maybe$Nothing, url: r.url});
+		{cx: $elm$http$Http$emptyBody, dE: r.dE, f: _List_Nil, y: 'GET', i: $elm$core$Maybe$Nothing, dm: $elm$core$Maybe$Nothing, ec: r.ec});
 };
 var $author$project$Invoice$Invoice = F6(
 	function (id, invoiceId, date, invoiceType, positions, partner) {
-		return {date: date, id: id, invoiceId: invoiceId, invoiceType: invoiceType, partner: partner, positions: positions};
+		return {cC: date, cO: id, cQ: invoiceId, cR: invoiceType, ch: partner, c1: positions};
 	});
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $elm$json$Json$Decode$at = F2(
@@ -6167,8 +6159,8 @@ var $elm$json$Json$Decode$at = F2(
 		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
 	});
 var $elm$json$Json$Decode$int = _Json_decodeInt;
-var $author$project$Invoice$Issued = {$: 'Issued'};
-var $author$project$Invoice$Received = {$: 'Received'};
+var $author$project$Invoice$Issued = 1;
+var $author$project$Invoice$Received = 0;
 var $elm$json$Json$Decode$andThen = _Json_andThen;
 var $elm$json$Json$Decode$fail = _Json_fail;
 var $elm$json$Json$Decode$string = _Json_decodeString;
@@ -6177,9 +6169,9 @@ var $author$project$Invoice$invoiceTypeDecoder = A2(
 	function (str) {
 		switch (str) {
 			case 'IN':
-				return $elm$json$Json$Decode$succeed($author$project$Invoice$Received);
+				return $elm$json$Json$Decode$succeed(0);
 			case 'OUT':
-				return $elm$json$Json$Decode$succeed($author$project$Invoice$Issued);
+				return $elm$json$Json$Decode$succeed(1);
 			default:
 				var somethingElse = str;
 				return $elm$json$Json$Decode$fail('Unknown invoice type: ' + somethingElse);
@@ -6190,7 +6182,7 @@ var $elm$json$Json$Decode$list = _Json_decodeList;
 var $elm$json$Json$Decode$map6 = _Json_map6;
 var $author$project$TradePartners$TradePartner = F4(
 	function (id, name, nipNumber, adress) {
-		return {adress: adress, id: id, name: name, nipNumber: nipNumber};
+		return {C: adress, cO: id, cd: name, dT: nipNumber};
 	});
 var $elm$json$Json$Decode$map4 = _Json_map4;
 var $elm$json$Json$Decode$oneOf = _Json_oneOf;
@@ -6230,7 +6222,7 @@ var $author$project$TradePartners$partnerDecoder = A5(
 			$elm$json$Json$Decode$string)));
 var $author$project$Invoice$InvoicePosition = F5(
 	function (id, name, vatRate, numItems, priceNet) {
-		return {id: id, name: name, numItems: numItems, priceNet: priceNet, vatRate: vatRate};
+		return {cO: id, cd: name, cY: numItems, c3: priceNet, ed: vatRate};
 	});
 var $elm$json$Json$Decode$float = _Json_decodeFloat;
 var $elm$json$Json$Decode$map5 = _Json_map5;
@@ -6298,40 +6290,35 @@ var $author$project$Invoice$invoiceDecoder = A7(
 var $author$project$Invoice$invoicesDecoder = $elm$json$Json$Decode$list($author$project$Invoice$invoiceDecoder);
 var $author$project$Invoice$fetchAllInvoices = $elm$http$Http$get(
 	{
-		expect: A2(
+		dE: A2(
 			$elm$http$Http$expectJson,
-			A2($elm$core$Basics$composeR, $krisajenkins$remotedata$RemoteData$fromResult, $author$project$Invoice$GotAllInvoices),
+			A2($elm$core$Basics$composeR, $krisajenkins$remotedata$RemoteData$fromResult, $elm$core$Basics$identity),
 			$author$project$Invoice$invoicesDecoder),
-		url: '/api/invoice'
+		ec: '/api/invoice'
 	});
 var $author$project$TradePartners$GotPartnersList = function (a) {
-	return {$: 'GotPartnersList', a: a};
+	return {$: 3, a: a};
 };
 var $author$project$TradePartners$partnersDecoder = $elm$json$Json$Decode$list($author$project$TradePartners$partnerDecoder);
 var $author$project$TradePartners$fetchAllPartners = $elm$http$Http$get(
 	{
-		expect: A2(
+		dE: A2(
 			$elm$http$Http$expectJson,
 			A2($elm$core$Basics$composeR, $krisajenkins$remotedata$RemoteData$fromResult, $author$project$TradePartners$GotPartnersList),
 			$author$project$TradePartners$partnersDecoder),
-		url: '/api/trading_partner'
+		ec: '/api/trading_partner'
 	});
-var $krisajenkins$remotedata$RemoteData$Loading = {$: 'Loading'};
-var $author$project$Invoice$init = {allInvoices: $krisajenkins$remotedata$RemoteData$Loading};
-var $author$project$Navbar$NavbarMsg = function (a) {
-	return {$: 'NavbarMsg', a: a};
-};
-var $author$project$Navbar$TradePartnersTab = {$: 'TradePartnersTab'};
-var $rundis$elm_bootstrap$Bootstrap$Navbar$Hidden = {$: 'Hidden'};
-var $rundis$elm_bootstrap$Bootstrap$Navbar$State = function (a) {
-	return {$: 'State', a: a};
-};
+var $krisajenkins$remotedata$RemoteData$Loading = {$: 1};
+var $author$project$Invoice$init = {aP: $krisajenkins$remotedata$RemoteData$Loading};
+var $author$project$Navbar$NavbarMsg = $elm$core$Basics$identity;
+var $author$project$Navbar$TradePartnersTab = 0;
+var $rundis$elm_bootstrap$Bootstrap$Navbar$Hidden = 0;
+var $rundis$elm_bootstrap$Bootstrap$Navbar$State = $elm$core$Basics$identity;
 var $elm$browser$Browser$Dom$getViewport = _Browser_withWindow(_Browser_getViewport);
 var $rundis$elm_bootstrap$Bootstrap$Navbar$mapState = F2(
 	function (mapper, _v0) {
-		var state = _v0.a;
-		return $rundis$elm_bootstrap$Bootstrap$Navbar$State(
-			mapper(state));
+		var state = _v0;
+		return mapper(state);
 	});
 var $rundis$elm_bootstrap$Bootstrap$Navbar$initWindowSize = F2(
 	function (toMsg, state) {
@@ -6345,7 +6332,7 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$initWindowSize = F2(
 							return _Utils_update(
 								s,
 								{
-									windowWidth: $elm$core$Maybe$Just(vp.viewport.width)
+									aH: $elm$core$Maybe$Just(vp.$7.dp)
 								});
 						},
 						state));
@@ -6353,22 +6340,21 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$initWindowSize = F2(
 			$elm$browser$Browser$Dom$getViewport);
 	});
 var $rundis$elm_bootstrap$Bootstrap$Navbar$initialState = function (toMsg) {
-	var state = $rundis$elm_bootstrap$Bootstrap$Navbar$State(
-		{dropdowns: $elm$core$Dict$empty, height: $elm$core$Maybe$Nothing, visibility: $rundis$elm_bootstrap$Bootstrap$Navbar$Hidden, windowWidth: $elm$core$Maybe$Nothing});
+	var state = {F: $elm$core$Dict$empty, cK: $elm$core$Maybe$Nothing, e: 0, aH: $elm$core$Maybe$Nothing};
 	return _Utils_Tuple2(
 		state,
 		A2($rundis$elm_bootstrap$Bootstrap$Navbar$initWindowSize, toMsg, state));
 };
 var $author$project$Navbar$init = function () {
-	var _v0 = $rundis$elm_bootstrap$Bootstrap$Navbar$initialState($author$project$Navbar$NavbarMsg);
+	var _v0 = $rundis$elm_bootstrap$Bootstrap$Navbar$initialState($elm$core$Basics$identity);
 	var navbarState = _v0.a;
 	var navbarCmd = _v0.b;
-	var model = {activeTab: $author$project$Navbar$TradePartnersTab, state: navbarState};
+	var model = {b1: 0, bR: navbarState};
 	return _Utils_Tuple2(model, navbarCmd);
 }();
 var $author$project$TradePartners$init = {
-	newTradePartner: {adress: '', name: '', nipNumber: ''},
-	tradePartners: $krisajenkins$remotedata$RemoteData$Loading
+	at: {C: '', cd: '', dT: ''},
+	az: $krisajenkins$remotedata$RemoteData$Loading
 };
 var $elm$core$Platform$Cmd$map = _Platform_map;
 var $author$project$Main$init = F3(
@@ -6377,7 +6363,7 @@ var $author$project$Main$init = F3(
 		var navbarstate = _v1.a;
 		var navbarcmd = _v1.b;
 		return _Utils_Tuple2(
-			{invoices: $author$project$Invoice$init, key: key, navbar: navbarstate, tradePartners: $author$project$TradePartners$init, url: url},
+			{am: $author$project$Invoice$init, cb: key, as: navbarstate, az: $author$project$TradePartners$init, ec: url},
 			$elm$core$Platform$Cmd$batch(
 				_List_fromArray(
 					[
@@ -6393,7 +6379,7 @@ var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $elm$browser$Browser$Navigation$pushUrl = _Browser_pushUrl;
 var $elm$url$Url$addPort = F2(
 	function (maybePort, starter) {
-		if (maybePort.$ === 'Nothing') {
+		if (maybePort.$ === 1) {
 			return starter;
 		} else {
 			var port_ = maybePort.a;
@@ -6402,7 +6388,7 @@ var $elm$url$Url$addPort = F2(
 	});
 var $elm$url$Url$addPrefixed = F3(
 	function (prefix, maybeSegment, starter) {
-		if (maybeSegment.$ === 'Nothing') {
+		if (maybeSegment.$ === 1) {
 			return starter;
 		} else {
 			var segment = maybeSegment.a;
@@ -6413,8 +6399,8 @@ var $elm$url$Url$addPrefixed = F3(
 	});
 var $elm$url$Url$toString = function (url) {
 	var http = function () {
-		var _v0 = url.protocol;
-		if (_v0.$ === 'Http') {
+		var _v0 = url.c6;
+		if (!_v0) {
 			return 'http://';
 		} else {
 			return 'https://';
@@ -6423,38 +6409,38 @@ var $elm$url$Url$toString = function (url) {
 	return A3(
 		$elm$url$Url$addPrefixed,
 		'#',
-		url.fragment,
+		url.cJ,
 		A3(
 			$elm$url$Url$addPrefixed,
 			'?',
-			url.query,
+			url.c7,
 			_Utils_ap(
 				A2(
 					$elm$url$Url$addPort,
-					url.port_,
-					_Utils_ap(http, url.host)),
-				url.path)));
+					url.c0,
+					_Utils_ap(http, url.cL)),
+				url.dZ)));
 };
 var $author$project$Invoice$update = F2(
 	function (msg, model) {
-		var response = msg.a;
+		var response = msg;
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
-				{allInvoices: response}),
+				{aP: response}),
 			$elm$core$Platform$Cmd$none);
 	});
 var $author$project$Navbar$update = F2(
 	function (msg, model) {
-		var state = msg.a;
+		var state = msg;
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
-				{state: state}),
+				{bR: state}),
 			$elm$core$Platform$Cmd$none);
 	});
 var $author$project$TradePartners$GotNewPartnerResult = function (a) {
-	return {$: 'GotNewPartnerResult', a: a};
+	return {$: 2, a: a};
 };
 var $elm$http$Http$jsonBody = function (value) {
 	return A2(
@@ -6472,12 +6458,12 @@ var $elm$json$Json$Encode$object = function (pairs) {
 					var v = _v0.b;
 					return A3(_Json_addField, k, v, obj);
 				}),
-			_Json_emptyObject(_Utils_Tuple0),
+			_Json_emptyObject(0),
 			pairs));
 };
 var $elm$http$Http$post = function (r) {
 	return $elm$http$Http$request(
-		{body: r.body, expect: r.expect, headers: _List_Nil, method: 'POST', timeout: $elm$core$Maybe$Nothing, tracker: $elm$core$Maybe$Nothing, url: r.url});
+		{cx: r.cx, dE: r.dE, f: _List_Nil, y: 'POST', i: $elm$core$Maybe$Nothing, dm: $elm$core$Maybe$Nothing, ec: r.ec});
 };
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $author$project$TradePartners$addNewPartner = function (partner_data) {
@@ -6486,44 +6472,44 @@ var $author$project$TradePartners$addNewPartner = function (partner_data) {
 			[
 				_Utils_Tuple2(
 				'name',
-				$elm$json$Json$Encode$string(partner_data.name)),
+				$elm$json$Json$Encode$string(partner_data.cd)),
 				_Utils_Tuple2(
 				'nip_number',
-				$elm$json$Json$Encode$string(partner_data.name)),
+				$elm$json$Json$Encode$string(partner_data.cd)),
 				_Utils_Tuple2(
 				'adress',
-				$elm$json$Json$Encode$string(partner_data.adress))
+				$elm$json$Json$Encode$string(partner_data.C))
 			]));
 	return $elm$http$Http$post(
 		{
-			body: $elm$http$Http$jsonBody(body),
-			expect: A2(
+			cx: $elm$http$Http$jsonBody(body),
+			dE: A2(
 				$elm$http$Http$expectJson,
 				A2($elm$core$Basics$composeR, $krisajenkins$remotedata$RemoteData$fromResult, $author$project$TradePartners$GotNewPartnerResult),
 				$author$project$TradePartners$partnerDecoder),
-			url: '/api/trading_partner'
+			ec: '/api/trading_partner'
 		});
 };
 var $author$project$TradePartners$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 'GotPartnersList':
+			case 3:
 				var response = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{tradePartners: response}),
+						{az: response}),
 					$elm$core$Platform$Cmd$none);
-			case 'AddPartner':
+			case 0:
 				return _Utils_Tuple2(
 					model,
-					$author$project$TradePartners$addNewPartner(model.newTradePartner));
-			case 'UpdateForm':
+					$author$project$TradePartners$addNewPartner(model.at));
+			case 1:
 				var partnerData = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{newTradePartner: partnerData}),
+						{at: partnerData}),
 					$elm$core$Platform$Cmd$none);
 			default:
 				return _Utils_Tuple2(model, $author$project$TradePartners$fetchAllPartners);
@@ -6532,17 +6518,17 @@ var $author$project$TradePartners$update = F2(
 var $author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 'UrlRequest':
+			case 0:
 				var urlRequest = msg.a;
-				if (urlRequest.$ === 'Internal') {
+				if (!urlRequest.$) {
 					var url = urlRequest.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{url: url}),
+							{ec: url}),
 						A2(
 							$elm$browser$Browser$Navigation$pushUrl,
-							model.key,
+							model.cb,
 							$elm$url$Url$toString(url)));
 				} else {
 					var url = urlRequest.a;
@@ -6550,40 +6536,40 @@ var $author$project$Main$update = F2(
 						model,
 						$elm$browser$Browser$Navigation$load(url));
 				}
-			case 'UrlChange':
+			case 1:
 				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
-			case 'NavbarMsg':
+			case 2:
 				var navmsg = msg.a;
-				var _v2 = A2($author$project$Navbar$update, navmsg, model.navbar);
+				var _v2 = A2($author$project$Navbar$update, navmsg, model.as);
 				var navmodel = _v2.a;
 				var navmsgin = _v2.b;
 				var navmsgout = A2($elm$core$Platform$Cmd$map, $author$project$Main$NavbarMsg, navmsgin);
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{navbar: navmodel}),
+						{as: navmodel}),
 					navmsgout);
-			case 'TradePartnersMsg':
+			case 3:
 				var tradepartnermsg = msg.a;
-				var _v3 = A2($author$project$TradePartners$update, tradepartnermsg, model.tradePartners);
+				var _v3 = A2($author$project$TradePartners$update, tradepartnermsg, model.az);
 				var tradepartnermodel = _v3.a;
 				var tradepartnercmd = _v3.b;
 				var tradepartnercmdout = A2($elm$core$Platform$Cmd$map, $author$project$Main$TradePartnersMsg, tradepartnercmd);
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{tradePartners: tradepartnermodel}),
+						{az: tradepartnermodel}),
 					tradepartnercmdout);
 			default:
 				var subMsg = msg.a;
-				var _v4 = A2($author$project$Invoice$update, subMsg, model.invoices);
+				var _v4 = A2($author$project$Invoice$update, subMsg, model.am);
 				var outmodel = _v4.a;
 				var cmd = _v4.b;
 				var outcmd = A2($elm$core$Platform$Cmd$map, $author$project$Main$InvoiceMsg, cmd);
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{invoices: outmodel}),
+						{am: outmodel}),
 					outcmd);
 		}
 	});
@@ -6610,7 +6596,7 @@ var $rundis$elm_bootstrap$Bootstrap$Grid$containerFluid = F2(
 	});
 var $elm$url$Url$Parser$State = F5(
 	function (visited, unvisited, params, frag, value) {
-		return {frag: frag, params: params, unvisited: unvisited, value: value, visited: visited};
+		return {G: frag, I: params, B: unvisited, t: value, N: visited};
 	});
 var $elm$url$Url$Parser$getFirstMatch = function (states) {
 	getFirstMatch:
@@ -6620,12 +6606,12 @@ var $elm$url$Url$Parser$getFirstMatch = function (states) {
 		} else {
 			var state = states.a;
 			var rest = states.b;
-			var _v1 = state.unvisited;
+			var _v1 = state.B;
 			if (!_v1.b) {
-				return $elm$core$Maybe$Just(state.value);
+				return $elm$core$Maybe$Just(state.t);
 			} else {
 				if ((_v1.a === '') && (!_v1.b.b)) {
-					return $elm$core$Maybe$Just(state.value);
+					return $elm$core$Maybe$Just(state.t);
 				} else {
 					var $temp$states = rest;
 					states = $temp$states;
@@ -6663,7 +6649,7 @@ var $elm$url$Url$Parser$preparePath = function (path) {
 };
 var $elm$url$Url$Parser$addToParametersHelp = F2(
 	function (value, maybeList) {
-		if (maybeList.$ === 'Nothing') {
+		if (maybeList.$ === 1) {
 			return $elm$core$Maybe$Just(
 				_List_fromArray(
 					[value]));
@@ -6682,12 +6668,12 @@ var $elm$url$Url$Parser$addParam = F2(
 			var _v1 = _v0.b;
 			var rawValue = _v1.a;
 			var _v2 = $elm$url$Url$percentDecode(rawKey);
-			if (_v2.$ === 'Nothing') {
+			if (_v2.$ === 1) {
 				return dict;
 			} else {
 				var key = _v2.a;
 				var _v3 = $elm$url$Url$percentDecode(rawValue);
-				if (_v3.$ === 'Nothing') {
+				if (_v3.$ === 1) {
 					return dict;
 				} else {
 					var value = _v3.a;
@@ -6703,7 +6689,7 @@ var $elm$url$Url$Parser$addParam = F2(
 		}
 	});
 var $elm$url$Url$Parser$prepareQuery = function (maybeQuery) {
-	if (maybeQuery.$ === 'Nothing') {
+	if (maybeQuery.$ === 1) {
 		return $elm$core$Dict$empty;
 	} else {
 		var qry = maybeQuery.a;
@@ -6716,29 +6702,27 @@ var $elm$url$Url$Parser$prepareQuery = function (maybeQuery) {
 };
 var $elm$url$Url$Parser$parse = F2(
 	function (_v0, url) {
-		var parser = _v0.a;
+		var parser = _v0;
 		return $elm$url$Url$Parser$getFirstMatch(
 			parser(
 				A5(
 					$elm$url$Url$Parser$State,
 					_List_Nil,
-					$elm$url$Url$Parser$preparePath(url.path),
-					$elm$url$Url$Parser$prepareQuery(url.query),
-					url.fragment,
+					$elm$url$Url$Parser$preparePath(url.dZ),
+					$elm$url$Url$Parser$prepareQuery(url.c7),
+					url.cJ,
 					$elm$core$Basics$identity)));
 	});
-var $author$project$Route$Invoices = {$: 'Invoices'};
-var $author$project$Route$TradePartner = {$: 'TradePartner'};
-var $elm$url$Url$Parser$Parser = function (a) {
-	return {$: 'Parser', a: a};
-};
+var $author$project$Route$Invoices = 1;
+var $author$project$Route$TradePartner = 0;
+var $elm$url$Url$Parser$Parser = $elm$core$Basics$identity;
 var $elm$url$Url$Parser$mapState = F2(
 	function (func, _v0) {
-		var visited = _v0.visited;
-		var unvisited = _v0.unvisited;
-		var params = _v0.params;
-		var frag = _v0.frag;
-		var value = _v0.value;
+		var visited = _v0.N;
+		var unvisited = _v0.B;
+		var params = _v0.I;
+		var frag = _v0.G;
+		var value = _v0.t;
 		return A5(
 			$elm$url$Url$Parser$State,
 			visited,
@@ -6749,20 +6733,19 @@ var $elm$url$Url$Parser$mapState = F2(
 	});
 var $elm$url$Url$Parser$map = F2(
 	function (subValue, _v0) {
-		var parseArg = _v0.a;
-		return $elm$url$Url$Parser$Parser(
-			function (_v1) {
-				var visited = _v1.visited;
-				var unvisited = _v1.unvisited;
-				var params = _v1.params;
-				var frag = _v1.frag;
-				var value = _v1.value;
-				return A2(
-					$elm$core$List$map,
-					$elm$url$Url$Parser$mapState(value),
-					parseArg(
-						A5($elm$url$Url$Parser$State, visited, unvisited, params, frag, subValue)));
-			});
+		var parseArg = _v0;
+		return function (_v1) {
+			var visited = _v1.N;
+			var unvisited = _v1.B;
+			var params = _v1.I;
+			var frag = _v1.G;
+			var value = _v1.t;
+			return A2(
+				$elm$core$List$map,
+				$elm$url$Url$Parser$mapState(value),
+				parseArg(
+					A5($elm$url$Url$Parser$State, visited, unvisited, params, frag, subValue)));
+		};
 	});
 var $elm$core$List$append = F2(
 	function (xs, ys) {
@@ -6781,64 +6764,61 @@ var $elm$core$List$concatMap = F2(
 			A2($elm$core$List$map, f, list));
 	});
 var $elm$url$Url$Parser$oneOf = function (parsers) {
-	return $elm$url$Url$Parser$Parser(
-		function (state) {
-			return A2(
-				$elm$core$List$concatMap,
-				function (_v0) {
-					var parser = _v0.a;
-					return parser(state);
-				},
-				parsers);
-		});
+	return function (state) {
+		return A2(
+			$elm$core$List$concatMap,
+			function (_v0) {
+				var parser = _v0;
+				return parser(state);
+			},
+			parsers);
+	};
 };
 var $elm$url$Url$Parser$s = function (str) {
-	return $elm$url$Url$Parser$Parser(
-		function (_v0) {
-			var visited = _v0.visited;
-			var unvisited = _v0.unvisited;
-			var params = _v0.params;
-			var frag = _v0.frag;
-			var value = _v0.value;
-			if (!unvisited.b) {
-				return _List_Nil;
-			} else {
-				var next = unvisited.a;
-				var rest = unvisited.b;
-				return _Utils_eq(next, str) ? _List_fromArray(
-					[
-						A5(
-						$elm$url$Url$Parser$State,
-						A2($elm$core$List$cons, next, visited),
-						rest,
-						params,
-						frag,
-						value)
-					]) : _List_Nil;
-			}
-		});
+	return function (_v0) {
+		var visited = _v0.N;
+		var unvisited = _v0.B;
+		var params = _v0.I;
+		var frag = _v0.G;
+		var value = _v0.t;
+		if (!unvisited.b) {
+			return _List_Nil;
+		} else {
+			var next = unvisited.a;
+			var rest = unvisited.b;
+			return _Utils_eq(next, str) ? _List_fromArray(
+				[
+					A5(
+					$elm$url$Url$Parser$State,
+					A2($elm$core$List$cons, next, visited),
+					rest,
+					params,
+					frag,
+					value)
+				]) : _List_Nil;
+		}
+	};
 };
-var $elm$url$Url$Parser$top = $elm$url$Url$Parser$Parser(
-	function (state) {
-		return _List_fromArray(
-			[state]);
-	});
+var $elm$url$Url$Parser$top = function (state) {
+	return _List_fromArray(
+		[state]);
+};
 var $author$project$Route$parser = $elm$url$Url$Parser$oneOf(
 	_List_fromArray(
 		[
-			A2($elm$url$Url$Parser$map, $author$project$Route$TradePartner, $elm$url$Url$Parser$top),
+			A2($elm$url$Url$Parser$map, 0, $elm$url$Url$Parser$top),
 			A2(
 			$elm$url$Url$Parser$map,
-			$author$project$Route$TradePartner,
+			0,
 			$elm$url$Url$Parser$s('tradepartners')),
 			A2(
 			$elm$url$Url$Parser$map,
-			$author$project$Route$Invoices,
+			1,
 			$elm$url$Url$Parser$s('invoices'))
 		]));
 var $elm$core$Maybe$withDefault = F2(
 	function (_default, maybe) {
-		if (maybe.$ === 'Just') {
+		if (!maybe.$) {
 			var value = maybe.a;
 			return value;
 		} else {
@@ -6852,260 +6832,260 @@ var $author$project$Route$fromUrl = function (url) {
 		_Utils_update(
 			url,
 			{
-				fragment: $elm$core$Maybe$Nothing,
-				path: A2($elm$core$Maybe$withDefault, '', url.fragment)
+				cJ: $elm$core$Maybe$Nothing,
+				dZ: A2($elm$core$Maybe$withDefault, '', url.cJ)
 			}));
 };
 var $elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
 var $elm$html$Html$map = $elm$virtual_dom$VirtualDom$map;
-var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$Col = {$: 'Col'};
+var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$Col = 0;
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$Width = F2(
 	function (screenSize, columnCount) {
-		return {columnCount: columnCount, screenSize: screenSize};
+		return {cB: columnCount, dd: screenSize};
 	});
-var $rundis$elm_bootstrap$Bootstrap$General$Internal$XS = {$: 'XS'};
+var $rundis$elm_bootstrap$Bootstrap$General$Internal$XS = 0;
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$applyColAlign = F2(
 	function (align_, options) {
-		var _v0 = align_.screenSize;
-		switch (_v0.$) {
-			case 'XS':
+		var _v0 = align_.dd;
+		switch (_v0) {
+			case 0:
 				return _Utils_update(
 					options,
 					{
-						alignXs: $elm$core$Maybe$Just(align_)
+						aO: $elm$core$Maybe$Just(align_)
 					});
-			case 'SM':
+			case 1:
 				return _Utils_update(
 					options,
 					{
-						alignSm: $elm$core$Maybe$Just(align_)
+						aM: $elm$core$Maybe$Just(align_)
 					});
-			case 'MD':
+			case 2:
 				return _Utils_update(
 					options,
 					{
-						alignMd: $elm$core$Maybe$Just(align_)
+						aL: $elm$core$Maybe$Just(align_)
 					});
-			case 'LG':
+			case 3:
 				return _Utils_update(
 					options,
 					{
-						alignLg: $elm$core$Maybe$Just(align_)
+						aK: $elm$core$Maybe$Just(align_)
 					});
 			default:
 				return _Utils_update(
 					options,
 					{
-						alignXl: $elm$core$Maybe$Just(align_)
+						aN: $elm$core$Maybe$Just(align_)
 					});
 		}
 	});
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$applyColOffset = F2(
 	function (offset_, options) {
-		var _v0 = offset_.screenSize;
-		switch (_v0.$) {
-			case 'XS':
+		var _v0 = offset_.dd;
+		switch (_v0) {
+			case 0:
 				return _Utils_update(
 					options,
 					{
-						offsetXs: $elm$core$Maybe$Just(offset_)
+						bo: $elm$core$Maybe$Just(offset_)
 					});
-			case 'SM':
+			case 1:
 				return _Utils_update(
 					options,
 					{
-						offsetSm: $elm$core$Maybe$Just(offset_)
+						bl: $elm$core$Maybe$Just(offset_)
 					});
-			case 'MD':
+			case 2:
 				return _Utils_update(
 					options,
 					{
-						offsetMd: $elm$core$Maybe$Just(offset_)
+						bk: $elm$core$Maybe$Just(offset_)
 					});
-			case 'LG':
+			case 3:
 				return _Utils_update(
 					options,
 					{
-						offsetLg: $elm$core$Maybe$Just(offset_)
+						bj: $elm$core$Maybe$Just(offset_)
 					});
 			default:
 				return _Utils_update(
 					options,
 					{
-						offsetXl: $elm$core$Maybe$Just(offset_)
+						bn: $elm$core$Maybe$Just(offset_)
 					});
 		}
 	});
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$applyColOrder = F2(
 	function (order_, options) {
-		var _v0 = order_.screenSize;
-		switch (_v0.$) {
-			case 'XS':
+		var _v0 = order_.dd;
+		switch (_v0) {
+			case 0:
 				return _Utils_update(
 					options,
 					{
-						orderXs: $elm$core$Maybe$Just(order_)
+						by: $elm$core$Maybe$Just(order_)
 					});
-			case 'SM':
+			case 1:
 				return _Utils_update(
 					options,
 					{
-						orderSm: $elm$core$Maybe$Just(order_)
+						bw: $elm$core$Maybe$Just(order_)
 					});
-			case 'MD':
+			case 2:
 				return _Utils_update(
 					options,
 					{
-						orderMd: $elm$core$Maybe$Just(order_)
+						bv: $elm$core$Maybe$Just(order_)
 					});
-			case 'LG':
+			case 3:
 				return _Utils_update(
 					options,
 					{
-						orderLg: $elm$core$Maybe$Just(order_)
+						bu: $elm$core$Maybe$Just(order_)
 					});
 			default:
 				return _Utils_update(
 					options,
 					{
-						orderXl: $elm$core$Maybe$Just(order_)
+						bx: $elm$core$Maybe$Just(order_)
 					});
 		}
 	});
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$applyColPull = F2(
 	function (pull_, options) {
-		var _v0 = pull_.screenSize;
-		switch (_v0.$) {
-			case 'XS':
+		var _v0 = pull_.dd;
+		switch (_v0) {
+			case 0:
 				return _Utils_update(
 					options,
 					{
-						pullXs: $elm$core$Maybe$Just(pull_)
+						bE: $elm$core$Maybe$Just(pull_)
 					});
-			case 'SM':
+			case 1:
 				return _Utils_update(
 					options,
 					{
-						pullSm: $elm$core$Maybe$Just(pull_)
+						bC: $elm$core$Maybe$Just(pull_)
 					});
-			case 'MD':
+			case 2:
 				return _Utils_update(
 					options,
 					{
-						pullMd: $elm$core$Maybe$Just(pull_)
+						bB: $elm$core$Maybe$Just(pull_)
 					});
-			case 'LG':
+			case 3:
 				return _Utils_update(
 					options,
 					{
-						pullLg: $elm$core$Maybe$Just(pull_)
+						bA: $elm$core$Maybe$Just(pull_)
 					});
 			default:
 				return _Utils_update(
 					options,
 					{
-						pullXl: $elm$core$Maybe$Just(pull_)
+						bD: $elm$core$Maybe$Just(pull_)
 					});
 		}
 	});
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$applyColPush = F2(
 	function (push_, options) {
-		var _v0 = push_.screenSize;
-		switch (_v0.$) {
-			case 'XS':
+		var _v0 = push_.dd;
+		switch (_v0) {
+			case 0:
 				return _Utils_update(
 					options,
 					{
-						pushXs: $elm$core$Maybe$Just(push_)
+						bJ: $elm$core$Maybe$Just(push_)
 					});
-			case 'SM':
+			case 1:
 				return _Utils_update(
 					options,
 					{
-						pushSm: $elm$core$Maybe$Just(push_)
+						bH: $elm$core$Maybe$Just(push_)
 					});
-			case 'MD':
+			case 2:
 				return _Utils_update(
 					options,
 					{
-						pushMd: $elm$core$Maybe$Just(push_)
+						bG: $elm$core$Maybe$Just(push_)
 					});
-			case 'LG':
+			case 3:
 				return _Utils_update(
 					options,
 					{
-						pushLg: $elm$core$Maybe$Just(push_)
+						bF: $elm$core$Maybe$Just(push_)
 					});
 			default:
 				return _Utils_update(
 					options,
 					{
-						pushXl: $elm$core$Maybe$Just(push_)
+						bI: $elm$core$Maybe$Just(push_)
 					});
 		}
 	});
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$applyColWidth = F2(
 	function (width_, options) {
-		var _v0 = width_.screenSize;
-		switch (_v0.$) {
-			case 'XS':
+		var _v0 = width_.dd;
+		switch (_v0) {
+			case 0:
 				return _Utils_update(
 					options,
 					{
-						widthXs: $elm$core$Maybe$Just(width_)
+						aG: $elm$core$Maybe$Just(width_)
 					});
-			case 'SM':
+			case 1:
 				return _Utils_update(
 					options,
 					{
-						widthSm: $elm$core$Maybe$Just(width_)
+						aE: $elm$core$Maybe$Just(width_)
 					});
-			case 'MD':
+			case 2:
 				return _Utils_update(
 					options,
 					{
-						widthMd: $elm$core$Maybe$Just(width_)
+						aD: $elm$core$Maybe$Just(width_)
 					});
-			case 'LG':
+			case 3:
 				return _Utils_update(
 					options,
 					{
-						widthLg: $elm$core$Maybe$Just(width_)
+						aC: $elm$core$Maybe$Just(width_)
 					});
 			default:
 				return _Utils_update(
 					options,
 					{
-						widthXl: $elm$core$Maybe$Just(width_)
+						aF: $elm$core$Maybe$Just(width_)
 					});
 		}
 	});
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$applyColOption = F2(
 	function (modifier, options) {
 		switch (modifier.$) {
-			case 'ColAttrs':
+			case 6:
 				var attrs = modifier.a;
 				return _Utils_update(
 					options,
 					{
-						attributes: _Utils_ap(options.attributes, attrs)
+						aS: _Utils_ap(options.aS, attrs)
 					});
-			case 'ColWidth':
+			case 0:
 				var width_ = modifier.a;
 				return A2($rundis$elm_bootstrap$Bootstrap$Grid$Internal$applyColWidth, width_, options);
-			case 'ColOffset':
+			case 1:
 				var offset_ = modifier.a;
 				return A2($rundis$elm_bootstrap$Bootstrap$Grid$Internal$applyColOffset, offset_, options);
-			case 'ColPull':
+			case 2:
 				var pull_ = modifier.a;
 				return A2($rundis$elm_bootstrap$Bootstrap$Grid$Internal$applyColPull, pull_, options);
-			case 'ColPush':
+			case 3:
 				var push_ = modifier.a;
 				return A2($rundis$elm_bootstrap$Bootstrap$Grid$Internal$applyColPush, push_, options);
-			case 'ColOrder':
+			case 4:
 				var order_ = modifier.a;
 				return A2($rundis$elm_bootstrap$Bootstrap$Grid$Internal$applyColOrder, order_, options);
-			case 'ColAlign':
+			case 5:
 				var align = modifier.a;
 				return A2($rundis$elm_bootstrap$Bootstrap$Grid$Internal$applyColAlign, align, options);
 			default:
@@ -7113,37 +7093,37 @@ var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$applyColOption = F2(
 				return _Utils_update(
 					options,
 					{
-						textAlign: $elm$core$Maybe$Just(align)
+						bS: $elm$core$Maybe$Just(align)
 					});
 		}
 	});
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$columnCountOption = function (size) {
-	switch (size.$) {
-		case 'Col':
+	switch (size) {
+		case 0:
 			return $elm$core$Maybe$Nothing;
-		case 'Col1':
+		case 1:
 			return $elm$core$Maybe$Just('1');
-		case 'Col2':
+		case 2:
 			return $elm$core$Maybe$Just('2');
-		case 'Col3':
+		case 3:
 			return $elm$core$Maybe$Just('3');
-		case 'Col4':
+		case 4:
 			return $elm$core$Maybe$Just('4');
-		case 'Col5':
+		case 5:
 			return $elm$core$Maybe$Just('5');
-		case 'Col6':
+		case 6:
 			return $elm$core$Maybe$Just('6');
-		case 'Col7':
+		case 7:
 			return $elm$core$Maybe$Just('7');
-		case 'Col8':
+		case 8:
 			return $elm$core$Maybe$Just('8');
-		case 'Col9':
+		case 9:
 			return $elm$core$Maybe$Just('9');
-		case 'Col10':
+		case 10:
 			return $elm$core$Maybe$Just('10');
-		case 'Col11':
+		case 11:
 			return $elm$core$Maybe$Just('11');
-		case 'Col12':
+		case 12:
 			return $elm$core$Maybe$Just('12');
 		default:
 			return $elm$core$Maybe$Just('auto');
@@ -7151,7 +7131,7 @@ var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$columnCountOption = function (
 };
 var $elm$core$Maybe$map = F2(
 	function (f, maybe) {
-		if (maybe.$ === 'Just') {
+		if (!maybe.$) {
 			var value = maybe.a;
 			return $elm$core$Maybe$Just(
 				f(value));
@@ -7160,22 +7140,22 @@ var $elm$core$Maybe$map = F2(
 		}
 	});
 var $rundis$elm_bootstrap$Bootstrap$General$Internal$screenSizeOption = function (size) {
-	switch (size.$) {
-		case 'XS':
+	switch (size) {
+		case 0:
 			return $elm$core$Maybe$Nothing;
-		case 'SM':
+		case 1:
 			return $elm$core$Maybe$Just('sm');
-		case 'MD':
+		case 2:
 			return $elm$core$Maybe$Just('md');
-		case 'LG':
+		case 3:
 			return $elm$core$Maybe$Just('lg');
 		default:
 			return $elm$core$Maybe$Just('xl');
 	}
 };
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$colWidthClass = function (_v0) {
-	var screenSize = _v0.screenSize;
-	var columnCount = _v0.columnCount;
+	var screenSize = _v0.dd;
+	var columnCount = _v0.cB;
 	return $elm$html$Html$Attributes$class(
 		'col' + (A2(
 			$elm$core$Maybe$withDefault,
@@ -7204,30 +7184,30 @@ var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$colWidthsToAttributes = functi
 		$elm$core$Basics$identity,
 		A2($elm$core$List$map, width_, widths));
 };
-var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$defaultColOptions = {alignLg: $elm$core$Maybe$Nothing, alignMd: $elm$core$Maybe$Nothing, alignSm: $elm$core$Maybe$Nothing, alignXl: $elm$core$Maybe$Nothing, alignXs: $elm$core$Maybe$Nothing, attributes: _List_Nil, offsetLg: $elm$core$Maybe$Nothing, offsetMd: $elm$core$Maybe$Nothing, offsetSm: $elm$core$Maybe$Nothing, offsetXl: $elm$core$Maybe$Nothing, offsetXs: $elm$core$Maybe$Nothing, orderLg: $elm$core$Maybe$Nothing, orderMd: $elm$core$Maybe$Nothing, orderSm: $elm$core$Maybe$Nothing, orderXl: $elm$core$Maybe$Nothing, orderXs: $elm$core$Maybe$Nothing, pullLg: $elm$core$Maybe$Nothing, pullMd: $elm$core$Maybe$Nothing, pullSm: $elm$core$Maybe$Nothing, pullXl: $elm$core$Maybe$Nothing, pullXs: $elm$core$Maybe$Nothing, pushLg: $elm$core$Maybe$Nothing, pushMd: $elm$core$Maybe$Nothing, pushSm: $elm$core$Maybe$Nothing, pushXl: $elm$core$Maybe$Nothing, pushXs: $elm$core$Maybe$Nothing, textAlign: $elm$core$Maybe$Nothing, widthLg: $elm$core$Maybe$Nothing, widthMd: $elm$core$Maybe$Nothing, widthSm: $elm$core$Maybe$Nothing, widthXl: $elm$core$Maybe$Nothing, widthXs: $elm$core$Maybe$Nothing};
+var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$defaultColOptions = {aK: $elm$core$Maybe$Nothing, aL: $elm$core$Maybe$Nothing, aM: $elm$core$Maybe$Nothing, aN: $elm$core$Maybe$Nothing, aO: $elm$core$Maybe$Nothing, aS: _List_Nil, bj: $elm$core$Maybe$Nothing, bk: $elm$core$Maybe$Nothing, bl: $elm$core$Maybe$Nothing, bn: $elm$core$Maybe$Nothing, bo: $elm$core$Maybe$Nothing, bu: $elm$core$Maybe$Nothing, bv: $elm$core$Maybe$Nothing, bw: $elm$core$Maybe$Nothing, bx: $elm$core$Maybe$Nothing, by: $elm$core$Maybe$Nothing, bA: $elm$core$Maybe$Nothing, bB: $elm$core$Maybe$Nothing, bC: $elm$core$Maybe$Nothing, bD: $elm$core$Maybe$Nothing, bE: $elm$core$Maybe$Nothing, bF: $elm$core$Maybe$Nothing, bG: $elm$core$Maybe$Nothing, bH: $elm$core$Maybe$Nothing, bI: $elm$core$Maybe$Nothing, bJ: $elm$core$Maybe$Nothing, bS: $elm$core$Maybe$Nothing, aC: $elm$core$Maybe$Nothing, aD: $elm$core$Maybe$Nothing, aE: $elm$core$Maybe$Nothing, aF: $elm$core$Maybe$Nothing, aG: $elm$core$Maybe$Nothing};
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$offsetCountOption = function (size) {
-	switch (size.$) {
-		case 'Offset0':
+	switch (size) {
+		case 0:
 			return '0';
-		case 'Offset1':
+		case 1:
 			return '1';
-		case 'Offset2':
+		case 2:
 			return '2';
-		case 'Offset3':
+		case 3:
 			return '3';
-		case 'Offset4':
+		case 4:
 			return '4';
-		case 'Offset5':
+		case 5:
 			return '5';
-		case 'Offset6':
+		case 6:
 			return '6';
-		case 'Offset7':
+		case 7:
 			return '7';
-		case 'Offset8':
+		case 8:
 			return '8';
-		case 'Offset9':
+		case 9:
 			return '9';
-		case 'Offset10':
+		case 10:
 			return '10';
 		default:
 			return '11';
@@ -7235,7 +7215,7 @@ var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$offsetCountOption = function (
 };
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$screenSizeToPartialString = function (screenSize) {
 	var _v0 = $rundis$elm_bootstrap$Bootstrap$General$Internal$screenSizeOption(screenSize);
-	if (_v0.$ === 'Just') {
+	if (!_v0.$) {
 		var s = _v0.a;
 		return '-' + (s + '-');
 	} else {
@@ -7243,8 +7223,8 @@ var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$screenSizeToPartialString = fu
 	}
 };
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$offsetClass = function (_v0) {
-	var screenSize = _v0.screenSize;
-	var offsetCount = _v0.offsetCount;
+	var screenSize = _v0.dd;
+	var offsetCount = _v0.c_;
 	return $elm$html$Html$Attributes$class(
 		'offset' + ($rundis$elm_bootstrap$Bootstrap$Grid$Internal$screenSizeToPartialString(screenSize) + $rundis$elm_bootstrap$Bootstrap$Grid$Internal$offsetCountOption(offsetCount)));
 };
@@ -7258,32 +7238,32 @@ var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$offsetsToAttributes = function
 		A2($elm$core$List$map, offset_, offsets));
 };
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$orderColOption = function (size) {
-	switch (size.$) {
-		case 'OrderFirst':
+	switch (size) {
+		case 0:
 			return 'first';
-		case 'Order1':
+		case 1:
 			return '1';
-		case 'Order2':
+		case 2:
 			return '2';
-		case 'Order3':
+		case 3:
 			return '3';
-		case 'Order4':
+		case 4:
 			return '4';
-		case 'Order5':
+		case 5:
 			return '5';
-		case 'Order6':
+		case 6:
 			return '6';
-		case 'Order7':
+		case 7:
 			return '7';
-		case 'Order8':
+		case 8:
 			return '8';
-		case 'Order9':
+		case 9:
 			return '9';
-		case 'Order10':
+		case 10:
 			return '10';
-		case 'Order11':
+		case 11:
 			return '11';
-		case 'Order12':
+		case 12:
 			return '12';
 		default:
 			return 'last';
@@ -7291,9 +7271,9 @@ var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$orderColOption = function (siz
 };
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$orderToAttributes = function (orders) {
 	var order_ = function (m) {
-		if (m.$ === 'Just') {
-			var screenSize = m.a.screenSize;
-			var moveCount = m.a.moveCount;
+		if (!m.$) {
+			var screenSize = m.a.dd;
+			var moveCount = m.a._;
 			return $elm$core$Maybe$Just(
 				$elm$html$Html$Attributes$class(
 					'order' + ($rundis$elm_bootstrap$Bootstrap$Grid$Internal$screenSizeToPartialString(screenSize) + $rundis$elm_bootstrap$Bootstrap$Grid$Internal$orderColOption(moveCount))));
@@ -7307,30 +7287,30 @@ var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$orderToAttributes = function (
 		A2($elm$core$List$map, order_, orders));
 };
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$moveCountOption = function (size) {
-	switch (size.$) {
-		case 'Move0':
+	switch (size) {
+		case 0:
 			return '0';
-		case 'Move1':
+		case 1:
 			return '1';
-		case 'Move2':
+		case 2:
 			return '2';
-		case 'Move3':
+		case 3:
 			return '3';
-		case 'Move4':
+		case 4:
 			return '4';
-		case 'Move5':
+		case 5:
 			return '5';
-		case 'Move6':
+		case 6:
 			return '6';
-		case 'Move7':
+		case 7:
 			return '7';
-		case 'Move8':
+		case 8:
 			return '8';
-		case 'Move9':
+		case 9:
 			return '9';
-		case 'Move10':
+		case 10:
 			return '10';
-		case 'Move11':
+		case 11:
 			return '11';
 		default:
 			return '12';
@@ -7338,9 +7318,9 @@ var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$moveCountOption = function (si
 };
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$pullsToAttributes = function (pulls) {
 	var pull_ = function (m) {
-		if (m.$ === 'Just') {
-			var screenSize = m.a.screenSize;
-			var moveCount = m.a.moveCount;
+		if (!m.$) {
+			var screenSize = m.a.dd;
+			var moveCount = m.a._;
 			return $elm$core$Maybe$Just(
 				$elm$html$Html$Attributes$class(
 					'pull' + ($rundis$elm_bootstrap$Bootstrap$Grid$Internal$screenSizeToPartialString(screenSize) + $rundis$elm_bootstrap$Bootstrap$Grid$Internal$moveCountOption(moveCount))));
@@ -7355,9 +7335,9 @@ var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$pullsToAttributes = function (
 };
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$pushesToAttributes = function (pushes) {
 	var push_ = function (m) {
-		if (m.$ === 'Just') {
-			var screenSize = m.a.screenSize;
-			var moveCount = m.a.moveCount;
+		if (!m.$) {
+			var screenSize = m.a.dd;
+			var moveCount = m.a._;
 			return $elm$core$Maybe$Just(
 				$elm$html$Html$Attributes$class(
 					'push' + ($rundis$elm_bootstrap$Bootstrap$Grid$Internal$screenSizeToPartialString(screenSize) + $rundis$elm_bootstrap$Bootstrap$Grid$Internal$moveCountOption(moveCount))));
@@ -7371,18 +7351,18 @@ var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$pushesToAttributes = function 
 		A2($elm$core$List$map, push_, pushes));
 };
 var $rundis$elm_bootstrap$Bootstrap$Internal$Text$textAlignDirOption = function (dir) {
-	switch (dir.$) {
-		case 'Center':
+	switch (dir) {
+		case 1:
 			return 'center';
-		case 'Left':
+		case 0:
 			return 'left';
 		default:
 			return 'right';
 	}
 };
 var $rundis$elm_bootstrap$Bootstrap$Internal$Text$textAlignClass = function (_v0) {
-	var dir = _v0.dir;
-	var size = _v0.size;
+	var dir = _v0.cE;
+	var size = _v0.de;
 	return $elm$html$Html$Attributes$class(
 		'text' + (A2(
 			$elm$core$Maybe$withDefault,
@@ -7395,10 +7375,10 @@ var $rundis$elm_bootstrap$Bootstrap$Internal$Text$textAlignClass = function (_v0
 				$rundis$elm_bootstrap$Bootstrap$General$Internal$screenSizeOption(size))) + $rundis$elm_bootstrap$Bootstrap$Internal$Text$textAlignDirOption(dir)));
 };
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$verticalAlignOption = function (align) {
-	switch (align.$) {
-		case 'Top':
+	switch (align) {
+		case 0:
 			return 'start';
-		case 'Middle':
+		case 1:
 			return 'center';
 		default:
 			return 'end';
@@ -7406,8 +7386,8 @@ var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$verticalAlignOption = function
 };
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$vAlignClass = F2(
 	function (prefix, _v0) {
-		var align = _v0.align;
-		var screenSize = _v0.screenSize;
+		var align = _v0.cw;
+		var screenSize = _v0.dd;
 		return $elm$html$Html$Attributes$class(
 			_Utils_ap(
 				prefix,
@@ -7443,44 +7423,44 @@ var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$colAttributes = function (modi
 			$elm$core$List$filterMap,
 			$elm$core$Basics$identity,
 			_List_fromArray(
-				[options.widthXs, options.widthSm, options.widthMd, options.widthLg, options.widthXl])));
+				[options.aG, options.aE, options.aD, options.aC, options.aF])));
 	return _Utils_ap(
 		$rundis$elm_bootstrap$Bootstrap$Grid$Internal$colWidthsToAttributes(
 			_List_fromArray(
 				[
 					shouldAddDefaultXs ? $elm$core$Maybe$Just(
-					A2($rundis$elm_bootstrap$Bootstrap$Grid$Internal$Width, $rundis$elm_bootstrap$Bootstrap$General$Internal$XS, $rundis$elm_bootstrap$Bootstrap$Grid$Internal$Col)) : options.widthXs,
-					options.widthSm,
-					options.widthMd,
-					options.widthLg,
-					options.widthXl
+					A2($rundis$elm_bootstrap$Bootstrap$Grid$Internal$Width, 0, 0)) : options.aG,
+					options.aE,
+					options.aD,
+					options.aC,
+					options.aF
 				])),
 		_Utils_ap(
 			$rundis$elm_bootstrap$Bootstrap$Grid$Internal$offsetsToAttributes(
 				_List_fromArray(
-					[options.offsetXs, options.offsetSm, options.offsetMd, options.offsetLg, options.offsetXl])),
+					[options.bo, options.bl, options.bk, options.bj, options.bn])),
 			_Utils_ap(
 				$rundis$elm_bootstrap$Bootstrap$Grid$Internal$pullsToAttributes(
 					_List_fromArray(
-						[options.pullXs, options.pullSm, options.pullMd, options.pullLg, options.pullXl])),
+						[options.bE, options.bC, options.bB, options.bA, options.bD])),
 				_Utils_ap(
 					$rundis$elm_bootstrap$Bootstrap$Grid$Internal$pushesToAttributes(
 						_List_fromArray(
-							[options.pushXs, options.pushSm, options.pushMd, options.pushLg, options.pushXl])),
+							[options.bJ, options.bH, options.bG, options.bF, options.bI])),
 					_Utils_ap(
 						$rundis$elm_bootstrap$Bootstrap$Grid$Internal$orderToAttributes(
 							_List_fromArray(
-								[options.orderXs, options.orderSm, options.orderMd, options.orderLg, options.orderXl])),
+								[options.by, options.bw, options.bv, options.bu, options.bx])),
 						_Utils_ap(
 							A2(
 								$rundis$elm_bootstrap$Bootstrap$Grid$Internal$vAlignsToAttributes,
 								'align-self-',
 								_List_fromArray(
-									[options.alignXs, options.alignSm, options.alignMd, options.alignLg, options.alignXl])),
+									[options.aO, options.aM, options.aL, options.aK, options.aN])),
 							_Utils_ap(
 								function () {
-									var _v0 = options.textAlign;
-									if (_v0.$ === 'Just') {
+									var _v0 = options.bS;
+									if (!_v0.$) {
 										var a = _v0.a;
 										return _List_fromArray(
 											[
@@ -7490,7 +7470,7 @@ var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$colAttributes = function (modi
 										return _List_Nil;
 									}
 								}(),
-								options.attributes)))))));
+								options.aS)))))));
 };
 var $elm$virtual_dom$VirtualDom$keyedNode = function (tag) {
 	return _VirtualDom_keyedNode(
@@ -7499,19 +7479,19 @@ var $elm$virtual_dom$VirtualDom$keyedNode = function (tag) {
 var $elm$html$Html$Keyed$node = $elm$virtual_dom$VirtualDom$keyedNode;
 var $rundis$elm_bootstrap$Bootstrap$Grid$renderCol = function (column) {
 	switch (column.$) {
-		case 'Column':
-			var options = column.a.options;
-			var children = column.a.children;
+		case 0:
+			var options = column.a.dY;
+			var children = column.a.cA;
 			return A2(
 				$elm$html$Html$div,
 				$rundis$elm_bootstrap$Bootstrap$Grid$Internal$colAttributes(options),
 				children);
-		case 'ColBreak':
+		case 1:
 			var e = column.a;
 			return e;
 		default:
-			var options = column.a.options;
-			var children = column.a.children;
+			var options = column.a.dY;
+			var children = column.a.cA;
 			return A3(
 				$elm$html$Html$Keyed$node,
 				'div',
@@ -7521,87 +7501,87 @@ var $rundis$elm_bootstrap$Bootstrap$Grid$renderCol = function (column) {
 };
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$applyRowHAlign = F2(
 	function (align, options) {
-		var _v0 = align.screenSize;
-		switch (_v0.$) {
-			case 'XS':
+		var _v0 = align.dd;
+		switch (_v0) {
+			case 0:
 				return _Utils_update(
 					options,
 					{
-						hAlignXs: $elm$core$Maybe$Just(align)
+						ba: $elm$core$Maybe$Just(align)
 					});
-			case 'SM':
+			case 1:
 				return _Utils_update(
 					options,
 					{
-						hAlignSm: $elm$core$Maybe$Just(align)
+						a8: $elm$core$Maybe$Just(align)
 					});
-			case 'MD':
+			case 2:
 				return _Utils_update(
 					options,
 					{
-						hAlignMd: $elm$core$Maybe$Just(align)
+						a7: $elm$core$Maybe$Just(align)
 					});
-			case 'LG':
+			case 3:
 				return _Utils_update(
 					options,
 					{
-						hAlignLg: $elm$core$Maybe$Just(align)
+						a6: $elm$core$Maybe$Just(align)
 					});
 			default:
 				return _Utils_update(
 					options,
 					{
-						hAlignXl: $elm$core$Maybe$Just(align)
+						a9: $elm$core$Maybe$Just(align)
 					});
 		}
 	});
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$applyRowVAlign = F2(
 	function (align_, options) {
-		var _v0 = align_.screenSize;
-		switch (_v0.$) {
-			case 'XS':
+		var _v0 = align_.dd;
+		switch (_v0) {
+			case 0:
 				return _Utils_update(
 					options,
 					{
-						vAlignXs: $elm$core$Maybe$Just(align_)
+						b_: $elm$core$Maybe$Just(align_)
 					});
-			case 'SM':
+			case 1:
 				return _Utils_update(
 					options,
 					{
-						vAlignSm: $elm$core$Maybe$Just(align_)
+						bY: $elm$core$Maybe$Just(align_)
 					});
-			case 'MD':
+			case 2:
 				return _Utils_update(
 					options,
 					{
-						vAlignMd: $elm$core$Maybe$Just(align_)
+						bX: $elm$core$Maybe$Just(align_)
 					});
-			case 'LG':
+			case 3:
 				return _Utils_update(
 					options,
 					{
-						vAlignLg: $elm$core$Maybe$Just(align_)
+						bW: $elm$core$Maybe$Just(align_)
 					});
 			default:
 				return _Utils_update(
 					options,
 					{
-						vAlignXl: $elm$core$Maybe$Just(align_)
+						bZ: $elm$core$Maybe$Just(align_)
 					});
 		}
 	});
 var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$applyRowOption = F2(
 	function (modifier, options) {
 		switch (modifier.$) {
-			case 'RowAttrs':
+			case 2:
 				var attrs = modifier.a;
 				return _Utils_update(
 					options,
 					{
-						attributes: _Utils_ap(options.attributes, attrs)
+						aS: _Utils_ap(options.aS, attrs)
 					});
-			case 'RowVAlign':
+			case 0:
 				var align = modifier.a;
 				return A2($rundis$elm_bootstrap$Bootstrap$Grid$Internal$applyRowVAlign, align, options);
 			default:
@@ -7609,24 +7589,24 @@ var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$applyRowOption = F2(
 				return A2($rundis$elm_bootstrap$Bootstrap$Grid$Internal$applyRowHAlign, align, options);
 		}
 	});
-var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$defaultRowOptions = {attributes: _List_Nil, hAlignLg: $elm$core$Maybe$Nothing, hAlignMd: $elm$core$Maybe$Nothing, hAlignSm: $elm$core$Maybe$Nothing, hAlignXl: $elm$core$Maybe$Nothing, hAlignXs: $elm$core$Maybe$Nothing, vAlignLg: $elm$core$Maybe$Nothing, vAlignMd: $elm$core$Maybe$Nothing, vAlignSm: $elm$core$Maybe$Nothing, vAlignXl: $elm$core$Maybe$Nothing, vAlignXs: $elm$core$Maybe$Nothing};
+var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$defaultRowOptions = {aS: _List_Nil, a6: $elm$core$Maybe$Nothing, a7: $elm$core$Maybe$Nothing, a8: $elm$core$Maybe$Nothing, a9: $elm$core$Maybe$Nothing, ba: $elm$core$Maybe$Nothing, bW: $elm$core$Maybe$Nothing, bX: $elm$core$Maybe$Nothing, bY: $elm$core$Maybe$Nothing, bZ: $elm$core$Maybe$Nothing, b_: $elm$core$Maybe$Nothing};
 var $rundis$elm_bootstrap$Bootstrap$General$Internal$horizontalAlignOption = function (align) {
-	switch (align.$) {
-		case 'Left':
+	switch (align) {
+		case 0:
 			return 'start';
-		case 'Center':
+		case 1:
 			return 'center';
-		case 'Right':
+		case 2:
 			return 'end';
-		case 'Around':
+		case 3:
 			return 'around';
 		default:
 			return 'between';
 	}
 };
 var $rundis$elm_bootstrap$Bootstrap$General$Internal$hAlignClass = function (_v0) {
-	var align = _v0.align;
-	var screenSize = _v0.screenSize;
+	var align = _v0.cw;
+	var screenSize = _v0.dd;
 	return $elm$html$Html$Attributes$class(
 		'justify-content-' + (A2(
 			$elm$core$Maybe$withDefault,
@@ -7659,12 +7639,12 @@ var $rundis$elm_bootstrap$Bootstrap$Grid$Internal$rowAttributes = function (modi
 				$rundis$elm_bootstrap$Bootstrap$Grid$Internal$vAlignsToAttributes,
 				'align-items-',
 				_List_fromArray(
-					[options.vAlignXs, options.vAlignSm, options.vAlignMd, options.vAlignLg, options.vAlignXl])),
+					[options.b_, options.bY, options.bX, options.bW, options.bZ])),
 			_Utils_ap(
 				$rundis$elm_bootstrap$Bootstrap$Grid$Internal$hAlignsToAttributes(
 					_List_fromArray(
-						[options.hAlignXs, options.hAlignSm, options.hAlignMd, options.hAlignLg, options.hAlignXl])),
-				options.attributes)));
+						[options.ba, options.a8, options.a7, options.a6, options.a9])),
+				options.aS)));
 };
 var $rundis$elm_bootstrap$Bootstrap$Grid$row = F2(
 	function (options, cols) {
@@ -7695,14 +7675,14 @@ var $rundis$elm_bootstrap$Bootstrap$CDN$stylesheet = A3(
 		]),
 	_List_Nil);
 var $rundis$elm_bootstrap$Bootstrap$Grid$Column = function (a) {
-	return {$: 'Column', a: a};
+	return {$: 0, a: a};
 };
 var $rundis$elm_bootstrap$Bootstrap$Grid$col = F2(
 	function (options, children) {
 		return $rundis$elm_bootstrap$Bootstrap$Grid$Column(
-			{children: children, options: options});
+			{cA: children, dY: options});
 	});
-var $rundis$elm_bootstrap$Bootstrap$Table$Inversed = {$: 'Inversed'};
+var $rundis$elm_bootstrap$Bootstrap$Table$Inversed = {$: 0};
 var $elm$core$List$any = F2(
 	function (isOkay, list) {
 		any:
@@ -7736,42 +7716,42 @@ var $elm$core$List$filter = F2(
 			list);
 	});
 var $rundis$elm_bootstrap$Bootstrap$Table$isResponsive = function (option) {
-	if (option.$ === 'Responsive') {
+	if (option.$ === 5) {
 		return true;
 	} else {
 		return false;
 	}
 };
 var $rundis$elm_bootstrap$Bootstrap$Table$KeyedTBody = function (a) {
-	return {$: 'KeyedTBody', a: a};
+	return {$: 1, a: a};
 };
 var $rundis$elm_bootstrap$Bootstrap$Table$TBody = function (a) {
-	return {$: 'TBody', a: a};
+	return {$: 0, a: a};
 };
 var $rundis$elm_bootstrap$Bootstrap$Table$InversedRow = function (a) {
-	return {$: 'InversedRow', a: a};
+	return {$: 1, a: a};
 };
 var $rundis$elm_bootstrap$Bootstrap$Table$KeyedRow = function (a) {
-	return {$: 'KeyedRow', a: a};
+	return {$: 1, a: a};
 };
 var $rundis$elm_bootstrap$Bootstrap$Table$Row = function (a) {
-	return {$: 'Row', a: a};
+	return {$: 0, a: a};
 };
 var $rundis$elm_bootstrap$Bootstrap$Table$InversedCell = function (a) {
-	return {$: 'InversedCell', a: a};
+	return {$: 1, a: a};
 };
 var $rundis$elm_bootstrap$Bootstrap$Table$Td = function (a) {
-	return {$: 'Td', a: a};
+	return {$: 0, a: a};
 };
 var $rundis$elm_bootstrap$Bootstrap$Table$Th = function (a) {
-	return {$: 'Th', a: a};
+	return {$: 1, a: a};
 };
 var $rundis$elm_bootstrap$Bootstrap$Table$mapInversedCell = function (cell) {
 	var inverseOptions = function (options) {
 		return A2(
 			$elm$core$List$map,
 			function (opt) {
-				if (opt.$ === 'RoledCell') {
+				if (!opt.$) {
 					var role = opt.a;
 					return $rundis$elm_bootstrap$Bootstrap$Table$InversedCell(role);
 				} else {
@@ -7780,13 +7760,13 @@ var $rundis$elm_bootstrap$Bootstrap$Table$mapInversedCell = function (cell) {
 			},
 			options);
 	};
-	if (cell.$ === 'Th') {
+	if (cell.$ === 1) {
 		var cellCfg = cell.a;
 		return $rundis$elm_bootstrap$Bootstrap$Table$Th(
 			_Utils_update(
 				cellCfg,
 				{
-					options: inverseOptions(cellCfg.options)
+					dY: inverseOptions(cellCfg.dY)
 				}));
 	} else {
 		var cellCfg = cell.a;
@@ -7794,7 +7774,7 @@ var $rundis$elm_bootstrap$Bootstrap$Table$mapInversedCell = function (cell) {
 			_Utils_update(
 				cellCfg,
 				{
-					options: inverseOptions(cellCfg.options)
+					dY: inverseOptions(cellCfg.dY)
 				}));
 	}
 };
@@ -7803,7 +7783,7 @@ var $rundis$elm_bootstrap$Bootstrap$Table$mapInversedRow = function (row) {
 		return A2(
 			$elm$core$List$map,
 			function (opt) {
-				if (opt.$ === 'RoledRow') {
+				if (!opt.$) {
 					var role = opt.a;
 					return $rundis$elm_bootstrap$Bootstrap$Table$InversedRow(role);
 				} else {
@@ -7812,20 +7792,20 @@ var $rundis$elm_bootstrap$Bootstrap$Table$mapInversedRow = function (row) {
 			},
 			options);
 	};
-	if (row.$ === 'Row') {
-		var options = row.a.options;
-		var cells = row.a.cells;
+	if (!row.$) {
+		var options = row.a.dY;
+		var cells = row.a.g;
 		return $rundis$elm_bootstrap$Bootstrap$Table$Row(
 			{
-				cells: A2($elm$core$List$map, $rundis$elm_bootstrap$Bootstrap$Table$mapInversedCell, cells),
-				options: inversedOptions(options)
+				g: A2($elm$core$List$map, $rundis$elm_bootstrap$Bootstrap$Table$mapInversedCell, cells),
+				dY: inversedOptions(options)
 			});
 	} else {
-		var options = row.a.options;
-		var cells = row.a.cells;
+		var options = row.a.dY;
+		var cells = row.a.g;
 		return $rundis$elm_bootstrap$Bootstrap$Table$KeyedRow(
 			{
-				cells: A2(
+				g: A2(
 					$elm$core$List$map,
 					function (_v1) {
 						var key = _v1.a;
@@ -7835,7 +7815,7 @@ var $rundis$elm_bootstrap$Bootstrap$Table$mapInversedRow = function (row) {
 							$rundis$elm_bootstrap$Bootstrap$Table$mapInversedCell(cell));
 					},
 					cells),
-				options: inversedOptions(options)
+				dY: inversedOptions(options)
 			});
 	}
 };
@@ -7845,13 +7825,13 @@ var $rundis$elm_bootstrap$Bootstrap$Table$maybeMapInversedTBody = F2(
 		if (!_v0.a) {
 			return tbody_;
 		} else {
-			if (_v0.b.$ === 'TBody') {
+			if (!_v0.b.$) {
 				var body = _v0.b.a;
 				return $rundis$elm_bootstrap$Bootstrap$Table$TBody(
 					_Utils_update(
 						body,
 						{
-							rows: A2($elm$core$List$map, $rundis$elm_bootstrap$Bootstrap$Table$mapInversedRow, body.rows)
+							bM: A2($elm$core$List$map, $rundis$elm_bootstrap$Bootstrap$Table$mapInversedRow, body.bM)
 						}));
 			} else {
 				var keyedBody = _v0.b.a;
@@ -7859,7 +7839,7 @@ var $rundis$elm_bootstrap$Bootstrap$Table$maybeMapInversedTBody = F2(
 					_Utils_update(
 						keyedBody,
 						{
-							rows: A2(
+							bM: A2(
 								$elm$core$List$map,
 								function (_v1) {
 									var key = _v1.a;
@@ -7868,34 +7848,31 @@ var $rundis$elm_bootstrap$Bootstrap$Table$maybeMapInversedTBody = F2(
 										key,
 										$rundis$elm_bootstrap$Bootstrap$Table$mapInversedRow(row));
 								},
-								keyedBody.rows)
+								keyedBody.bM)
 						}));
 			}
 		}
 	});
-var $rundis$elm_bootstrap$Bootstrap$Table$InversedHead = {$: 'InversedHead'};
-var $rundis$elm_bootstrap$Bootstrap$Table$THead = function (a) {
-	return {$: 'THead', a: a};
-};
+var $rundis$elm_bootstrap$Bootstrap$Table$InversedHead = {$: 0};
+var $rundis$elm_bootstrap$Bootstrap$Table$THead = $elm$core$Basics$identity;
 var $rundis$elm_bootstrap$Bootstrap$Table$maybeMapInversedTHead = F2(
 	function (isTableInversed, _v0) {
-		var thead_ = _v0.a;
+		var thead_ = _v0;
 		var isHeadInversed = A2(
 			$elm$core$List$any,
 			function (opt) {
 				return _Utils_eq(opt, $rundis$elm_bootstrap$Bootstrap$Table$InversedHead);
 			},
-			thead_.options);
-		return $rundis$elm_bootstrap$Bootstrap$Table$THead(
-			(isTableInversed || isHeadInversed) ? _Utils_update(
-				thead_,
-				{
-					rows: A2($elm$core$List$map, $rundis$elm_bootstrap$Bootstrap$Table$mapInversedRow, thead_.rows)
-				}) : thead_);
+			thead_.dY);
+		return (isTableInversed || isHeadInversed) ? _Utils_update(
+			thead_,
+			{
+				bM: A2($elm$core$List$map, $rundis$elm_bootstrap$Bootstrap$Table$mapInversedRow, thead_.bM)
+			}) : thead_;
 	});
 var $elm$core$Maybe$andThen = F2(
 	function (callback, maybeValue) {
-		if (maybeValue.$ === 'Just') {
+		if (!maybeValue.$) {
 			var value = maybeValue.a;
 			return callback(value);
 		} else {
@@ -7928,7 +7905,7 @@ var $rundis$elm_bootstrap$Bootstrap$Table$maybeWrapResponsive = F2(
 						A2(
 							$elm$core$Maybe$andThen,
 							function (opt) {
-								if (opt.$ === 'Responsive') {
+								if (opt.$ === 5) {
 									var val = opt.a;
 									return val;
 								} else {
@@ -7946,33 +7923,33 @@ var $rundis$elm_bootstrap$Bootstrap$Table$maybeWrapResponsive = F2(
 	});
 var $elm$core$Basics$not = _Basics_not;
 var $rundis$elm_bootstrap$Bootstrap$Table$CellAttr = function (a) {
-	return {$: 'CellAttr', a: a};
+	return {$: 2, a: a};
 };
 var $rundis$elm_bootstrap$Bootstrap$Table$cellAttr = function (attr_) {
 	return $rundis$elm_bootstrap$Bootstrap$Table$CellAttr(attr_);
 };
 var $elm$html$Html$Attributes$scope = $elm$html$Html$Attributes$stringProperty('scope');
 var $rundis$elm_bootstrap$Bootstrap$Table$addScopeIfTh = function (cell) {
-	if (cell.$ === 'Th') {
+	if (cell.$ === 1) {
 		var cellConfig = cell.a;
 		return $rundis$elm_bootstrap$Bootstrap$Table$Th(
 			_Utils_update(
 				cellConfig,
 				{
-					options: A2(
+					dY: A2(
 						$elm$core$List$cons,
 						$rundis$elm_bootstrap$Bootstrap$Table$cellAttr(
 							$elm$html$Html$Attributes$scope('row')),
-						cellConfig.options)
+						cellConfig.dY)
 				}));
 	} else {
 		return cell;
 	}
 };
 var $rundis$elm_bootstrap$Bootstrap$Table$maybeAddScopeToFirstCell = function (row) {
-	if (row.$ === 'Row') {
-		var options = row.a.options;
-		var cells = row.a.cells;
+	if (!row.$) {
+		var options = row.a.dY;
+		var cells = row.a.g;
 		if (!cells.b) {
 			return row;
 		} else {
@@ -7980,16 +7957,16 @@ var $rundis$elm_bootstrap$Bootstrap$Table$maybeAddScopeToFirstCell = function (r
 			var rest = cells.b;
 			return $rundis$elm_bootstrap$Bootstrap$Table$Row(
 				{
-					cells: A2(
+					g: A2(
 						$elm$core$List$cons,
 						$rundis$elm_bootstrap$Bootstrap$Table$addScopeIfTh(first),
 						rest),
-					options: options
+					dY: options
 				});
 		}
 	} else {
-		var options = row.a.options;
-		var cells = row.a.cells;
+		var options = row.a.dY;
+		var cells = row.a.g;
 		if (!cells.b) {
 			return row;
 		} else {
@@ -7999,13 +7976,13 @@ var $rundis$elm_bootstrap$Bootstrap$Table$maybeAddScopeToFirstCell = function (r
 			var rest = cells.b;
 			return $rundis$elm_bootstrap$Bootstrap$Table$KeyedRow(
 				{
-					cells: A2(
+					g: A2(
 						$elm$core$List$cons,
 						_Utils_Tuple2(
 							firstKey,
 							$rundis$elm_bootstrap$Bootstrap$Table$addScopeIfTh(first)),
 						rest),
-					options: options
+					dY: options
 				});
 		}
 	}
@@ -8014,20 +7991,20 @@ var $rundis$elm_bootstrap$Bootstrap$Internal$Role$toClass = F2(
 	function (prefix, role) {
 		return $elm$html$Html$Attributes$class(
 			prefix + ('-' + function () {
-				switch (role.$) {
-					case 'Primary':
+				switch (role) {
+					case 0:
 						return 'primary';
-					case 'Secondary':
+					case 1:
 						return 'secondary';
-					case 'Success':
+					case 2:
 						return 'success';
-					case 'Info':
+					case 3:
 						return 'info';
-					case 'Warning':
+					case 4:
 						return 'warning';
-					case 'Danger':
+					case 5:
 						return 'danger';
-					case 'Light':
+					case 6:
 						return 'light';
 					default:
 						return 'dark';
@@ -8036,16 +8013,16 @@ var $rundis$elm_bootstrap$Bootstrap$Internal$Role$toClass = F2(
 	});
 var $rundis$elm_bootstrap$Bootstrap$Table$cellAttribute = function (option) {
 	switch (option.$) {
-		case 'RoledCell':
-			if (option.a.$ === 'Roled') {
+		case 0:
+			if (!option.a.$) {
 				var role = option.a.a;
 				return A2($rundis$elm_bootstrap$Bootstrap$Internal$Role$toClass, 'table', role);
 			} else {
 				var _v1 = option.a;
 				return $elm$html$Html$Attributes$class('table-active');
 			}
-		case 'InversedCell':
-			if (option.a.$ === 'Roled') {
+		case 1:
+			if (!option.a.$) {
 				var role = option.a.a;
 				return A2($rundis$elm_bootstrap$Bootstrap$Internal$Role$toClass, 'bg-', role);
 			} else {
@@ -8063,16 +8040,16 @@ var $rundis$elm_bootstrap$Bootstrap$Table$cellAttributes = function (options) {
 var $elm$html$Html$td = _VirtualDom_node('td');
 var $elm$html$Html$th = _VirtualDom_node('th');
 var $rundis$elm_bootstrap$Bootstrap$Table$renderCell = function (cell) {
-	if (cell.$ === 'Td') {
-		var options = cell.a.options;
-		var children = cell.a.children;
+	if (!cell.$) {
+		var options = cell.a.dY;
+		var children = cell.a.cA;
 		return A2(
 			$elm$html$Html$td,
 			$rundis$elm_bootstrap$Bootstrap$Table$cellAttributes(options),
 			children);
 	} else {
-		var options = cell.a.options;
-		var children = cell.a.children;
+		var options = cell.a.dY;
+		var children = cell.a.cA;
 		return A2(
 			$elm$html$Html$th,
 			$rundis$elm_bootstrap$Bootstrap$Table$cellAttributes(options),
@@ -8081,16 +8058,16 @@ var $rundis$elm_bootstrap$Bootstrap$Table$renderCell = function (cell) {
 };
 var $rundis$elm_bootstrap$Bootstrap$Table$rowClass = function (option) {
 	switch (option.$) {
-		case 'RoledRow':
-			if (option.a.$ === 'Roled') {
+		case 0:
+			if (!option.a.$) {
 				var role_ = option.a.a;
 				return A2($rundis$elm_bootstrap$Bootstrap$Internal$Role$toClass, 'table', role_);
 			} else {
 				var _v1 = option.a;
 				return $elm$html$Html$Attributes$class('table-active');
 			}
-		case 'InversedRow':
-			if (option.a.$ === 'Roled') {
+		case 1:
+			if (!option.a.$) {
 				var role_ = option.a.a;
 				return A2($rundis$elm_bootstrap$Bootstrap$Internal$Role$toClass, 'bg', role_);
 			} else {
@@ -8107,16 +8084,16 @@ var $rundis$elm_bootstrap$Bootstrap$Table$rowAttributes = function (options) {
 };
 var $elm$html$Html$tr = _VirtualDom_node('tr');
 var $rundis$elm_bootstrap$Bootstrap$Table$renderRow = function (row) {
-	if (row.$ === 'Row') {
-		var options = row.a.options;
-		var cells = row.a.cells;
+	if (!row.$) {
+		var options = row.a.dY;
+		var cells = row.a.g;
 		return A2(
 			$elm$html$Html$tr,
 			$rundis$elm_bootstrap$Bootstrap$Table$rowAttributes(options),
 			A2($elm$core$List$map, $rundis$elm_bootstrap$Bootstrap$Table$renderCell, cells));
 	} else {
-		var options = row.a.options;
-		var cells = row.a.cells;
+		var options = row.a.dY;
+		var cells = row.a.g;
 		return A3(
 			$elm$html$Html$Keyed$node,
 			'tr',
@@ -8135,9 +8112,9 @@ var $rundis$elm_bootstrap$Bootstrap$Table$renderRow = function (row) {
 };
 var $elm$html$Html$tbody = _VirtualDom_node('tbody');
 var $rundis$elm_bootstrap$Bootstrap$Table$renderTBody = function (body) {
-	if (body.$ === 'TBody') {
-		var attributes = body.a.attributes;
-		var rows = body.a.rows;
+	if (!body.$) {
+		var attributes = body.a.aS;
+		var rows = body.a.bM;
 		return A2(
 			$elm$html$Html$tbody,
 			attributes,
@@ -8149,8 +8126,8 @@ var $rundis$elm_bootstrap$Bootstrap$Table$renderTBody = function (body) {
 				},
 				rows));
 	} else {
-		var attributes = body.a.attributes;
-		var rows = body.a.rows;
+		var attributes = body.a.aS;
+		var rows = body.a.bM;
 		return A3(
 			$elm$html$Html$Keyed$node,
 			'tbody',
@@ -8171,9 +8148,9 @@ var $rundis$elm_bootstrap$Bootstrap$Table$renderTBody = function (body) {
 var $elm$html$Html$thead = _VirtualDom_node('thead');
 var $rundis$elm_bootstrap$Bootstrap$Table$theadAttribute = function (option) {
 	switch (option.$) {
-		case 'InversedHead':
+		case 0:
 			return $elm$html$Html$Attributes$class('thead-dark');
-		case 'DefaultHead':
+		case 1:
 			return $elm$html$Html$Attributes$class('thead-default');
 		default:
 			var attr_ = option.a;
@@ -8184,8 +8161,8 @@ var $rundis$elm_bootstrap$Bootstrap$Table$theadAttributes = function (options) {
 	return A2($elm$core$List$map, $rundis$elm_bootstrap$Bootstrap$Table$theadAttribute, options);
 };
 var $rundis$elm_bootstrap$Bootstrap$Table$renderTHead = function (_v0) {
-	var options = _v0.a.options;
-	var rows = _v0.a.rows;
+	var options = _v0.dY;
+	var rows = _v0.bM;
 	return A2(
 		$elm$html$Html$thead,
 		$rundis$elm_bootstrap$Bootstrap$Table$theadAttributes(options),
@@ -8194,24 +8171,24 @@ var $rundis$elm_bootstrap$Bootstrap$Table$renderTHead = function (_v0) {
 var $elm$html$Html$table = _VirtualDom_node('table');
 var $rundis$elm_bootstrap$Bootstrap$Table$tableClass = function (option) {
 	switch (option.$) {
-		case 'Inversed':
+		case 0:
 			return $elm$core$Maybe$Just(
 				$elm$html$Html$Attributes$class('table-dark'));
-		case 'Striped':
+		case 1:
 			return $elm$core$Maybe$Just(
 				$elm$html$Html$Attributes$class('table-striped'));
-		case 'Bordered':
+		case 2:
 			return $elm$core$Maybe$Just(
 				$elm$html$Html$Attributes$class('table-bordered'));
-		case 'Hover':
+		case 3:
 			return $elm$core$Maybe$Just(
 				$elm$html$Html$Attributes$class('table-hover'));
-		case 'Small':
+		case 4:
 			return $elm$core$Maybe$Just(
 				$elm$html$Html$Attributes$class('table-sm'));
-		case 'Responsive':
+		case 5:
 			return $elm$core$Maybe$Nothing;
-		case 'Reflow':
+		case 6:
 			return $elm$core$Maybe$Just(
 				$elm$html$Html$Attributes$class('table-reflow'));
 		default:
@@ -8234,51 +8211,51 @@ var $rundis$elm_bootstrap$Bootstrap$Table$table = function (rec) {
 		function (opt) {
 			return _Utils_eq(opt, $rundis$elm_bootstrap$Bootstrap$Table$Inversed);
 		},
-		rec.options);
+		rec.dY);
 	var classOptions = A2(
 		$elm$core$List$filter,
 		function (opt) {
 			return !$rundis$elm_bootstrap$Bootstrap$Table$isResponsive(opt);
 		},
-		rec.options);
+		rec.dY);
 	return A2(
 		$rundis$elm_bootstrap$Bootstrap$Table$maybeWrapResponsive,
-		rec.options,
+		rec.dY,
 		A2(
 			$elm$html$Html$table,
 			$rundis$elm_bootstrap$Bootstrap$Table$tableAttributes(classOptions),
 			_List_fromArray(
 				[
 					$rundis$elm_bootstrap$Bootstrap$Table$renderTHead(
-					A2($rundis$elm_bootstrap$Bootstrap$Table$maybeMapInversedTHead, isInversed, rec.thead)),
+					A2($rundis$elm_bootstrap$Bootstrap$Table$maybeMapInversedTHead, isInversed, rec.d9)),
 					$rundis$elm_bootstrap$Bootstrap$Table$renderTBody(
-					A2($rundis$elm_bootstrap$Bootstrap$Table$maybeMapInversedTBody, isInversed, rec.tbody))
+					A2($rundis$elm_bootstrap$Bootstrap$Table$maybeMapInversedTBody, isInversed, rec.d8))
 				])));
 };
 var $rundis$elm_bootstrap$Bootstrap$Table$tbody = F2(
 	function (attributes, rows) {
 		return $rundis$elm_bootstrap$Bootstrap$Table$TBody(
-			{attributes: attributes, rows: rows});
+			{aS: attributes, bM: rows});
 	});
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $elm$core$String$fromFloat = _String_fromNumber;
 var $author$project$Invoice$invoiceTypeToString = function (invtype) {
-	if (invtype.$ === 'Received') {
+	if (!invtype) {
 		return 'Zakup';
 	} else {
 		return 'Sprzedaż';
 	}
 };
 var $author$project$Invoice$partnerToString = function (partner) {
-	return A2($elm$core$Maybe$withDefault, '', partner.name) + (' | ' + A2($elm$core$Maybe$withDefault, '', partner.nipNumber));
+	return A2($elm$core$Maybe$withDefault, '', partner.cd) + (' | ' + A2($elm$core$Maybe$withDefault, '', partner.dT));
 };
 var $elm$core$List$sum = function (numbers) {
 	return A3($elm$core$List$foldl, $elm$core$Basics$add, 0, numbers);
 };
 var $author$project$Invoice$sumNetPositions = function (positions) {
 	var sumofposition = function (position) {
-		return position.numItems * position.priceNet;
+		return position.cY * position.c3;
 	};
 	return $elm$core$List$sum(
 		A2($elm$core$List$map, sumofposition, positions));
@@ -8286,12 +8263,12 @@ var $author$project$Invoice$sumNetPositions = function (positions) {
 var $rundis$elm_bootstrap$Bootstrap$Table$td = F2(
 	function (options, children) {
 		return $rundis$elm_bootstrap$Bootstrap$Table$Td(
-			{children: children, options: options});
+			{cA: children, dY: options});
 	});
 var $rundis$elm_bootstrap$Bootstrap$Table$tr = F2(
 	function (options, cells) {
 		return $rundis$elm_bootstrap$Bootstrap$Table$Row(
-			{cells: cells, options: options});
+			{g: cells, dY: options});
 	});
 var $author$project$Invoice$viewInvoiceRow = function (invoice) {
 	return A2(
@@ -8305,29 +8282,21 @@ var $author$project$Invoice$viewInvoiceRow = function (invoice) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						A2($elm$core$Maybe$withDefault, 'Unavailable', invoice.partner.name))
+						A2($elm$core$Maybe$withDefault, 'Unavailable', invoice.ch.cd))
 					])),
 				A2(
 				$rundis$elm_bootstrap$Bootstrap$Table$td,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text(invoice.invoiceId)
+						$elm$html$Html$text(invoice.cQ)
 					])),
 				A2(
 				$rundis$elm_bootstrap$Bootstrap$Table$td,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text(invoice.date)
-					])),
-				A2(
-				$rundis$elm_bootstrap$Bootstrap$Table$td,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text(
-						$author$project$Invoice$invoiceTypeToString(invoice.invoiceType))
+						$elm$html$Html$text(invoice.cC)
 					])),
 				A2(
 				$rundis$elm_bootstrap$Bootstrap$Table$td,
@@ -8335,7 +8304,15 @@ var $author$project$Invoice$viewInvoiceRow = function (invoice) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Invoice$partnerToString(invoice.partner))
+						$author$project$Invoice$invoiceTypeToString(invoice.cR))
+					])),
+				A2(
+				$rundis$elm_bootstrap$Bootstrap$Table$td,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						$author$project$Invoice$partnerToString(invoice.ch))
 					])),
 				A2(
 				$rundis$elm_bootstrap$Bootstrap$Table$td,
@@ -8344,14 +8321,13 @@ var $author$project$Invoice$viewInvoiceRow = function (invoice) {
 					[
 						$elm$html$Html$text(
 						$elm$core$String$fromFloat(
-							$author$project$Invoice$sumNetPositions(invoice.positions)))
+							$author$project$Invoice$sumNetPositions(invoice.c1)))
 					]))
 			]));
 };
 var $rundis$elm_bootstrap$Bootstrap$Table$thead = F2(
 	function (options, rows) {
-		return $rundis$elm_bootstrap$Bootstrap$Table$THead(
-			{options: options, rows: rows});
+		return {dY: options, bM: rows};
 	});
 var $rundis$elm_bootstrap$Bootstrap$Table$simpleThead = function (cells) {
 	return A2(
@@ -8365,7 +8341,7 @@ var $rundis$elm_bootstrap$Bootstrap$Table$simpleThead = function (cells) {
 var $rundis$elm_bootstrap$Bootstrap$Table$th = F2(
 	function (options, children) {
 		return $rundis$elm_bootstrap$Bootstrap$Table$Th(
-			{children: children, options: options});
+			{cA: children, dY: options});
 	});
 var $author$project$Invoice$viewTableHeader = $rundis$elm_bootstrap$Bootstrap$Table$simpleThead(
 	_List_fromArray(
@@ -8401,18 +8377,18 @@ var $author$project$Invoice$viewTableHeader = $rundis$elm_bootstrap$Bootstrap$Ta
 		]));
 var $author$project$Invoice$view = function (model) {
 	var outbody = function () {
-		var _v0 = model.allInvoices;
+		var _v0 = model.aP;
 		switch (_v0.$) {
-			case 'Loading':
+			case 1:
 				return $elm$html$Html$text('Wczytywanie danych ...');
-			case 'Success':
+			case 3:
 				var data = _v0.a;
 				var rows_data = A2($elm$core$List$map, $author$project$Invoice$viewInvoiceRow, data);
 				return $rundis$elm_bootstrap$Bootstrap$Table$table(
 					{
-						options: _List_Nil,
-						tbody: A2($rundis$elm_bootstrap$Bootstrap$Table$tbody, _List_Nil, rows_data),
-						thead: $author$project$Invoice$viewTableHeader
+						dY: _List_Nil,
+						d8: A2($rundis$elm_bootstrap$Bootstrap$Table$tbody, _List_Nil, rows_data),
+						d9: $author$project$Invoice$viewTableHeader
 					});
 			default:
 				return $elm$html$Html$text('Failed loading data');
@@ -8424,18 +8400,13 @@ var $author$project$Invoice$view = function (model) {
 		_List_fromArray(
 			[outbody]));
 };
-var $rundis$elm_bootstrap$Bootstrap$Navbar$Brand = function (a) {
-	return {$: 'Brand', a: a};
-};
+var $rundis$elm_bootstrap$Bootstrap$Navbar$Brand = $elm$core$Basics$identity;
 var $elm$html$Html$a = _VirtualDom_node('a');
-var $rundis$elm_bootstrap$Bootstrap$Navbar$Config = function (a) {
-	return {$: 'Config', a: a};
-};
+var $rundis$elm_bootstrap$Bootstrap$Navbar$Config = $elm$core$Basics$identity;
 var $rundis$elm_bootstrap$Bootstrap$Navbar$updateConfig = F2(
 	function (mapper, _v0) {
-		var conf = _v0.a;
-		return $rundis$elm_bootstrap$Bootstrap$Navbar$Config(
-			mapper(conf));
+		var conf = _v0;
+		return mapper(conf);
 	});
 var $rundis$elm_bootstrap$Bootstrap$Navbar$brand = F3(
 	function (attributes, children, config_) {
@@ -8445,50 +8416,48 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$brand = F3(
 				return _Utils_update(
 					conf,
 					{
-						brand: $elm$core$Maybe$Just(
-							$rundis$elm_bootstrap$Bootstrap$Navbar$Brand(
-								A2(
-									$elm$html$Html$a,
-									_Utils_ap(
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('navbar-brand')
-											]),
-										attributes),
-									children)))
+						ag: $elm$core$Maybe$Just(
+							A2(
+								$elm$html$Html$a,
+								_Utils_ap(
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('navbar-brand')
+										]),
+									attributes),
+								children))
 					});
 			},
 			config_);
 	});
-var $rundis$elm_bootstrap$Bootstrap$Internal$Role$Light = {$: 'Light'};
-var $rundis$elm_bootstrap$Bootstrap$Navbar$Light = {$: 'Light'};
+var $rundis$elm_bootstrap$Bootstrap$Internal$Role$Light = 6;
+var $rundis$elm_bootstrap$Bootstrap$Navbar$Light = 1;
 var $rundis$elm_bootstrap$Bootstrap$Navbar$Roled = function (a) {
-	return {$: 'Roled', a: a};
+	return {$: 0, a: a};
 };
 var $rundis$elm_bootstrap$Bootstrap$Navbar$config = function (toMsg) {
-	return $rundis$elm_bootstrap$Bootstrap$Navbar$Config(
-		{
-			brand: $elm$core$Maybe$Nothing,
-			customItems: _List_Nil,
-			items: _List_Nil,
-			options: {
-				attributes: _List_Nil,
-				fix: $elm$core$Maybe$Nothing,
-				isContainer: false,
-				scheme: $elm$core$Maybe$Just(
-					{
-						bgColor: $rundis$elm_bootstrap$Bootstrap$Navbar$Roled($rundis$elm_bootstrap$Bootstrap$Internal$Role$Light),
-						modifier: $rundis$elm_bootstrap$Bootstrap$Navbar$Light
-					}),
-				toggleAt: $rundis$elm_bootstrap$Bootstrap$General$Internal$XS
-			},
-			toMsg: toMsg,
-			withAnimation: false
-		});
+	return {
+		ag: $elm$core$Maybe$Nothing,
+		a0: _List_Nil,
+		cT: _List_Nil,
+		dY: {
+			aS: _List_Nil,
+			V: $elm$core$Maybe$Nothing,
+			bd: false,
+			bN: $elm$core$Maybe$Just(
+				{
+					aU: $rundis$elm_bootstrap$Bootstrap$Navbar$Roled(6),
+					bi: 1
+				}),
+			ay: 0
+		},
+		ct: toMsg,
+		O: false
+	};
 };
 var $author$project$Route$routeToString = function (page) {
 	var pieces = function () {
-		if (page.$ === 'TradePartner') {
+		if (!page) {
 			return _List_fromArray(
 				['tradepartners']);
 		} else {
@@ -8503,12 +8472,12 @@ var $author$project$Route$href = function (targetRoute) {
 		$author$project$Route$routeToString(targetRoute));
 };
 var $rundis$elm_bootstrap$Bootstrap$Navbar$Item = function (a) {
-	return {$: 'Item', a: a};
+	return {$: 0, a: a};
 };
 var $rundis$elm_bootstrap$Bootstrap$Navbar$itemLink = F2(
 	function (attributes, children) {
 		return $rundis$elm_bootstrap$Bootstrap$Navbar$Item(
-			{attributes: attributes, children: children});
+			{aS: attributes, cA: children});
 	});
 var $rundis$elm_bootstrap$Bootstrap$Navbar$itemLinkActive = function (attributes) {
 	return $rundis$elm_bootstrap$Bootstrap$Navbar$itemLink(
@@ -8524,14 +8493,14 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$items = F2(
 			function (conf) {
 				return _Utils_update(
 					conf,
-					{items: items_});
+					{cT: items_});
 			},
 			config_);
 	});
 var $elm$html$Html$button = _VirtualDom_node('button');
 var $rundis$elm_bootstrap$Bootstrap$Navbar$maybeBrand = function (brand_) {
-	if (brand_.$ === 'Just') {
-		var b = brand_.a.a;
+	if (!brand_.$) {
+		var b = brand_.a;
 		return _List_fromArray(
 			[b]);
 	} else {
@@ -8539,7 +8508,7 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$maybeBrand = function (brand_) {
 	}
 };
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 'Normal', a: a};
+	return {$: 0, a: a};
 };
 var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
 var $elm$html$Html$Events$on = F2(
@@ -8550,97 +8519,97 @@ var $elm$html$Html$Events$on = F2(
 			$elm$virtual_dom$VirtualDom$Normal(decoder));
 	});
 var $rundis$elm_bootstrap$Bootstrap$Navbar$sizeToComparable = function (size) {
-	switch (size.$) {
-		case 'XS':
+	switch (size) {
+		case 0:
 			return 1;
-		case 'SM':
+		case 1:
 			return 2;
-		case 'MD':
+		case 2:
 			return 3;
-		case 'LG':
+		case 3:
 			return 4;
 		default:
 			return 5;
 	}
 };
-var $rundis$elm_bootstrap$Bootstrap$General$Internal$LG = {$: 'LG'};
-var $rundis$elm_bootstrap$Bootstrap$General$Internal$MD = {$: 'MD'};
-var $rundis$elm_bootstrap$Bootstrap$General$Internal$SM = {$: 'SM'};
-var $rundis$elm_bootstrap$Bootstrap$General$Internal$XL = {$: 'XL'};
+var $rundis$elm_bootstrap$Bootstrap$General$Internal$LG = 3;
+var $rundis$elm_bootstrap$Bootstrap$General$Internal$MD = 2;
+var $rundis$elm_bootstrap$Bootstrap$General$Internal$SM = 1;
+var $rundis$elm_bootstrap$Bootstrap$General$Internal$XL = 4;
 var $rundis$elm_bootstrap$Bootstrap$Navbar$toScreenSize = function (windowWidth) {
-	return (windowWidth <= 576) ? $rundis$elm_bootstrap$Bootstrap$General$Internal$XS : ((windowWidth <= 768) ? $rundis$elm_bootstrap$Bootstrap$General$Internal$SM : ((windowWidth <= 992) ? $rundis$elm_bootstrap$Bootstrap$General$Internal$MD : ((windowWidth <= 1200) ? $rundis$elm_bootstrap$Bootstrap$General$Internal$LG : $rundis$elm_bootstrap$Bootstrap$General$Internal$XL)));
+	return (windowWidth <= 576) ? 0 : ((windowWidth <= 768) ? 1 : ((windowWidth <= 992) ? 2 : ((windowWidth <= 1200) ? 3 : 4)));
 };
 var $rundis$elm_bootstrap$Bootstrap$Navbar$shouldHideMenu = F2(
 	function (_v0, _v1) {
-		var windowWidth = _v0.a.windowWidth;
-		var options = _v1.options;
+		var windowWidth = _v0.aH;
+		var options = _v1.dY;
 		var winMedia = function () {
-			if (windowWidth.$ === 'Just') {
+			if (!windowWidth.$) {
 				var s = windowWidth.a;
 				return $rundis$elm_bootstrap$Bootstrap$Navbar$toScreenSize(s);
 			} else {
-				return $rundis$elm_bootstrap$Bootstrap$General$Internal$XS;
+				return 0;
 			}
 		}();
 		return _Utils_cmp(
 			$rundis$elm_bootstrap$Bootstrap$Navbar$sizeToComparable(winMedia),
-			$rundis$elm_bootstrap$Bootstrap$Navbar$sizeToComparable(options.toggleAt)) > 0;
+			$rundis$elm_bootstrap$Bootstrap$Navbar$sizeToComparable(options.ay)) > 0;
 	});
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
-var $rundis$elm_bootstrap$Bootstrap$Navbar$AnimatingDown = {$: 'AnimatingDown'};
-var $rundis$elm_bootstrap$Bootstrap$Navbar$AnimatingUp = {$: 'AnimatingUp'};
-var $rundis$elm_bootstrap$Bootstrap$Navbar$Shown = {$: 'Shown'};
-var $rundis$elm_bootstrap$Bootstrap$Navbar$StartDown = {$: 'StartDown'};
-var $rundis$elm_bootstrap$Bootstrap$Navbar$StartUp = {$: 'StartUp'};
+var $rundis$elm_bootstrap$Bootstrap$Navbar$AnimatingDown = 2;
+var $rundis$elm_bootstrap$Bootstrap$Navbar$AnimatingUp = 4;
+var $rundis$elm_bootstrap$Bootstrap$Navbar$Shown = 5;
+var $rundis$elm_bootstrap$Bootstrap$Navbar$StartDown = 1;
+var $rundis$elm_bootstrap$Bootstrap$Navbar$StartUp = 3;
 var $rundis$elm_bootstrap$Bootstrap$Navbar$visibilityTransition = F2(
 	function (withAnimation_, visibility) {
 		var _v0 = _Utils_Tuple2(withAnimation_, visibility);
 		if (_v0.a) {
-			switch (_v0.b.$) {
-				case 'Hidden':
+			switch (_v0.b) {
+				case 0:
 					var _v1 = _v0.b;
-					return $rundis$elm_bootstrap$Bootstrap$Navbar$StartDown;
-				case 'StartDown':
+					return 1;
+				case 1:
 					var _v2 = _v0.b;
-					return $rundis$elm_bootstrap$Bootstrap$Navbar$AnimatingDown;
-				case 'AnimatingDown':
+					return 2;
+				case 2:
 					var _v3 = _v0.b;
-					return $rundis$elm_bootstrap$Bootstrap$Navbar$Shown;
-				case 'Shown':
+					return 5;
+				case 5:
 					var _v4 = _v0.b;
-					return $rundis$elm_bootstrap$Bootstrap$Navbar$StartUp;
-				case 'StartUp':
+					return 3;
+				case 3:
 					var _v5 = _v0.b;
-					return $rundis$elm_bootstrap$Bootstrap$Navbar$AnimatingUp;
+					return 4;
 				default:
 					var _v6 = _v0.b;
-					return $rundis$elm_bootstrap$Bootstrap$Navbar$Hidden;
+					return 0;
 			}
 		} else {
-			switch (_v0.b.$) {
-				case 'Hidden':
+			switch (_v0.b) {
+				case 0:
 					var _v7 = _v0.b;
-					return $rundis$elm_bootstrap$Bootstrap$Navbar$Shown;
-				case 'Shown':
+					return 5;
+				case 5:
 					var _v8 = _v0.b;
-					return $rundis$elm_bootstrap$Bootstrap$Navbar$Hidden;
+					return 0;
 				default:
-					return $rundis$elm_bootstrap$Bootstrap$Navbar$Hidden;
+					return 0;
 			}
 		}
 	});
 var $rundis$elm_bootstrap$Bootstrap$Navbar$transitionHandler = F2(
 	function (state, configRec) {
 		return $elm$json$Json$Decode$succeed(
-			configRec.toMsg(
+			configRec.ct(
 				A2(
 					$rundis$elm_bootstrap$Bootstrap$Navbar$mapState,
 					function (s) {
 						return _Utils_update(
 							s,
 							{
-								visibility: A2($rundis$elm_bootstrap$Bootstrap$Navbar$visibilityTransition, configRec.withAnimation, s.visibility)
+								e: A2($rundis$elm_bootstrap$Bootstrap$Navbar$visibilityTransition, configRec.O, s.e)
 							});
 					},
 					state)));
@@ -8674,16 +8643,16 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$transitionStyle = function (maybeHeig
 };
 var $rundis$elm_bootstrap$Bootstrap$Navbar$menuAttributes = F2(
 	function (state, configRec) {
-		var visibility = state.a.visibility;
-		var height = state.a.height;
+		var visibility = state.e;
+		var height = state.cK;
 		var defaults = _List_fromArray(
 			[
 				$elm$html$Html$Attributes$class('collapse navbar-collapse')
 			]);
-		switch (visibility.$) {
-			case 'Hidden':
-				if (height.$ === 'Nothing') {
-					return ((!configRec.withAnimation) || A2($rundis$elm_bootstrap$Bootstrap$Navbar$shouldHideMenu, state, configRec)) ? defaults : _List_fromArray(
+		switch (visibility) {
+			case 0:
+				if (height.$ === 1) {
+					return ((!configRec.O) || A2($rundis$elm_bootstrap$Bootstrap$Navbar$shouldHideMenu, state, configRec)) ? defaults : _List_fromArray(
 						[
 							A2($elm$html$Html$Attributes$style, 'display', 'block'),
 							A2($elm$html$Html$Attributes$style, 'height', '0'),
@@ -8693,9 +8662,9 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$menuAttributes = F2(
 				} else {
 					return defaults;
 				}
-			case 'StartDown':
+			case 1:
 				return $rundis$elm_bootstrap$Bootstrap$Navbar$transitionStyle($elm$core$Maybe$Nothing);
-			case 'AnimatingDown':
+			case 2:
 				return _Utils_ap(
 					$rundis$elm_bootstrap$Bootstrap$Navbar$transitionStyle(height),
 					_List_fromArray(
@@ -8705,7 +8674,7 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$menuAttributes = F2(
 							'transitionend',
 							A2($rundis$elm_bootstrap$Bootstrap$Navbar$transitionHandler, state, configRec))
 						]));
-			case 'AnimatingUp':
+			case 4:
 				return _Utils_ap(
 					$rundis$elm_bootstrap$Bootstrap$Navbar$transitionStyle($elm$core$Maybe$Nothing),
 					_List_fromArray(
@@ -8715,7 +8684,7 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$menuAttributes = F2(
 							'transitionend',
 							A2($rundis$elm_bootstrap$Bootstrap$Navbar$transitionHandler, state, configRec))
 						]));
-			case 'StartUp':
+			case 3:
 				return $rundis$elm_bootstrap$Bootstrap$Navbar$transitionStyle(height);
 			default:
 				return _Utils_ap(
@@ -8728,37 +8697,37 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$menuAttributes = F2(
 	});
 var $rundis$elm_bootstrap$Bootstrap$Navbar$menuWrapperAttributes = F2(
 	function (state, confRec) {
-		var visibility = state.a.visibility;
-		var height = state.a.height;
+		var visibility = state.e;
+		var height = state.cK;
 		var styleBlock = _List_fromArray(
 			[
 				A2($elm$html$Html$Attributes$style, 'display', 'block'),
 				A2($elm$html$Html$Attributes$style, 'width', '100%')
 			]);
 		var display = function () {
-			if (height.$ === 'Nothing') {
-				return ((!confRec.withAnimation) || A2($rundis$elm_bootstrap$Bootstrap$Navbar$shouldHideMenu, state, confRec)) ? 'flex' : 'block';
+			if (height.$ === 1) {
+				return ((!confRec.O) || A2($rundis$elm_bootstrap$Bootstrap$Navbar$shouldHideMenu, state, confRec)) ? 'flex' : 'block';
 			} else {
 				return 'flex';
 			}
 		}();
-		switch (visibility.$) {
-			case 'Hidden':
+		switch (visibility) {
+			case 0:
 				return _List_fromArray(
 					[
 						A2($elm$html$Html$Attributes$style, 'display', display),
 						A2($elm$html$Html$Attributes$style, 'width', '100%')
 					]);
-			case 'StartDown':
+			case 1:
 				return styleBlock;
-			case 'AnimatingDown':
+			case 2:
 				return styleBlock;
-			case 'AnimatingUp':
+			case 4:
 				return styleBlock;
-			case 'StartUp':
+			case 3:
 				return styleBlock;
 			default:
-				return ((!confRec.withAnimation) || A2($rundis$elm_bootstrap$Bootstrap$Navbar$shouldHideMenu, state, confRec)) ? _List_fromArray(
+				return ((!confRec.O) || A2($rundis$elm_bootstrap$Bootstrap$Navbar$shouldHideMenu, state, confRec)) ? _List_fromArray(
 					[
 						$elm$html$Html$Attributes$class('collapse navbar-collapse show')
 					]) : _List_fromArray(
@@ -8795,33 +8764,33 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$expandOption = function (size) {
 					},
 					$rundis$elm_bootstrap$Bootstrap$General$Internal$screenSizeOption(sz))));
 	};
-	switch (size.$) {
-		case 'XS':
+	switch (size) {
+		case 0:
 			return _List_fromArray(
 				[
-					toClass($rundis$elm_bootstrap$Bootstrap$General$Internal$SM)
+					toClass(1)
 				]);
-		case 'SM':
+		case 1:
 			return _List_fromArray(
 				[
-					toClass($rundis$elm_bootstrap$Bootstrap$General$Internal$MD)
+					toClass(2)
 				]);
-		case 'MD':
+		case 2:
 			return _List_fromArray(
 				[
-					toClass($rundis$elm_bootstrap$Bootstrap$General$Internal$LG)
+					toClass(3)
 				]);
-		case 'LG':
+		case 3:
 			return _List_fromArray(
 				[
-					toClass($rundis$elm_bootstrap$Bootstrap$General$Internal$XL)
+					toClass(4)
 				]);
 		default:
 			return _List_Nil;
 	}
 };
 var $rundis$elm_bootstrap$Bootstrap$Navbar$fixOption = function (fix) {
-	if (fix.$ === 'Top') {
+	if (!fix) {
 		return 'fixed-top';
 	} else {
 		return 'fixed-bottom';
@@ -8862,10 +8831,10 @@ var $avh4$elm_color$Color$toCssString = function (_v0) {
 };
 var $rundis$elm_bootstrap$Bootstrap$Navbar$backgroundColorOption = function (bgClass) {
 	switch (bgClass.$) {
-		case 'Roled':
+		case 0:
 			var role = bgClass.a;
 			return A2($rundis$elm_bootstrap$Bootstrap$Internal$Role$toClass, 'bg', role);
-		case 'Custom':
+		case 1:
 			var color = bgClass.a;
 			return A2(
 				$elm$html$Html$Attributes$style,
@@ -8879,7 +8848,7 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$backgroundColorOption = function (bgC
 var $rundis$elm_bootstrap$Bootstrap$Navbar$linkModifierClass = function (modifier) {
 	return $elm$html$Html$Attributes$class(
 		function () {
-			if (modifier.$ === 'Dark') {
+			if (!modifier) {
 				return 'navbar-dark';
 			} else {
 				return 'navbar-light';
@@ -8887,8 +8856,8 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$linkModifierClass = function (modifie
 		}());
 };
 var $rundis$elm_bootstrap$Bootstrap$Navbar$schemeAttributes = function (_v0) {
-	var modifier = _v0.modifier;
-	var bgColor = _v0.bgColor;
+	var modifier = _v0.bi;
+	var bgColor = _v0.aU;
 	return _List_fromArray(
 		[
 			$rundis$elm_bootstrap$Bootstrap$Navbar$linkModifierClass(modifier),
@@ -8903,15 +8872,15 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$navbarAttributes = function (options)
 				_List_fromArray(
 					[
 						_Utils_Tuple2('navbar', true),
-						_Utils_Tuple2('container', options.isContainer)
+						_Utils_Tuple2('container', options.bd)
 					]))
 			]),
 		_Utils_ap(
-			$rundis$elm_bootstrap$Bootstrap$Navbar$expandOption(options.toggleAt),
+			$rundis$elm_bootstrap$Bootstrap$Navbar$expandOption(options.ay),
 			_Utils_ap(
 				function () {
-					var _v0 = options.scheme;
-					if (_v0.$ === 'Just') {
+					var _v0 = options.bN;
+					if (!_v0.$) {
 						var scheme_ = _v0.a;
 						return $rundis$elm_bootstrap$Bootstrap$Navbar$schemeAttributes(scheme_);
 					} else {
@@ -8920,8 +8889,8 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$navbarAttributes = function (options)
 				}(),
 				_Utils_ap(
 					function () {
-						var _v1 = options.fix;
-						if (_v1.$ === 'Just') {
+						var _v1 = options.V;
+						if (!_v1.$) {
 							var fix = _v1.a;
 							return _List_fromArray(
 								[
@@ -8932,30 +8901,30 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$navbarAttributes = function (options)
 							return _List_Nil;
 						}
 					}(),
-					options.attributes))));
+					options.aS))));
 };
 var $rundis$elm_bootstrap$Bootstrap$Navbar$renderCustom = function (items_) {
 	return A2(
 		$elm$core$List$map,
 		function (_v0) {
-			var item = _v0.a;
+			var item = _v0;
 			return item;
 		},
 		items_);
 };
-var $rundis$elm_bootstrap$Bootstrap$Navbar$Closed = {$: 'Closed'};
+var $rundis$elm_bootstrap$Bootstrap$Navbar$Closed = 2;
 var $rundis$elm_bootstrap$Bootstrap$Navbar$getOrInitDropdownStatus = F2(
 	function (id, _v0) {
-		var dropdowns = _v0.a.dropdowns;
+		var dropdowns = _v0.F;
 		return A2(
 			$elm$core$Maybe$withDefault,
-			$rundis$elm_bootstrap$Bootstrap$Navbar$Closed,
+			2,
 			A2($elm$core$Dict$get, id, dropdowns));
 	});
 var $elm$html$Html$li = _VirtualDom_node('li');
 var $elm$core$Basics$neq = _Utils_notEqual;
 var $elm$virtual_dom$VirtualDom$Custom = function (a) {
-	return {$: 'Custom', a: a};
+	return {$: 3, a: a};
 };
 var $elm$html$Html$Events$custom = F2(
 	function (event, decoder) {
@@ -8964,19 +8933,19 @@ var $elm$html$Html$Events$custom = F2(
 			event,
 			$elm$virtual_dom$VirtualDom$Custom(decoder));
 	});
-var $rundis$elm_bootstrap$Bootstrap$Navbar$Open = {$: 'Open'};
+var $rundis$elm_bootstrap$Bootstrap$Navbar$Open = 0;
 var $rundis$elm_bootstrap$Bootstrap$Navbar$toggleOpen = F3(
 	function (state, id, _v0) {
-		var toMsg = _v0.toMsg;
+		var toMsg = _v0.ct;
 		var currStatus = A2($rundis$elm_bootstrap$Bootstrap$Navbar$getOrInitDropdownStatus, id, state);
 		var newStatus = function () {
-			switch (currStatus.$) {
-				case 'Open':
-					return $rundis$elm_bootstrap$Bootstrap$Navbar$Closed;
-				case 'ListenClicks':
-					return $rundis$elm_bootstrap$Bootstrap$Navbar$Closed;
+			switch (currStatus) {
+				case 0:
+					return 2;
+				case 1:
+					return 2;
 				default:
-					return $rundis$elm_bootstrap$Bootstrap$Navbar$Open;
+					return 0;
 			}
 		}();
 		return toMsg(
@@ -8986,15 +8955,15 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$toggleOpen = F3(
 					return _Utils_update(
 						s,
 						{
-							dropdowns: A3($elm$core$Dict$insert, id, newStatus, s.dropdowns)
+							F: A3($elm$core$Dict$insert, id, newStatus, s.F)
 						});
 				},
 				state));
 	});
 var $rundis$elm_bootstrap$Bootstrap$Navbar$renderDropdownToggle = F4(
 	function (state, id, configRec, _v0) {
-		var attributes = _v0.a.attributes;
-		var children = _v0.a.children;
+		var attributes = _v0.aS;
+		var children = _v0.cA;
 		return A2(
 			$elm$html$Html$a,
 			_Utils_ap(
@@ -9007,9 +8976,9 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$renderDropdownToggle = F4(
 						'click',
 						$elm$json$Json$Decode$succeed(
 							{
-								message: A3($rundis$elm_bootstrap$Bootstrap$Navbar$toggleOpen, state, id, configRec),
-								preventDefault: true,
-								stopPropagation: false
+								dR: A3($rundis$elm_bootstrap$Bootstrap$Navbar$toggleOpen, state, id, configRec),
+								ck: true,
+								cq: false
 							}))
 					]),
 				attributes),
@@ -9017,23 +8986,21 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$renderDropdownToggle = F4(
 	});
 var $rundis$elm_bootstrap$Bootstrap$Navbar$renderDropdown = F3(
 	function (state, configRec, _v0) {
-		var ddRec = _v0.a;
+		var ddRec = _v0;
 		var needsDropup = A2(
 			$elm$core$Maybe$withDefault,
 			false,
 			A2(
 				$elm$core$Maybe$map,
 				function (fix) {
-					if (fix.$ === 'Bottom') {
+					if (fix === 1) {
 						return true;
 					} else {
 						return false;
 					}
 				},
-				configRec.options.fix));
-		var isShown = !_Utils_eq(
-			A2($rundis$elm_bootstrap$Bootstrap$Navbar$getOrInitDropdownStatus, ddRec.id, state),
-			$rundis$elm_bootstrap$Bootstrap$Navbar$Closed);
+				configRec.dY.V));
+		var isShown = A2($rundis$elm_bootstrap$Bootstrap$Navbar$getOrInitDropdownStatus, ddRec.cO, state) !== 2;
 		return A2(
 			$elm$html$Html$li,
 			_List_fromArray(
@@ -9049,7 +9016,7 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$renderDropdown = F3(
 				]),
 			_List_fromArray(
 				[
-					A4($rundis$elm_bootstrap$Bootstrap$Navbar$renderDropdownToggle, state, ddRec.id, configRec, ddRec.toggle),
+					A4($rundis$elm_bootstrap$Bootstrap$Navbar$renderDropdownToggle, state, ddRec.cO, configRec, ddRec.di),
 					A2(
 					$elm$html$Html$div,
 					_List_fromArray(
@@ -9064,15 +9031,15 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$renderDropdown = F3(
 					A2(
 						$elm$core$List$map,
 						function (_v1) {
-							var item = _v1.a;
+							var item = _v1;
 							return item;
 						},
-						ddRec.items))
+						ddRec.cT))
 				]));
 	});
 var $rundis$elm_bootstrap$Bootstrap$Navbar$renderItemLink = function (_v0) {
-	var attributes = _v0.attributes;
-	var children = _v0.children;
+	var attributes = _v0.aS;
+	var children = _v0.cA;
 	return A2(
 		$elm$html$Html$li,
 		_List_fromArray(
@@ -9104,7 +9071,7 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$renderNav = F3(
 			A2(
 				$elm$core$List$map,
 				function (item) {
-					if (item.$ === 'Item') {
+					if (!item.$) {
 						var item_ = item.a;
 						return $rundis$elm_bootstrap$Bootstrap$Navbar$renderItemLink(item_);
 					} else {
@@ -9133,7 +9100,7 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$heightDecoder = function () {
 		A2($elm$json$Json$Decode$field, 'tagName', $elm$json$Json$Decode$string),
 		$elm$json$Json$Decode$value);
 	var resToDec = function (res) {
-		if (res.$ === 'Ok') {
+		if (!res.$) {
 			var v = res.a;
 			return $elm$json$Json$Decode$succeed(v);
 		} else {
@@ -9178,7 +9145,7 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$heightDecoder = function () {
 }();
 var $rundis$elm_bootstrap$Bootstrap$Navbar$toggleHandler = F2(
 	function (state, configRec) {
-		var height = state.a.height;
+		var height = state.cK;
 		var updState = function (h) {
 			return A2(
 				$rundis$elm_bootstrap$Bootstrap$Navbar$mapState,
@@ -9186,8 +9153,8 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$toggleHandler = F2(
 					return _Utils_update(
 						s,
 						{
-							height: $elm$core$Maybe$Just(h),
-							visibility: A2($rundis$elm_bootstrap$Bootstrap$Navbar$visibilityTransition, configRec.withAnimation, s.visibility)
+							cK: $elm$core$Maybe$Just(h),
+							e: A2($rundis$elm_bootstrap$Bootstrap$Navbar$visibilityTransition, configRec.O, s.e)
 						});
 				},
 				state);
@@ -9199,7 +9166,7 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$toggleHandler = F2(
 				$elm$json$Json$Decode$andThen,
 				function (v) {
 					return $elm$json$Json$Decode$succeed(
-						configRec.toMsg(
+						configRec.ct(
 							(v > 0) ? updState(v) : updState(
 								A2($elm$core$Maybe$withDefault, 0, height))));
 				},
@@ -9208,12 +9175,12 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$toggleHandler = F2(
 var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
 var $rundis$elm_bootstrap$Bootstrap$Navbar$view = F2(
 	function (state, conf) {
-		var configRec = conf.a;
+		var configRec = conf;
 		return A2(
 			$elm$html$Html$nav,
-			$rundis$elm_bootstrap$Bootstrap$Navbar$navbarAttributes(configRec.options),
+			$rundis$elm_bootstrap$Bootstrap$Navbar$navbarAttributes(configRec.dY),
 			_Utils_ap(
-				$rundis$elm_bootstrap$Bootstrap$Navbar$maybeBrand(configRec.brand),
+				$rundis$elm_bootstrap$Bootstrap$Navbar$maybeBrand(configRec.ag),
 				_Utils_ap(
 					_List_fromArray(
 						[
@@ -9230,7 +9197,7 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$view = F2(
 											function (_v0) {
 												return ' navbar-toggler-right';
 											},
-											configRec.brand))),
+											configRec.ag))),
 									$elm$html$Html$Attributes$type_('button'),
 									A2($rundis$elm_bootstrap$Bootstrap$Navbar$toggleHandler, state, configRec)
 								]),
@@ -9258,9 +9225,9 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$view = F2(
 									_Utils_ap(
 										_List_fromArray(
 											[
-												A3($rundis$elm_bootstrap$Bootstrap$Navbar$renderNav, state, configRec, configRec.items)
+												A3($rundis$elm_bootstrap$Bootstrap$Navbar$renderNav, state, configRec, configRec.cT)
 											]),
-										$rundis$elm_bootstrap$Bootstrap$Navbar$renderCustom(configRec.customItems)))
+										$rundis$elm_bootstrap$Bootstrap$Navbar$renderCustom(configRec.a0)))
 								]))
 						]))));
 	});
@@ -9270,7 +9237,7 @@ var $rundis$elm_bootstrap$Bootstrap$Navbar$withAnimation = function (config_) {
 		function (conf) {
 			return _Utils_update(
 				conf,
-				{withAnimation: true});
+				{O: true});
 		},
 		config_);
 };
@@ -9290,20 +9257,20 @@ var $author$project$Navbar$view = function (model) {
 				]));
 	};
 	var tabs = function () {
-		var _v0 = model.activeTab;
-		if (_v0.$ === 'TradePartnersTab') {
+		var _v0 = model.b1;
+		if (!_v0) {
 			return _List_fromArray(
 				[
 					A2(
 					active,
-					$author$project$Route$TradePartner,
+					0,
 					_List_fromArray(
 						[
 							$elm$html$Html$text('Kontrahenci')
 						])),
 					A2(
 					inactive,
-					$author$project$Route$Invoices,
+					1,
 					_List_fromArray(
 						[
 							$elm$html$Html$text('Faktury')
@@ -9314,14 +9281,14 @@ var $author$project$Navbar$view = function (model) {
 				[
 					A2(
 					inactive,
-					$author$project$Route$TradePartner,
+					0,
 					_List_fromArray(
 						[
 							$elm$html$Html$text('Kontrahenci')
 						])),
 					A2(
 					active,
-					$author$project$Route$Invoices,
+					1,
 					_List_fromArray(
 						[
 							$elm$html$Html$text('Faktury')
@@ -9331,7 +9298,7 @@ var $author$project$Navbar$view = function (model) {
 	}();
 	return A2(
 		$rundis$elm_bootstrap$Bootstrap$Navbar$view,
-		model.state,
+		model.bR,
 		A2(
 			$rundis$elm_bootstrap$Bootstrap$Navbar$items,
 			tabs,
@@ -9346,15 +9313,15 @@ var $author$project$Navbar$view = function (model) {
 						$elm$html$Html$text('VatCalc')
 					]),
 				$rundis$elm_bootstrap$Bootstrap$Navbar$withAnimation(
-					$rundis$elm_bootstrap$Bootstrap$Navbar$config($author$project$Navbar$NavbarMsg)))));
+					$rundis$elm_bootstrap$Bootstrap$Navbar$config($elm$core$Basics$identity)))));
 };
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
-var $author$project$TradePartners$AddPartner = {$: 'AddPartner'};
+var $author$project$TradePartners$AddPartner = {$: 0};
 var $author$project$TradePartners$UpdateForm = function (a) {
-	return {$: 'UpdateForm', a: a};
+	return {$: 1, a: a};
 };
 var $rundis$elm_bootstrap$Bootstrap$Form$Input$Attrs = function (a) {
-	return {$: 'Attrs', a: a};
+	return {$: 10, a: a};
 };
 var $rundis$elm_bootstrap$Bootstrap$Form$Input$attrs = function (attrs_) {
 	return $rundis$elm_bootstrap$Bootstrap$Form$Input$Attrs(attrs_);
@@ -9362,39 +9329,39 @@ var $rundis$elm_bootstrap$Bootstrap$Form$Input$attrs = function (attrs_) {
 var $rundis$elm_bootstrap$Bootstrap$Internal$Button$applyModifier = F2(
 	function (modifier, options) {
 		switch (modifier.$) {
-			case 'Size':
+			case 0:
 				var size = modifier.a;
 				return _Utils_update(
 					options,
 					{
-						size: $elm$core$Maybe$Just(size)
+						de: $elm$core$Maybe$Just(size)
 					});
-			case 'Coloring':
+			case 1:
 				var coloring = modifier.a;
 				return _Utils_update(
 					options,
 					{
-						coloring: $elm$core$Maybe$Just(coloring)
+						w: $elm$core$Maybe$Just(coloring)
 					});
-			case 'Block':
+			case 2:
 				return _Utils_update(
 					options,
-					{block: true});
-			case 'Disabled':
+					{aV: true});
+			case 3:
 				var val = modifier.a;
 				return _Utils_update(
 					options,
-					{disabled: val});
+					{a4: val});
 			default:
 				var attrs = modifier.a;
 				return _Utils_update(
 					options,
 					{
-						attributes: _Utils_ap(options.attributes, attrs)
+						aS: _Utils_ap(options.aS, attrs)
 					});
 		}
 	});
-var $rundis$elm_bootstrap$Bootstrap$Internal$Button$defaultOptions = {attributes: _List_Nil, block: false, coloring: $elm$core$Maybe$Nothing, disabled: false, size: $elm$core$Maybe$Nothing};
+var $rundis$elm_bootstrap$Bootstrap$Internal$Button$defaultOptions = {aS: _List_Nil, aV: false, w: $elm$core$Maybe$Nothing, a4: false, de: $elm$core$Maybe$Nothing};
 var $elm$json$Json$Encode$bool = _Json_wrap;
 var $elm$html$Html$Attributes$boolProperty = F2(
 	function (key, bool) {
@@ -9405,22 +9372,22 @@ var $elm$html$Html$Attributes$boolProperty = F2(
 	});
 var $elm$html$Html$Attributes$disabled = $elm$html$Html$Attributes$boolProperty('disabled');
 var $rundis$elm_bootstrap$Bootstrap$Internal$Button$roleClass = function (role) {
-	switch (role.$) {
-		case 'Primary':
+	switch (role) {
+		case 0:
 			return 'primary';
-		case 'Secondary':
+		case 1:
 			return 'secondary';
-		case 'Success':
+		case 2:
 			return 'success';
-		case 'Info':
+		case 3:
 			return 'info';
-		case 'Warning':
+		case 4:
 			return 'warning';
-		case 'Danger':
+		case 5:
 			return 'danger';
-		case 'Dark':
+		case 6:
 			return 'dark';
-		case 'Light':
+		case 7:
 			return 'light';
 		default:
 			return 'link';
@@ -9435,15 +9402,15 @@ var $rundis$elm_bootstrap$Bootstrap$Internal$Button$buttonAttributes = function 
 				_List_fromArray(
 					[
 						_Utils_Tuple2('btn', true),
-						_Utils_Tuple2('btn-block', options.block),
-						_Utils_Tuple2('disabled', options.disabled)
+						_Utils_Tuple2('btn-block', options.aV),
+						_Utils_Tuple2('disabled', options.a4)
 					])),
-				$elm$html$Html$Attributes$disabled(options.disabled)
+				$elm$html$Html$Attributes$disabled(options.a4)
 			]),
 		_Utils_ap(
 			function () {
-				var _v0 = A2($elm$core$Maybe$andThen, $rundis$elm_bootstrap$Bootstrap$General$Internal$screenSizeOption, options.size);
-				if (_v0.$ === 'Just') {
+				var _v0 = A2($elm$core$Maybe$andThen, $rundis$elm_bootstrap$Bootstrap$General$Internal$screenSizeOption, options.de);
+				if (!_v0.$) {
 					var s = _v0.a;
 					return _List_fromArray(
 						[
@@ -9455,9 +9422,9 @@ var $rundis$elm_bootstrap$Bootstrap$Internal$Button$buttonAttributes = function 
 			}(),
 			_Utils_ap(
 				function () {
-					var _v1 = options.coloring;
-					if (_v1.$ === 'Just') {
-						if (_v1.a.$ === 'Roled') {
+					var _v1 = options.w;
+					if (!_v1.$) {
+						if (!_v1.a.$) {
 							var role = _v1.a.a;
 							return _List_fromArray(
 								[
@@ -9476,7 +9443,7 @@ var $rundis$elm_bootstrap$Bootstrap$Internal$Button$buttonAttributes = function 
 						return _List_Nil;
 					}
 				}(),
-				options.attributes)));
+				options.aS)));
 };
 var $rundis$elm_bootstrap$Bootstrap$Button$button = F2(
 	function (options, children) {
@@ -9485,11 +9452,11 @@ var $rundis$elm_bootstrap$Bootstrap$Button$button = F2(
 			$rundis$elm_bootstrap$Bootstrap$Internal$Button$buttonAttributes(options),
 			children);
 	});
-var $rundis$elm_bootstrap$Bootstrap$Form$FormInternal$Danger = {$: 'Danger'};
+var $rundis$elm_bootstrap$Bootstrap$Form$FormInternal$Danger = 1;
 var $rundis$elm_bootstrap$Bootstrap$Form$Input$Validation = function (a) {
-	return {$: 'Validation', a: a};
+	return {$: 6, a: a};
 };
-var $rundis$elm_bootstrap$Bootstrap$Form$Input$danger = $rundis$elm_bootstrap$Bootstrap$Form$Input$Validation($rundis$elm_bootstrap$Bootstrap$Form$FormInternal$Danger);
+var $rundis$elm_bootstrap$Bootstrap$Form$Input$danger = $rundis$elm_bootstrap$Bootstrap$Form$Input$Validation(1);
 var $elm$html$Html$form = _VirtualDom_node('form');
 var $rundis$elm_bootstrap$Bootstrap$Form$form = F2(
 	function (attributes, children) {
@@ -9497,14 +9464,14 @@ var $rundis$elm_bootstrap$Bootstrap$Form$form = F2(
 	});
 var $rundis$elm_bootstrap$Bootstrap$Form$applyModifier = F2(
 	function (modifier, options) {
-		var value = modifier.a;
+		var value = modifier;
 		return _Utils_update(
 			options,
 			{
-				attributes: _Utils_ap(options.attributes, value)
+				aS: _Utils_ap(options.aS, value)
 			});
 	});
-var $rundis$elm_bootstrap$Bootstrap$Form$defaultOptions = {attributes: _List_Nil};
+var $rundis$elm_bootstrap$Bootstrap$Form$defaultOptions = {aS: _List_Nil};
 var $rundis$elm_bootstrap$Bootstrap$Form$toAttributes = function (modifiers) {
 	var options = A3($elm$core$List$foldl, $rundis$elm_bootstrap$Bootstrap$Form$applyModifier, $rundis$elm_bootstrap$Bootstrap$Form$defaultOptions, modifiers);
 	return _Utils_ap(
@@ -9512,7 +9479,7 @@ var $rundis$elm_bootstrap$Bootstrap$Form$toAttributes = function (modifiers) {
 			[
 				$elm$html$Html$Attributes$class('form-group')
 			]),
-		options.attributes);
+		options.aS);
 };
 var $rundis$elm_bootstrap$Bootstrap$Form$group = F2(
 	function (options, children) {
@@ -9522,7 +9489,7 @@ var $rundis$elm_bootstrap$Bootstrap$Form$group = F2(
 			children);
 	});
 var $rundis$elm_bootstrap$Bootstrap$Form$Input$Id = function (a) {
-	return {$: 'Id', a: a};
+	return {$: 1, a: a};
 };
 var $rundis$elm_bootstrap$Bootstrap$Form$Input$id = function (id_) {
 	return $rundis$elm_bootstrap$Bootstrap$Form$Input$Id(id_);
@@ -9545,13 +9512,13 @@ var $elm$html$Html$Attributes$maxlength = function (n) {
 		$elm$core$String$fromInt(n));
 };
 var $rundis$elm_bootstrap$Bootstrap$Internal$Button$Attrs = function (a) {
-	return {$: 'Attrs', a: a};
+	return {$: 4, a: a};
 };
 var $rundis$elm_bootstrap$Bootstrap$Button$attrs = function (attrs_) {
 	return $rundis$elm_bootstrap$Bootstrap$Internal$Button$Attrs(attrs_);
 };
 var $elm$virtual_dom$VirtualDom$MayPreventDefault = function (a) {
-	return {$: 'MayPreventDefault', a: a};
+	return {$: 2, a: a};
 };
 var $elm$html$Html$Events$preventDefaultOn = F2(
 	function (event, decoder) {
@@ -9572,23 +9539,23 @@ var $rundis$elm_bootstrap$Bootstrap$Button$onClick = function (message) {
 			]));
 };
 var $rundis$elm_bootstrap$Bootstrap$Form$Input$OnInput = function (a) {
-	return {$: 'OnInput', a: a};
+	return {$: 5, a: a};
 };
 var $rundis$elm_bootstrap$Bootstrap$Form$Input$onInput = function (toMsg) {
 	return $rundis$elm_bootstrap$Bootstrap$Form$Input$OnInput(toMsg);
 };
 var $rundis$elm_bootstrap$Bootstrap$Internal$Button$Coloring = function (a) {
-	return {$: 'Coloring', a: a};
+	return {$: 1, a: a};
 };
-var $rundis$elm_bootstrap$Bootstrap$Internal$Button$Primary = {$: 'Primary'};
+var $rundis$elm_bootstrap$Bootstrap$Internal$Button$Primary = 0;
 var $rundis$elm_bootstrap$Bootstrap$Internal$Button$Roled = function (a) {
-	return {$: 'Roled', a: a};
+	return {$: 0, a: a};
 };
 var $rundis$elm_bootstrap$Bootstrap$Button$primary = $rundis$elm_bootstrap$Bootstrap$Internal$Button$Coloring(
-	$rundis$elm_bootstrap$Bootstrap$Internal$Button$Roled($rundis$elm_bootstrap$Bootstrap$Internal$Button$Primary));
-var $rundis$elm_bootstrap$Bootstrap$Internal$Button$Secondary = {$: 'Secondary'};
+	$rundis$elm_bootstrap$Bootstrap$Internal$Button$Roled(0));
+var $rundis$elm_bootstrap$Bootstrap$Internal$Button$Secondary = 1;
 var $rundis$elm_bootstrap$Bootstrap$Button$secondary = $rundis$elm_bootstrap$Bootstrap$Internal$Button$Coloring(
-	$rundis$elm_bootstrap$Bootstrap$Internal$Button$Roled($rundis$elm_bootstrap$Bootstrap$Internal$Button$Secondary));
+	$rundis$elm_bootstrap$Bootstrap$Internal$Button$Roled(1));
 var $rundis$elm_bootstrap$Bootstrap$Button$submitButton = F2(
 	function (options, children) {
 		return A2(
@@ -9599,107 +9566,104 @@ var $rundis$elm_bootstrap$Bootstrap$Button$submitButton = F2(
 				$rundis$elm_bootstrap$Bootstrap$Internal$Button$buttonAttributes(options)),
 			children);
 	});
-var $rundis$elm_bootstrap$Bootstrap$Form$FormInternal$Success = {$: 'Success'};
-var $rundis$elm_bootstrap$Bootstrap$Form$Input$success = $rundis$elm_bootstrap$Bootstrap$Form$Input$Validation($rundis$elm_bootstrap$Bootstrap$Form$FormInternal$Success);
-var $rundis$elm_bootstrap$Bootstrap$Form$Input$Text = {$: 'Text'};
-var $rundis$elm_bootstrap$Bootstrap$Form$Input$Input = function (a) {
-	return {$: 'Input', a: a};
-};
+var $rundis$elm_bootstrap$Bootstrap$Form$FormInternal$Success = 0;
+var $rundis$elm_bootstrap$Bootstrap$Form$Input$success = $rundis$elm_bootstrap$Bootstrap$Form$Input$Validation(0);
+var $rundis$elm_bootstrap$Bootstrap$Form$Input$Text = 0;
+var $rundis$elm_bootstrap$Bootstrap$Form$Input$Input = $elm$core$Basics$identity;
 var $rundis$elm_bootstrap$Bootstrap$Form$Input$Type = function (a) {
-	return {$: 'Type', a: a};
+	return {$: 2, a: a};
 };
 var $rundis$elm_bootstrap$Bootstrap$Form$Input$create = F2(
 	function (tipe, options) {
-		return $rundis$elm_bootstrap$Bootstrap$Form$Input$Input(
-			{
-				options: A2(
-					$elm$core$List$cons,
-					$rundis$elm_bootstrap$Bootstrap$Form$Input$Type(tipe),
-					options)
-			});
+		return {
+			dY: A2(
+				$elm$core$List$cons,
+				$rundis$elm_bootstrap$Bootstrap$Form$Input$Type(tipe),
+				options)
+		};
 	});
 var $elm$html$Html$input = _VirtualDom_node('input');
 var $rundis$elm_bootstrap$Bootstrap$Form$Input$applyModifier = F2(
 	function (modifier, options) {
 		switch (modifier.$) {
-			case 'Size':
+			case 0:
 				var size_ = modifier.a;
 				return _Utils_update(
 					options,
 					{
-						size: $elm$core$Maybe$Just(size_)
+						de: $elm$core$Maybe$Just(size_)
 					});
-			case 'Id':
+			case 1:
 				var id_ = modifier.a;
 				return _Utils_update(
 					options,
 					{
-						id: $elm$core$Maybe$Just(id_)
+						cO: $elm$core$Maybe$Just(id_)
 					});
-			case 'Type':
+			case 2:
 				var tipe = modifier.a;
 				return _Utils_update(
 					options,
-					{tipe: tipe});
-			case 'Disabled':
+					{ax: tipe});
+			case 3:
 				var val = modifier.a;
 				return _Utils_update(
 					options,
-					{disabled: val});
-			case 'Value':
+					{a4: val});
+			case 4:
 				var value_ = modifier.a;
 				return _Utils_update(
 					options,
 					{
-						value: $elm$core$Maybe$Just(value_)
+						t: $elm$core$Maybe$Just(value_)
 					});
-			case 'Placeholder':
+			case 7:
 				var value_ = modifier.a;
 				return _Utils_update(
 					options,
 					{
-						placeholder: $elm$core$Maybe$Just(value_)
+						bz: $elm$core$Maybe$Just(value_)
 					});
-			case 'OnInput':
+			case 5:
 				var onInput_ = modifier.a;
 				return _Utils_update(
 					options,
 					{
-						onInput: $elm$core$Maybe$Just(onInput_)
+						bs: $elm$core$Maybe$Just(onInput_)
 					});
-			case 'Validation':
+			case 6:
 				var validation_ = modifier.a;
 				return _Utils_update(
 					options,
 					{
-						validation: $elm$core$Maybe$Just(validation_)
+						b$: $elm$core$Maybe$Just(validation_)
 					});
-			case 'Readonly':
+			case 8:
 				var val = modifier.a;
 				return _Utils_update(
 					options,
-					{readonly: val});
-			case 'PlainText':
+					{bK: val});
+			case 9:
 				var val = modifier.a;
 				return _Utils_update(
 					options,
-					{plainText: val});
+					{av: val});
 			default:
 				var attrs_ = modifier.a;
 				return _Utils_update(
 					options,
 					{
-						attributes: _Utils_ap(options.attributes, attrs_)
+						aS: _Utils_ap(options.aS, attrs_)
 					});
 		}
 	});
-var $rundis$elm_bootstrap$Bootstrap$Form$Input$defaultOptions = {attributes: _List_Nil, disabled: false, id: $elm$core$Maybe$Nothing, onInput: $elm$core$Maybe$Nothing, placeholder: $elm$core$Maybe$Nothing, plainText: false, readonly: false, size: $elm$core$Maybe$Nothing, tipe: $rundis$elm_bootstrap$Bootstrap$Form$Input$Text, validation: $elm$core$Maybe$Nothing, value: $elm$core$Maybe$Nothing};
+var $rundis$elm_bootstrap$Bootstrap$Form$Input$defaultOptions = {aS: _List_Nil, a4: false, cO: $elm$core$Maybe$Nothing, bs: $elm$core$Maybe$Nothing, bz: $elm$core$Maybe$Nothing, av: false, bK: false, de: $elm$core$Maybe$Nothing, ax: 0, b$: $elm$core$Maybe$Nothing, t: $elm$core$Maybe$Nothing};
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$html$Html$Events$alwaysStop = function (x) {
 	return _Utils_Tuple2(x, true);
 };
 var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
-	return {$: 'MayStopPropagation', a: a};
+	return {$: 1, a: a};
 };
 var $elm$html$Html$Events$stopPropagationOn = F2(
 	function (event, decoder) {
@@ -9735,30 +9699,30 @@ var $rundis$elm_bootstrap$Bootstrap$Form$Input$sizeAttribute = function (size) {
 var $rundis$elm_bootstrap$Bootstrap$Form$Input$typeAttribute = function (inputType) {
 	return $elm$html$Html$Attributes$type_(
 		function () {
-			switch (inputType.$) {
-				case 'Text':
+			switch (inputType) {
+				case 0:
 					return 'text';
-				case 'Password':
+				case 1:
 					return 'password';
-				case 'DatetimeLocal':
+				case 2:
 					return 'datetime-local';
-				case 'Date':
+				case 3:
 					return 'date';
-				case 'Month':
+				case 4:
 					return 'month';
-				case 'Time':
+				case 5:
 					return 'time';
-				case 'Week':
+				case 6:
 					return 'week';
-				case 'Number':
+				case 7:
 					return 'number';
-				case 'Email':
+				case 8:
 					return 'email';
-				case 'Url':
+				case 9:
 					return 'url';
-				case 'Search':
+				case 10:
 					return 'search';
-				case 'Tel':
+				case 11:
 					return 'tel';
 				default:
 					return 'color';
@@ -9766,7 +9730,7 @@ var $rundis$elm_bootstrap$Bootstrap$Form$Input$typeAttribute = function (inputTy
 		}());
 };
 var $rundis$elm_bootstrap$Bootstrap$Form$FormInternal$validationToString = function (validation) {
-	if (validation.$ === 'Success') {
+	if (!validation) {
 		return 'is-valid';
 	} else {
 		return 'is-invalid';
@@ -9783,10 +9747,10 @@ var $rundis$elm_bootstrap$Bootstrap$Form$Input$toAttributes = function (modifier
 		_List_fromArray(
 			[
 				$elm$html$Html$Attributes$class(
-				options.plainText ? 'form-control-plaintext' : 'form-control'),
-				$elm$html$Html$Attributes$disabled(options.disabled),
-				$elm$html$Html$Attributes$readonly(options.readonly || options.plainText),
-				$rundis$elm_bootstrap$Bootstrap$Form$Input$typeAttribute(options.tipe)
+				options.av ? 'form-control-plaintext' : 'form-control'),
+				$elm$html$Html$Attributes$disabled(options.a4),
+				$elm$html$Html$Attributes$readonly(options.bK || options.av),
+				$rundis$elm_bootstrap$Bootstrap$Form$Input$typeAttribute(options.ax)
 			]),
 		_Utils_ap(
 			A2(
@@ -9794,17 +9758,17 @@ var $rundis$elm_bootstrap$Bootstrap$Form$Input$toAttributes = function (modifier
 				$elm$core$Basics$identity,
 				_List_fromArray(
 					[
-						A2($elm$core$Maybe$map, $elm$html$Html$Attributes$id, options.id),
-						A2($elm$core$Maybe$andThen, $rundis$elm_bootstrap$Bootstrap$Form$Input$sizeAttribute, options.size),
-						A2($elm$core$Maybe$map, $elm$html$Html$Attributes$value, options.value),
-						A2($elm$core$Maybe$map, $elm$html$Html$Attributes$placeholder, options.placeholder),
-						A2($elm$core$Maybe$map, $elm$html$Html$Events$onInput, options.onInput),
-						A2($elm$core$Maybe$map, $rundis$elm_bootstrap$Bootstrap$Form$Input$validationAttribute, options.validation)
+						A2($elm$core$Maybe$map, $elm$html$Html$Attributes$id, options.cO),
+						A2($elm$core$Maybe$andThen, $rundis$elm_bootstrap$Bootstrap$Form$Input$sizeAttribute, options.de),
+						A2($elm$core$Maybe$map, $elm$html$Html$Attributes$value, options.t),
+						A2($elm$core$Maybe$map, $elm$html$Html$Attributes$placeholder, options.bz),
+						A2($elm$core$Maybe$map, $elm$html$Html$Events$onInput, options.bs),
+						A2($elm$core$Maybe$map, $rundis$elm_bootstrap$Bootstrap$Form$Input$validationAttribute, options.b$)
 					])),
-			options.attributes));
+			options.aS));
 };
 var $rundis$elm_bootstrap$Bootstrap$Form$Input$view = function (_v0) {
-	var options = _v0.a.options;
+	var options = _v0.dY;
 	return A2(
 		$elm$html$Html$input,
 		$rundis$elm_bootstrap$Bootstrap$Form$Input$toAttributes(options),
@@ -9815,10 +9779,10 @@ var $rundis$elm_bootstrap$Bootstrap$Form$Input$input = F2(
 		return $rundis$elm_bootstrap$Bootstrap$Form$Input$view(
 			A2($rundis$elm_bootstrap$Bootstrap$Form$Input$create, tipe, options));
 	});
-var $rundis$elm_bootstrap$Bootstrap$Form$Input$text = $rundis$elm_bootstrap$Bootstrap$Form$Input$input($rundis$elm_bootstrap$Bootstrap$Form$Input$Text);
-var $author$project$TradePartners$Invalid = {$: 'Invalid'};
-var $author$project$TradePartners$TooShort = {$: 'TooShort'};
-var $author$project$TradePartners$Valid = {$: 'Valid'};
+var $rundis$elm_bootstrap$Bootstrap$Form$Input$text = $rundis$elm_bootstrap$Bootstrap$Form$Input$input(0);
+var $author$project$TradePartners$Invalid = 1;
+var $author$project$TradePartners$TooShort = 2;
+var $author$project$TradePartners$Valid = 0;
 var $elm$core$Basics$modBy = _Basics_modBy;
 var $author$project$TradePartners$validateNIP = function (nip) {
 	var get_val = function (number) {
@@ -9833,11 +9797,11 @@ var $author$project$TradePartners$validateNIP = function (nip) {
 			$elm$core$Basics$modBy,
 			11,
 			((((((((get_val(0) * 6) + (get_val(1) * 5)) + (get_val(2) * 7)) + (get_val(3) * 2)) + (get_val(4) * 3)) + (get_val(5) * 4)) + (get_val(6) * 5)) + (get_val(7) * 6)) + (get_val(8) * 7)),
-		get_val(9)) ? $author$project$TradePartners$Valid : $author$project$TradePartners$Invalid) : $author$project$TradePartners$TooShort;
+		get_val(9)) ? 0 : 1) : 2;
 	return nipValid;
 };
 var $rundis$elm_bootstrap$Bootstrap$Form$Input$Value = function (a) {
-	return {$: 'Value', a: a};
+	return {$: 4, a: a};
 };
 var $rundis$elm_bootstrap$Bootstrap$Form$Input$value = function (value_) {
 	return $rundis$elm_bootstrap$Bootstrap$Form$Input$Value(value_);
@@ -9845,12 +9809,12 @@ var $rundis$elm_bootstrap$Bootstrap$Form$Input$value = function (value_) {
 var $author$project$TradePartners$viewTradePartnerAdd = function (newTradePartner) {
 	var trade_partner_data = newTradePartner;
 	var nip_validity = function () {
-		var _v0 = $author$project$TradePartners$validateNIP(newTradePartner.nipNumber);
-		switch (_v0.$) {
-			case 'Valid':
+		var _v0 = $author$project$TradePartners$validateNIP(newTradePartner.dT);
+		switch (_v0) {
+			case 0:
 				return _List_fromArray(
 					[$rundis$elm_bootstrap$Bootstrap$Form$Input$success]);
-			case 'Invalid':
+			case 1:
 				return _List_fromArray(
 					[$rundis$elm_bootstrap$Bootstrap$Form$Input$danger]);
 			default:
@@ -9889,9 +9853,9 @@ var $author$project$TradePartners$viewTradePartnerAdd = function (newTradePartne
 										return $author$project$TradePartners$UpdateForm(
 											_Utils_update(
 												trade_partner_data,
-												{nipNumber: value}));
+												{dT: value}));
 									}),
-									$rundis$elm_bootstrap$Bootstrap$Form$Input$value(newTradePartner.nipNumber)
+									$rundis$elm_bootstrap$Bootstrap$Form$Input$value(newTradePartner.dT)
 								]),
 							nip_validity)),
 						A2(
@@ -9924,9 +9888,9 @@ var $author$project$TradePartners$viewTradePartnerAdd = function (newTradePartne
 									return $author$project$TradePartners$UpdateForm(
 										_Utils_update(
 											trade_partner_data,
-											{name: value}));
+											{cd: value}));
 								}),
-								$rundis$elm_bootstrap$Bootstrap$Form$Input$value(newTradePartner.name)
+								$rundis$elm_bootstrap$Bootstrap$Form$Input$value(newTradePartner.cd)
 							]))
 					])),
 				A2(
@@ -9950,9 +9914,9 @@ var $author$project$TradePartners$viewTradePartnerAdd = function (newTradePartne
 									return $author$project$TradePartners$UpdateForm(
 										_Utils_update(
 											trade_partner_data,
-											{adress: value}));
+											{C: value}));
 								}),
-								$rundis$elm_bootstrap$Bootstrap$Form$Input$value(newTradePartner.adress)
+								$rundis$elm_bootstrap$Bootstrap$Form$Input$value(newTradePartner.C)
 							]))
 					])),
 				A2(
@@ -10013,7 +9977,7 @@ var $author$project$TradePartners$viewTradePartnerRow = function (trade_partner)
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$elm$core$String$fromInt(trade_partner.id))
+						$elm$core$String$fromInt(trade_partner.cO))
 					])),
 				A2(
 				$rundis$elm_bootstrap$Bootstrap$Table$td,
@@ -10021,7 +9985,7 @@ var $author$project$TradePartners$viewTradePartnerRow = function (trade_partner)
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						A2($elm$core$Maybe$withDefault, 'Unavailable', trade_partner.name))
+						A2($elm$core$Maybe$withDefault, 'Unavailable', trade_partner.cd))
 					])),
 				A2(
 				$rundis$elm_bootstrap$Bootstrap$Table$td,
@@ -10029,7 +9993,7 @@ var $author$project$TradePartners$viewTradePartnerRow = function (trade_partner)
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						A2($elm$core$Maybe$withDefault, 'Unavailable', trade_partner.nipNumber))
+						A2($elm$core$Maybe$withDefault, 'Unavailable', trade_partner.dT))
 					])),
 				A2(
 				$rundis$elm_bootstrap$Bootstrap$Table$td,
@@ -10037,27 +10001,27 @@ var $author$project$TradePartners$viewTradePartnerRow = function (trade_partner)
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						A2($elm$core$Maybe$withDefault, 'Unavailable', trade_partner.adress))
+						A2($elm$core$Maybe$withDefault, 'Unavailable', trade_partner.C))
 					]))
 			]));
 };
 var $author$project$TradePartners$viewTradePartners = function (trade_partners) {
 	return $rundis$elm_bootstrap$Bootstrap$Table$table(
 		{
-			options: _List_Nil,
-			tbody: A2(
+			dY: _List_Nil,
+			d8: A2(
 				$rundis$elm_bootstrap$Bootstrap$Table$tbody,
 				_List_Nil,
 				A2($elm$core$List$map, $author$project$TradePartners$viewTradePartnerRow, trade_partners)),
-			thead: $author$project$TradePartners$viewTableHeader
+			d9: $author$project$TradePartners$viewTableHeader
 		});
 };
 var $author$project$TradePartners$viewPartnersOrError = function (model) {
-	var _v0 = model.tradePartners;
+	var _v0 = model.az;
 	switch (_v0.$) {
-		case 'NotAsked':
+		case 0:
 			return $elm$html$Html$text('');
-		case 'Loading':
+		case 1:
 			return A2(
 				$elm$html$Html$h3,
 				_List_Nil,
@@ -10065,7 +10029,7 @@ var $author$project$TradePartners$viewPartnersOrError = function (model) {
 					[
 						$elm$html$Html$text('Loading...')
 					]));
-		case 'Success':
+		case 3:
 			var trade_partners = _v0.a;
 			return $author$project$TradePartners$viewTradePartners(trade_partners);
 		default:
@@ -10110,7 +10074,7 @@ var $author$project$TradePartners$view = function (model) {
 					[
 						$elm$html$Html$text('Dodaj nową firmę')
 					])),
-				$author$project$TradePartners$viewTradePartnerAdd(model.newTradePartner)
+				$author$project$TradePartners$viewTradePartnerAdd(model.at)
 			]));
 };
 var $author$project$Main$view = function (model) {
@@ -10122,7 +10086,7 @@ var $author$project$Main$view = function (model) {
 			_List_Nil,
 			_List_fromArray(
 				[
-					$author$project$TradePartners$view(model.tradePartners)
+					$author$project$TradePartners$view(model.az)
 				])));
 	var viewInvoices = A2(
 		$elm$html$Html$map,
@@ -10132,14 +10096,14 @@ var $author$project$Main$view = function (model) {
 			_List_Nil,
 			_List_fromArray(
 				[
-					$author$project$Invoice$view(model.invoices)
+					$author$project$Invoice$view(model.am)
 				])));
 	var view_all = function () {
-		var _v0 = $author$project$Route$fromUrl(model.url);
-		if (_v0.$ === 'Nothing') {
+		var _v0 = $author$project$Route$fromUrl(model.ec);
+		if (_v0.$ === 1) {
 			return viewTradePartners;
 		} else {
-			if (_v0.a.$ === 'Invoices') {
+			if (_v0.a === 1) {
 				var _v1 = _v0.a;
 				return viewInvoices;
 			} else {
@@ -10149,7 +10113,7 @@ var $author$project$Main$view = function (model) {
 		}
 	}();
 	return {
-		body: _List_fromArray(
+		cx: _List_fromArray(
 			[
 				A2(
 				$rundis$elm_bootstrap$Bootstrap$Grid$containerFluid,
@@ -10160,23 +10124,23 @@ var $author$project$Main$view = function (model) {
 						A2(
 						$elm$html$Html$map,
 						$author$project$Main$NavbarMsg,
-						$author$project$Navbar$view(model.navbar)),
+						$author$project$Navbar$view(model.as)),
 						view_all
 					]))
 			]),
-		title: 'Site1'
+		dh: 'Site1'
 	};
 };
 var $author$project$Main$main = $elm$browser$Browser$application(
 	{
-		init: $author$project$Main$init,
-		onUrlChange: $author$project$Main$UrlChange,
-		onUrlRequest: $author$project$Main$UrlRequest,
-		subscriptions: function (_v0) {
+		dM: $author$project$Main$init,
+		dV: $author$project$Main$UrlChange,
+		dW: $author$project$Main$UrlRequest,
+		d7: function (_v0) {
 			return $elm$core$Platform$Sub$none;
 		},
-		update: $author$project$Main$update,
-		view: $author$project$Main$view
+		eb: $author$project$Main$update,
+		ee: $author$project$Main$view
 	});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(

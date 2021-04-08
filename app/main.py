@@ -1,6 +1,7 @@
 from typing import List
 
 from fastapi import FastAPI, Request
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.responses import HTMLResponse
@@ -14,6 +15,8 @@ from .trading_partner.routers import trading_partner_router
 from .user.routers import main_user_router
 
 app = FastAPI(title="API")
+app.add_middleware(GZipMiddleware, minimum_size=1000)
+
 app.include_router(trading_partner_router, prefix="/api")
 app.include_router(main_invoices_router, prefix="/api")
 app.include_router(main_user_router, prefix="/api")
