@@ -14,7 +14,7 @@ To regenerate frontend js use `./scripts/build_frontend.sh`
 It is currently deployed on heroku.
 Deployment requires setting following environment variables:
 - `DB_URL`
-- `JWT_TOKEN`
+- `JWT_SECRET`
 
 
 # TODO
