@@ -1,6 +1,9 @@
 name: Run tests
 on:
   pull_request:
+  push:
+    branches:
+      - master
 jobs:
   test_backend:
     runs-on: ubuntu-18.04
