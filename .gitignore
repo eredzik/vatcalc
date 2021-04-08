@@ -7,3 +7,5 @@ node_modules/
 elm-stuff/
 build/
 .env
+.coverage
+coverage.xml
