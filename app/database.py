@@ -9,9 +9,12 @@ POSTGRES_USER = os.environ.get("POSTGRES_USER")
 POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
 POSTGRES_DB = os.environ.get("POSTGRES_DB")
 
-DB_URL = "postgres://{}:{}@{}:{}/{}".format(
-    POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_SERVER, POSTGRES_PORT, POSTGRES_DB
-)
+try:
+    DB_URL = os.environ["DATABASE_URL"]
+except:
+    DB_URL = "postgres://{}:{}@{}:{}/{}".format(
+        POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_SERVER, POSTGRES_PORT, POSTGRES_DB
+    )
 # DB_URL = "sqlite://sql_app.db"
 # POSTGRES_DATABASE_URL = "postgres://postgres:password@localhost:5432/db_name"
 print(DB_URL)
