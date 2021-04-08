@@ -9,7 +9,7 @@ from tortoise.contrib.fastapi import register_tortoise
 from tortoise.contrib.pydantic import pydantic_model_creator
 from typing_extensions import TypeAlias
 
-from .database import TORTOISE_ORM
+from .database import GENERATE_SCHEMA, TORTOISE_ORM
 from .invoice.routers import main_invoices_router
 from .trading_partner.routers import trading_partner_router
 from .user.routers import main_user_router
@@ -24,7 +24,12 @@ app.include_router(main_user_router, prefix="/api")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-register_tortoise(app, config=TORTOISE_ORM, add_exception_handlers=True)
+register_tortoise(
+    app,
+    config=TORTOISE_ORM,
+    add_exception_handlers=True,
+    generate_schemas=GENERATE_SCHEMA,
+)
 
 
 @app.get("/", response_class=HTMLResponse)

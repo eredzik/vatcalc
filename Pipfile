@@ -12,9 +12,9 @@ aerich = "*"
 asyncpg = "*"
 passlib = "*"
 python-multipart = "*"
-pyjwt = "*"
+PyJWT = "*"
 aiofiles = "*"
-jinja2 = "*"
+Jinja2 = "*"
 
 [dev-packages]
 pytest = "*"
@@ -22,6 +22,8 @@ sqlalchemy-stubs = "*"
 mypy = "*"
 black = "==20.8b1"
 python-dotenv = "*"
+asynctest = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.8"

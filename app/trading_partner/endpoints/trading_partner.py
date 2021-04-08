@@ -3,13 +3,10 @@ from typing import List
 from fastapi import APIRouter
 from tortoise.contrib.pydantic import pydantic_model_creator
 
-from ..models import TradingPartner
+from ..models import TradingPartner, TradingPartnerIn
 
 tprouter = APIRouter()
 
-TradingPartnerIn_Pydantic = pydantic_model_creator(
-    TradingPartner, name="TradingPartnerIn", exclude_readonly=True
-)
 TradingPartner_Pydantic = pydantic_model_creator(TradingPartner, name="TradingPartner")
 
 
@@ -20,7 +17,7 @@ async def get_trading_partners():
 
 @tprouter.post("/", response_model=TradingPartner_Pydantic)
 async def create_trading_partner(
-    trading_partner_in: TradingPartnerIn_Pydantic,  # type: ignore
+    trading_partner_in: TradingPartnerIn,  # type: ignore
 ):
     trading_partner_obj = await TradingPartner.create(
         **trading_partner_in.dict(exclude_unset=True)  # type: ignore
