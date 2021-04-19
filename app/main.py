@@ -1,37 +1,44 @@
-from typing import List
-
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.responses import HTMLResponse
-from tortoise.contrib.fastapi import register_tortoise
-from tortoise.contrib.pydantic import pydantic_model_creator
-from typing_extensions import TypeAlias
 
-from .database import GENERATE_SCHEMA, TORTOISE_ORM
-from .invoice.routers import main_invoices_router
-from .trading_partner.routers import trading_partner_router
-from .user.routers import main_user_router
+from . import models, router
 
-app = FastAPI(title="API")
+
+async def get_index(request: Request, exc=None):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+app = FastAPI(title="API", exception_handlers={404: get_index})
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
-app.include_router(trading_partner_router, prefix="/api")
-app.include_router(main_invoices_router, prefix="/api")
-app.include_router(main_user_router, prefix="/api")
 
+@app.on_event("startup")
+async def startup():
+    await models.database.connect()
+
+
+@app.on_event("shutdown")
+async def shutdown():
+    await models.database.disconnect()
+
+
+# app.include_router(router.index_router)
+app.include_router(router.api_router)
+app.include_router(router.auth_router)
+
+
+# index_router = APIRouter()
+# Frontend section
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-register_tortoise(
-    app,
-    config=TORTOISE_ORM,
-    add_exception_handlers=True,
-    generate_schemas=GENERATE_SCHEMA,
-)
+
+app.get("/", response_class=HTMLResponse)(get_index)
 
 
 @app.get("/", response_class=HTMLResponse)
-async def get_index(request: Request):
+async def get_favicon(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
