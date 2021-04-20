@@ -31,7 +31,3 @@ type TradingPartnerMsg
     | GotPartnersList (WebData (List TradingPartner))
 
 
-type alias TradingPartnerModel =
-    { newTradePartner : TradingPartnerNew
-    , tradePartners : WebData (List TradingPartner)
-    }

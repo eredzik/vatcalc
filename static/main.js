@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region._.a7 === region.af.a7)
+	if (region.ae.a9 === region.aj.a9)
 	{
-		return 'on line ' + region._.a7;
+		return 'on line ' + region.ae.a9;
 	}
-	return 'on lines ' + region._.a7 + ' through ' + region.af.a7;
+	return 'on lines ' + region.ae.a9 + ' through ' + region.aj.a9;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a4,
+		impl.a6,
+		impl.bB,
 		impl.bx,
-		impl.bu,
 		function() { return function() {} }
 	);
 });
@@ -2704,9 +2704,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		ba: func(record.ba),
-		aa: record.aa,
-		X: record.X
+		bc: func(record.bc),
+		af: record.af,
+		ab: record.ab
 	}
 });
 
@@ -2974,11 +2974,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.ba;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.aa;
+		var message = !tag ? value : tag < 3 ? value.a : value.bc;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.af;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.X) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.ab) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a4,
+		impl.a6,
+		impl.bB,
 		impl.bx,
-		impl.bu,
 		function(sendToApp, initialModel) {
-			var view = impl.bA;
+			var view = impl.bE;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a4,
+		impl.a6,
+		impl.bB,
 		impl.bx,
-		impl.bu,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.Z && impl.Z(sendToApp)
-			var view = impl.bA;
+			var divertHrefToApp = impl.ad && impl.ad(sendToApp)
+			var view = impl.bE;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aQ);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aS);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.bv) && (_VirtualDom_doc.title = title = doc.bv);
+				(title !== doc.by) && (_VirtualDom_doc.title = title = doc.by);
 			});
 		}
 	);
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.bg;
-	var onUrlRequest = impl.bh;
+	var onUrlChange = impl.bj;
+	var onUrlRequest = impl.bk;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		Z: function(sendToApp)
+		ad: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.ax === next.ax
-							&& curr.ak === next.ak
-							&& curr.au.a === next.au.a
+							&& curr.az === next.az
+							&& curr.ao === next.ao
+							&& curr.aw.a === next.aw.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		a4: function(flags)
+		a6: function(flags)
 		{
-			return A3(impl.a4, flags, _Browser_getUrl(), key);
+			return A3(impl.a6, flags, _Browser_getUrl(), key);
 		},
-		bA: impl.bA,
-		bx: impl.bx,
-		bu: impl.bu
+		bE: impl.bE,
+		bB: impl.bB,
+		bx: impl.bx
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { a1: 'hidden', aS: 'visibilitychange' }
+		? { a3: 'hidden', aU: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { a1: 'mozHidden', aS: 'mozvisibilitychange' }
+		? { a3: 'mozHidden', aU: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { a1: 'msHidden', aS: 'msvisibilitychange' }
+		? { a3: 'msHidden', aU: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { a1: 'webkitHidden', aS: 'webkitvisibilitychange' }
-		: { a1: 'hidden', aS: 'visibilitychange' };
+		? { a3: 'webkitHidden', aU: 'webkitvisibilitychange' }
+		: { a3: 'hidden', aU: 'visibilitychange' };
 }
 
 
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		aD: _Browser_getScene(),
-		aI: {
-			aK: _Browser_window.pageXOffset,
-			aL: _Browser_window.pageYOffset,
-			aJ: _Browser_doc.documentElement.clientWidth,
-			aj: _Browser_doc.documentElement.clientHeight
+		aF: _Browser_getScene(),
+		aK: {
+			aM: _Browser_window.pageXOffset,
+			aN: _Browser_window.pageYOffset,
+			aL: _Browser_doc.documentElement.clientWidth,
+			an: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4247,8 +4247,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		aJ: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		aj: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		aL: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		an: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			aD: {
-				aJ: node.scrollWidth,
-				aj: node.scrollHeight
+			aF: {
+				aL: node.scrollWidth,
+				an: node.scrollHeight
 			},
-			aI: {
-				aK: node.scrollLeft,
-				aL: node.scrollTop,
-				aJ: node.clientWidth,
-				aj: node.clientHeight
+			aK: {
+				aM: node.scrollLeft,
+				aN: node.scrollTop,
+				aL: node.clientWidth,
+				an: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			aD: _Browser_getScene(),
-			aI: {
-				aK: x,
-				aL: y,
-				aJ: _Browser_doc.documentElement.clientWidth,
-				aj: _Browser_doc.documentElement.clientHeight
+			aF: _Browser_getScene(),
+			aK: {
+				aM: x,
+				aN: y,
+				aL: _Browser_doc.documentElement.clientWidth,
+				an: _Browser_doc.documentElement.clientHeight
 			},
-			aX: {
-				aK: x + rect.left,
-				aL: y + rect.top,
-				aJ: rect.width,
-				aj: rect.height
+			aZ: {
+				aM: x + rect.left,
+				aN: y + rect.top,
+				aL: rect.width,
+				an: rect.height
 			}
 		};
 	});
@@ -4365,25 +4365,25 @@ var _Http_toTask = F3(function(router, toTask, request)
 	return _Scheduler_binding(function(callback)
 	{
 		function done(response) {
-			callback(toTask(request.aZ.a(response)));
+			callback(toTask(request.a$.a(response)));
 		}
 
 		var xhr = new XMLHttpRequest();
 		xhr.addEventListener('error', function() { done($elm$http$Http$NetworkError_); });
 		xhr.addEventListener('timeout', function() { done($elm$http$Http$Timeout_); });
-		xhr.addEventListener('load', function() { done(_Http_toResponse(request.aZ.b, xhr)); });
-		$elm$core$Maybe$isJust(request.aH) && _Http_track(router, xhr, request.aH.a);
+		xhr.addEventListener('load', function() { done(_Http_toResponse(request.a$.b, xhr)); });
+		$elm$core$Maybe$isJust(request.aJ) && _Http_track(router, xhr, request.aJ.a);
 
 		try {
-			xhr.open(request.q, request.by, true);
+			xhr.open(request.q, request.bC, true);
 		} catch (e) {
-			return done($elm$http$Http$BadUrl_(request.by));
+			return done($elm$http$Http$BadUrl_(request.bC));
 		}
 
 		_Http_configureRequest(xhr, request);
 
-		request.aQ.a && xhr.setRequestHeader('Content-Type', request.aQ.a);
-		xhr.send(request.aQ.b);
+		request.aS.a && xhr.setRequestHeader('Content-Type', request.aS.a);
+		xhr.send(request.aS.b);
 
 		return function() { xhr.c = true; xhr.abort(); };
 	});
@@ -4399,8 +4399,8 @@ function _Http_configureRequest(xhr, request)
 		xhr.setRequestHeader(headers.a.a, headers.a.b);
 	}
 	xhr.timeout = request.h.a || 0;
-	xhr.responseType = request.aZ.d;
-	xhr.withCredentials = request.aO;
+	xhr.responseType = request.a$.d;
+	xhr.withCredentials = request.aQ;
 }
 
 
@@ -4421,9 +4421,9 @@ function _Http_toResponse(toBody, xhr)
 function _Http_toMetadata(xhr)
 {
 	return {
-		by: xhr.responseURL,
-		br: xhr.status,
-		bs: xhr.statusText,
+		bC: xhr.responseURL,
+		bu: xhr.status,
+		bv: xhr.statusText,
 		f: _Http_parseHeaders(xhr.getAllResponseHeaders())
 	};
 }
@@ -4519,15 +4519,15 @@ function _Http_track(router, xhr, tracker)
 	xhr.upload.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Sending({
-			bq: event.loaded,
-			aE: event.total
+			bt: event.loaded,
+			aG: event.total
 		}))));
 	});
 	xhr.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Receiving({
-			bm: event.loaded,
-			aE: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
+			bp: event.loaded,
+			aG: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
 		}))));
 	});
 }
@@ -4547,7 +4547,108 @@ function _Url_percentDecode(string)
 	{
 		return $elm$core$Maybe$Nothing;
 	}
-}var $author$project$Main$Types$UrlChange = function (a) {
+}
+
+// CREATE
+
+var _Regex_never = /.^/;
+
+var _Regex_fromStringWith = F2(function(options, string)
+{
+	var flags = 'g';
+	if (options.bd) { flags += 'm'; }
+	if (options.aT) { flags += 'i'; }
+
+	try
+	{
+		return $elm$core$Maybe$Just(new RegExp(string, flags));
+	}
+	catch(error)
+	{
+		return $elm$core$Maybe$Nothing;
+	}
+});
+
+
+// USE
+
+var _Regex_contains = F2(function(re, string)
+{
+	return string.match(re) !== null;
+});
+
+
+var _Regex_findAtMost = F3(function(n, re, str)
+{
+	var out = [];
+	var number = 0;
+	var string = str;
+	var lastIndex = re.lastIndex;
+	var prevLastIndex = -1;
+	var result;
+	while (number++ < n && (result = re.exec(string)))
+	{
+		if (prevLastIndex == re.lastIndex) break;
+		var i = result.length - 1;
+		var subs = new Array(i);
+		while (i > 0)
+		{
+			var submatch = result[i];
+			subs[--i] = submatch
+				? $elm$core$Maybe$Just(submatch)
+				: $elm$core$Maybe$Nothing;
+		}
+		out.push(A4($elm$regex$Regex$Match, result[0], result.index, number, _List_fromArray(subs)));
+		prevLastIndex = re.lastIndex;
+	}
+	re.lastIndex = lastIndex;
+	return _List_fromArray(out);
+});
+
+
+var _Regex_replaceAtMost = F4(function(n, re, replacer, string)
+{
+	var count = 0;
+	function jsReplacer(match)
+	{
+		if (count++ >= n)
+		{
+			return match;
+		}
+		var i = arguments.length - 3;
+		var submatches = new Array(i);
+		while (i > 0)
+		{
+			var submatch = arguments[i];
+			submatches[--i] = submatch
+				? $elm$core$Maybe$Just(submatch)
+				: $elm$core$Maybe$Nothing;
+		}
+		return replacer(A4($elm$regex$Regex$Match, match, arguments[arguments.length - 2], count, _List_fromArray(submatches)));
+	}
+	return string.replace(re, jsReplacer);
+});
+
+var _Regex_splitAtMost = F3(function(n, re, str)
+{
+	var string = str;
+	var out = [];
+	var start = re.lastIndex;
+	var restoreLastIndex = re.lastIndex;
+	while (n--)
+	{
+		var result = re.exec(string);
+		if (!result) break;
+		out.push(string.slice(start, result.index));
+		start = re.lastIndex;
+	}
+	out.push(string.slice(start));
+	re.lastIndex = restoreLastIndex;
+	return _List_fromArray(out);
+});
+
+var _Regex_infinity = Infinity;
+var $author$project$Main$Types$UrlChange = function (a) {
 	return {$: 1, a: a};
 };
 var $author$project$Main$Types$UrlRequest = function (a) {
@@ -5057,7 +5158,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {ai: fragment, ak: host, as: path, au: port_, ax: protocol, ay: query};
+		return {am: fragment, ao: host, au: path, aw: port_, az: protocol, aA: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5339,6 +5440,7 @@ var $elm$browser$Browser$application = _Browser_application;
 var $author$project$Main$Types$InvoiceMsg = function (a) {
 	return {$: 3, a: a};
 };
+var $krisajenkins$remotedata$RemoteData$Loading = {$: 1};
 var $author$project$Main$Types$TradingPartnerMsg = function (a) {
 	return {$: 2, a: a};
 };
@@ -5937,7 +6039,7 @@ var $elm$http$Http$resolve = F2(
 			case 3:
 				var metadata = response.a;
 				return $elm$core$Result$Err(
-					$elm$http$Http$BadStatus(metadata.br));
+					$elm$http$Http$BadStatus(metadata.bu));
 			default:
 				var body = response.b;
 				return A2(
@@ -5980,7 +6082,7 @@ var $elm$http$Http$Request = function (a) {
 };
 var $elm$http$Http$State = F2(
 	function (reqs, subs) {
-		return {aA: reqs, aF: subs};
+		return {aC: reqs, aH: subs};
 	});
 var $elm$http$Http$init = $elm$core$Task$succeed(
 	A2($elm$http$Http$State, $elm$core$Dict$empty, _List_Nil));
@@ -6024,7 +6126,7 @@ var $elm$http$Http$updateReqs = F3(
 					return A2(
 						$elm$core$Task$andThen,
 						function (pid) {
-							var _v4 = req.aH;
+							var _v4 = req.aJ;
 							if (_v4.$ === 1) {
 								return A3($elm$http$Http$updateReqs, router, otherCmds, reqs);
 							} else {
@@ -6054,7 +6156,7 @@ var $elm$http$Http$onEffects = F4(
 				return $elm$core$Task$succeed(
 					A2($elm$http$Http$State, reqs, subs));
 			},
-			A3($elm$http$Http$updateReqs, router, cmds, state.aA));
+			A3($elm$http$Http$updateReqs, router, cmds, state.aC));
 	});
 var $elm$core$List$maybeCons = F3(
 	function (f, mx, xs) {
@@ -6097,7 +6199,7 @@ var $elm$http$Http$onSelfMsg = F3(
 				A2(
 					$elm$core$List$filterMap,
 					A3($elm$http$Http$maybeSend, router, tracker, progress),
-					state.aF)));
+					state.aH)));
 	});
 var $elm$http$Http$Cancel = function (a) {
 	return {$: 0, a: a};
@@ -6111,14 +6213,14 @@ var $elm$http$Http$cmdMap = F2(
 			var r = cmd.a;
 			return $elm$http$Http$Request(
 				{
-					aO: r.aO,
 					aQ: r.aQ,
-					aZ: A2(_Http_mapExpect, func, r.aZ),
+					aS: r.aS,
+					a$: A2(_Http_mapExpect, func, r.a$),
 					f: r.f,
 					q: r.q,
 					h: r.h,
-					aH: r.aH,
-					by: r.by
+					aJ: r.aJ,
+					bC: r.bC
 				});
 		}
 	});
@@ -6141,15 +6243,15 @@ var $elm$http$Http$subscription = _Platform_leaf('Http');
 var $elm$http$Http$request = function (r) {
 	return $elm$http$Http$command(
 		$elm$http$Http$Request(
-			{aO: false, aQ: r.aQ, aZ: r.aZ, f: r.f, q: r.q, h: r.h, aH: r.aH, by: r.by}));
+			{aQ: false, aS: r.aS, a$: r.a$, f: r.f, q: r.q, h: r.h, aJ: r.aJ, bC: r.bC}));
 };
 var $elm$http$Http$get = function (r) {
 	return $elm$http$Http$request(
-		{aQ: $elm$http$Http$emptyBody, aZ: r.aZ, f: _List_Nil, q: 'GET', h: $elm$core$Maybe$Nothing, aH: $elm$core$Maybe$Nothing, by: r.by});
+		{aS: $elm$http$Http$emptyBody, a$: r.a$, f: _List_Nil, q: 'GET', h: $elm$core$Maybe$Nothing, aJ: $elm$core$Maybe$Nothing, bC: r.bC});
 };
 var $author$project$Invoice$Types$Invoice = F6(
 	function (id, invoiceId, date, invoiceType, positions, partner) {
-		return {aU: date, am: id, a5: invoiceId, a6: invoiceType, bj: partner, bk: positions};
+		return {aW: date, aq: id, a7: invoiceId, a8: invoiceType, bm: partner, bn: positions};
 	});
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $elm$json$Json$Decode$at = F2(
@@ -6180,7 +6282,7 @@ var $elm$json$Json$Decode$list = _Json_decodeList;
 var $elm$json$Json$Decode$map6 = _Json_map6;
 var $author$project$TradingPartner$Types$TradingPartner = F4(
 	function (id, nipNumber, name, adress) {
-		return {aN: adress, am: id, bc: name, bd: nipNumber};
+		return {aP: adress, aq: id, be: name, bg: nipNumber};
 	});
 var $elm$json$Json$Decode$map4 = _Json_map4;
 var $author$project$TradingPartner$API$partnerDecoder = A5(
@@ -6208,7 +6310,7 @@ var $author$project$TradingPartner$API$partnerDecoder = A5(
 		$elm$json$Json$Decode$string));
 var $author$project$Invoice$Types$InvoicePosition = F5(
 	function (id, name, vatRate, numItems, priceNet) {
-		return {am: id, bc: name, be: numItems, bl: priceNet, bz: vatRate};
+		return {aq: id, be: name, bh: numItems, bo: priceNet, bD: vatRate};
 	});
 var $elm$json$Json$Decode$float = _Json_decodeFloat;
 var $elm$json$Json$Decode$map5 = _Json_map5;
@@ -6276,11 +6378,11 @@ var $author$project$Invoice$API$invoiceDecoder = A7(
 var $author$project$Invoice$API$invoicesDecoder = $elm$json$Json$Decode$list($author$project$Invoice$API$invoiceDecoder);
 var $author$project$Invoice$API$fetchAllInvoices = $elm$http$Http$get(
 	{
-		aZ: A2(
+		a$: A2(
 			$elm$http$Http$expectJson,
 			A2($elm$core$Basics$composeR, $krisajenkins$remotedata$RemoteData$fromResult, $elm$core$Basics$identity),
 			$author$project$Invoice$API$invoicesDecoder),
-		by: '/api/invoice'
+		bC: '/api/invoice'
 	});
 var $author$project$TradingPartner$Types$GotPartnersList = function (a) {
 	return {$: 3, a: a};
@@ -6288,221 +6390,16 @@ var $author$project$TradingPartner$Types$GotPartnersList = function (a) {
 var $author$project$TradingPartner$API$partnersDecoder = $elm$json$Json$Decode$list($author$project$TradingPartner$API$partnerDecoder);
 var $author$project$TradingPartner$API$fetchAllPartners = $elm$http$Http$get(
 	{
-		aZ: A2(
+		a$: A2(
 			$elm$http$Http$expectJson,
 			A2($elm$core$Basics$composeR, $krisajenkins$remotedata$RemoteData$fromResult, $author$project$TradingPartner$Types$GotPartnersList),
 			$author$project$TradingPartner$API$partnersDecoder),
-		by: '/api/tradingpartner'
+		bC: '/api/tradingpartner'
 	});
-var $krisajenkins$remotedata$RemoteData$Loading = {$: 1};
-var $author$project$Invoice$Functions$init = {Q: $krisajenkins$remotedata$RemoteData$Loading};
-var $author$project$TradingPartner$Functions$init = {
-	V: {aN: '', bc: '', bd: ''},
-	ab: $krisajenkins$remotedata$RemoteData$Loading
-};
-var $elm$core$Platform$Cmd$map = _Platform_map;
-var $author$project$Main$Functions$init = F3(
-	function (_v0, url, key) {
-		return _Utils_Tuple2(
-			{T: $author$project$Invoice$Functions$init, an: key, ap: 1, P: $author$project$TradingPartner$Functions$init, by: url},
-			$elm$core$Platform$Cmd$batch(
-				_List_fromArray(
-					[
-						A2($elm$core$Platform$Cmd$map, $author$project$Main$Types$TradingPartnerMsg, $author$project$TradingPartner$API$fetchAllPartners),
-						A2($elm$core$Platform$Cmd$map, $author$project$Main$Types$InvoiceMsg, $author$project$Invoice$API$fetchAllInvoices)
-					])));
-	});
-var $elm$core$Platform$Sub$batch = _Platform_batch;
-var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
-var $elm$browser$Browser$Navigation$load = _Browser_load;
-var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
-var $elm$browser$Browser$Navigation$pushUrl = _Browser_pushUrl;
-var $elm$url$Url$addPort = F2(
-	function (maybePort, starter) {
-		if (maybePort.$ === 1) {
-			return starter;
-		} else {
-			var port_ = maybePort.a;
-			return starter + (':' + $elm$core$String$fromInt(port_));
-		}
-	});
-var $elm$url$Url$addPrefixed = F3(
-	function (prefix, maybeSegment, starter) {
-		if (maybeSegment.$ === 1) {
-			return starter;
-		} else {
-			var segment = maybeSegment.a;
-			return _Utils_ap(
-				starter,
-				_Utils_ap(prefix, segment));
-		}
-	});
-var $elm$url$Url$toString = function (url) {
-	var http = function () {
-		var _v0 = url.ax;
-		if (!_v0) {
-			return 'http://';
-		} else {
-			return 'https://';
-		}
-	}();
-	return A3(
-		$elm$url$Url$addPrefixed,
-		'#',
-		url.ai,
-		A3(
-			$elm$url$Url$addPrefixed,
-			'?',
-			url.ay,
-			_Utils_ap(
-				A2(
-					$elm$url$Url$addPort,
-					url.au,
-					_Utils_ap(http, url.ak)),
-				url.as)));
-};
-var $author$project$Invoice$Functions$update = F2(
-	function (msg, model) {
-		var response = msg;
-		return _Utils_Tuple2(
-			_Utils_update(
-				model,
-				{Q: response}),
-			$elm$core$Platform$Cmd$none);
-	});
-var $author$project$TradingPartner$Types$GotNewPartnerResult = function (a) {
-	return {$: 2, a: a};
-};
-var $elm$http$Http$jsonBody = function (value) {
-	return A2(
-		_Http_pair,
-		'application/json',
-		A2($elm$json$Json$Encode$encode, 0, value));
-};
-var $elm$json$Json$Encode$object = function (pairs) {
-	return _Json_wrap(
-		A3(
-			$elm$core$List$foldl,
-			F2(
-				function (_v0, obj) {
-					var k = _v0.a;
-					var v = _v0.b;
-					return A3(_Json_addField, k, v, obj);
-				}),
-			_Json_emptyObject(0),
-			pairs));
-};
-var $elm$http$Http$post = function (r) {
-	return $elm$http$Http$request(
-		{aQ: r.aQ, aZ: r.aZ, f: _List_Nil, q: 'POST', h: $elm$core$Maybe$Nothing, aH: $elm$core$Maybe$Nothing, by: r.by});
-};
-var $elm$json$Json$Encode$string = _Json_wrap;
-var $author$project$TradingPartner$API$addNewPartner = function (partner_data) {
-	var body = $elm$json$Json$Encode$object(
-		_List_fromArray(
-			[
-				_Utils_Tuple2(
-				'name',
-				$elm$json$Json$Encode$string(partner_data.bc)),
-				_Utils_Tuple2(
-				'nip_number',
-				$elm$json$Json$Encode$string(partner_data.bc)),
-				_Utils_Tuple2(
-				'adress',
-				$elm$json$Json$Encode$string(partner_data.aN))
-			]));
-	return $elm$http$Http$post(
-		{
-			aQ: $elm$http$Http$jsonBody(body),
-			aZ: A2(
-				$elm$http$Http$expectJson,
-				A2($elm$core$Basics$composeR, $krisajenkins$remotedata$RemoteData$fromResult, $author$project$TradingPartner$Types$GotNewPartnerResult),
-				$author$project$TradingPartner$API$partnerDecoder),
-			by: '/api/tradingpartner'
-		});
-};
-var $author$project$TradingPartner$Functions$update = F2(
-	function (msg, model) {
-		switch (msg.$) {
-			case 3:
-				var response = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{ab: response}),
-					$elm$core$Platform$Cmd$none);
-			case 0:
-				return _Utils_Tuple2(
-					model,
-					$author$project$TradingPartner$API$addNewPartner(model.V));
-			case 1:
-				var partnerData = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{V: partnerData}),
-					$elm$core$Platform$Cmd$none);
-			default:
-				return _Utils_Tuple2(model, $author$project$TradingPartner$API$fetchAllPartners);
-		}
-	});
-var $author$project$Main$Functions$update = F2(
-	function (msg, model) {
-		switch (msg.$) {
-			case 0:
-				var urlRequest = msg.a;
-				if (!urlRequest.$) {
-					var url = urlRequest.a;
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{by: url}),
-						A2(
-							$elm$browser$Browser$Navigation$pushUrl,
-							model.an,
-							$elm$url$Url$toString(url)));
-				} else {
-					var url = urlRequest.a;
-					return _Utils_Tuple2(
-						model,
-						$elm$browser$Browser$Navigation$load(url));
-				}
-			case 1:
-				var url = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{by: url}),
-					$elm$core$Platform$Cmd$none);
-			case 2:
-				var tradepartnermsg = msg.a;
-				var _v2 = A2($author$project$TradingPartner$Functions$update, tradepartnermsg, model.P);
-				var tradepartnermodel = _v2.a;
-				var cmd = _v2.b;
-				var outmsg = A2($elm$core$Platform$Cmd$map, $author$project$Main$Types$TradingPartnerMsg, cmd);
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{P: tradepartnermodel}),
-					outmsg);
-			default:
-				var subMsg = msg.a;
-				var _v3 = A2($author$project$Invoice$Functions$update, subMsg, model.T);
-				var outmodel = _v3.a;
-				var cmd = _v3.b;
-				var outmsg = A2($elm$core$Platform$Cmd$map, $author$project$Main$Types$InvoiceMsg, cmd);
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{T: outmodel}),
-					outmsg);
-		}
-	});
-var $elm$html$Html$div = _VirtualDom_node('div');
 var $author$project$Route$Index = 0;
 var $elm$url$Url$Parser$State = F5(
 	function (visited, unvisited, params, frag, value) {
-		return {t: frag, u: params, s: unvisited, o: value, y: visited};
+		return {t: frag, v: params, s: unvisited, o: value, z: visited};
 	});
 var $elm$url$Url$Parser$getFirstMatch = function (states) {
 	getFirstMatch:
@@ -6614,21 +6511,22 @@ var $elm$url$Url$Parser$parse = F2(
 				A5(
 					$elm$url$Url$Parser$State,
 					_List_Nil,
-					$elm$url$Url$Parser$preparePath(url.as),
-					$elm$url$Url$Parser$prepareQuery(url.ay),
-					url.ai,
+					$elm$url$Url$Parser$preparePath(url.au),
+					$elm$url$Url$Parser$prepareQuery(url.aA),
+					url.am,
 					$elm$core$Basics$identity)));
 	});
 var $author$project$Route$Invoices = 2;
 var $author$project$Route$LogIn = 3;
 var $author$project$Route$LogOut = 4;
+var $author$project$Route$Register = 5;
 var $author$project$Route$TradePartner = 1;
 var $elm$url$Url$Parser$Parser = $elm$core$Basics$identity;
 var $elm$url$Url$Parser$mapState = F2(
 	function (func, _v0) {
-		var visited = _v0.y;
+		var visited = _v0.z;
 		var unvisited = _v0.s;
-		var params = _v0.u;
+		var params = _v0.v;
 		var frag = _v0.t;
 		var value = _v0.o;
 		return A5(
@@ -6643,9 +6541,9 @@ var $elm$url$Url$Parser$map = F2(
 	function (subValue, _v0) {
 		var parseArg = _v0;
 		return function (_v1) {
-			var visited = _v1.y;
+			var visited = _v1.z;
 			var unvisited = _v1.s;
-			var params = _v1.u;
+			var params = _v1.v;
 			var frag = _v1.t;
 			var value = _v1.o;
 			return A2(
@@ -6684,9 +6582,9 @@ var $elm$url$Url$Parser$oneOf = function (parsers) {
 };
 var $elm$url$Url$Parser$s = function (str) {
 	return function (_v0) {
-		var visited = _v0.y;
+		var visited = _v0.z;
 		var unvisited = _v0.s;
-		var params = _v0.u;
+		var params = _v0.v;
 		var frag = _v0.t;
 		var value = _v0.o;
 		if (!unvisited.b) {
@@ -6730,7 +6628,11 @@ var $author$project$Route$parser = $elm$url$Url$Parser$oneOf(
 			A2(
 			$elm$url$Url$Parser$map,
 			4,
-			$elm$url$Url$Parser$s('logout'))
+			$elm$url$Url$Parser$s('logout')),
+			A2(
+			$elm$url$Url$Parser$map,
+			5,
+			$elm$url$Url$Parser$s('register'))
 		]));
 var $elm$core$Maybe$withDefault = F2(
 	function (_default, maybe) {
@@ -6747,6 +6649,398 @@ var $author$project$Route$fromUrl = function (url) {
 		0,
 		A2($elm$url$Url$Parser$parse, $author$project$Route$parser, url));
 };
+var $author$project$Invoice$Functions$init = {R: $krisajenkins$remotedata$RemoteData$Loading};
+var $elm$core$Platform$Cmd$map = _Platform_map;
+var $author$project$Main$Functions$init = F3(
+	function (_v0, url, key) {
+		return _Utils_Tuple2(
+			{
+				T: $author$project$Invoice$Functions$init,
+				Z: key,
+				u: {L: '', V: ''},
+				U: 1,
+				W: $author$project$Route$fromUrl(url),
+				O: {
+					bf: {aP: '', be: '', bg: ''},
+					bz: $krisajenkins$remotedata$RemoteData$Loading
+				}
+			},
+			$elm$core$Platform$Cmd$batch(
+				_List_fromArray(
+					[
+						A2($elm$core$Platform$Cmd$map, $author$project$Main$Types$TradingPartnerMsg, $author$project$TradingPartner$API$fetchAllPartners),
+						A2($elm$core$Platform$Cmd$map, $author$project$Main$Types$InvoiceMsg, $author$project$Invoice$API$fetchAllInvoices)
+					])));
+	});
+var $elm$core$Platform$Sub$batch = _Platform_batch;
+var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
+var $elm$browser$Browser$Navigation$load = _Browser_load;
+var $author$project$Main$Functions$Email = 0;
+var $author$project$Main$Functions$Password = 1;
+var $rtfeldman$elm_validate$Validate$Validator = $elm$core$Basics$identity;
+var $rtfeldman$elm_validate$Validate$firstErrorHelp = F2(
+	function (validators, subject) {
+		firstErrorHelp:
+		while (true) {
+			if (!validators.b) {
+				return _List_Nil;
+			} else {
+				var getErrors = validators.a;
+				var rest = validators.b;
+				var _v1 = getErrors(subject);
+				if (!_v1.b) {
+					var $temp$validators = rest,
+						$temp$subject = subject;
+					validators = $temp$validators;
+					subject = $temp$subject;
+					continue firstErrorHelp;
+				} else {
+					var errors = _v1;
+					return errors;
+				}
+			}
+		}
+	});
+var $rtfeldman$elm_validate$Validate$firstError = function (validators) {
+	var getErrors = function (subject) {
+		return A2($rtfeldman$elm_validate$Validate$firstErrorHelp, validators, subject);
+	};
+	return getErrors;
+};
+var $rtfeldman$elm_validate$Validate$ifTrue = F2(
+	function (test, error) {
+		var getErrors = function (subject) {
+			return test(subject) ? _List_fromArray(
+				[error]) : _List_Nil;
+		};
+		return getErrors;
+	});
+var $rtfeldman$elm_validate$Validate$isWhitespaceChar = function (_char) {
+	return (_char === ' ') || ((_char === '\n') || ((_char === '\t') || (_char === '\u000D')));
+};
+var $rtfeldman$elm_validate$Validate$isBlank = function (str) {
+	isBlank:
+	while (true) {
+		var _v0 = $elm$core$String$uncons(str);
+		if (!_v0.$) {
+			var _v1 = _v0.a;
+			var _char = _v1.a;
+			var rest = _v1.b;
+			if ($rtfeldman$elm_validate$Validate$isWhitespaceChar(_char)) {
+				var $temp$str = rest;
+				str = $temp$str;
+				continue isBlank;
+			} else {
+				return false;
+			}
+		} else {
+			return true;
+		}
+	}
+};
+var $rtfeldman$elm_validate$Validate$ifBlank = F2(
+	function (subjectToString, error) {
+		return A2(
+			$rtfeldman$elm_validate$Validate$ifTrue,
+			function (subject) {
+				return $rtfeldman$elm_validate$Validate$isBlank(
+					subjectToString(subject));
+			},
+			error);
+	});
+var $elm$regex$Regex$Match = F4(
+	function (match, index, number, submatches) {
+		return {a5: index, bb: match, bi: number, bw: submatches};
+	});
+var $elm$regex$Regex$contains = _Regex_contains;
+var $elm$regex$Regex$fromStringWith = _Regex_fromStringWith;
+var $elm$regex$Regex$never = _Regex_never;
+var $rtfeldman$elm_validate$Validate$validEmail = A2(
+	$elm$core$Maybe$withDefault,
+	$elm$regex$Regex$never,
+	A2(
+		$elm$regex$Regex$fromStringWith,
+		{aT: true, bd: false},
+		'^[a-zA-Z0-9.!#$%&\'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$'));
+var $rtfeldman$elm_validate$Validate$isValidEmail = function (email) {
+	return A2($elm$regex$Regex$contains, $rtfeldman$elm_validate$Validate$validEmail, email);
+};
+var $rtfeldman$elm_validate$Validate$ifInvalidEmail = F2(
+	function (subjectToEmail, errorFromEmail) {
+		var getErrors = function (subject) {
+			var email = subjectToEmail(subject);
+			return $rtfeldman$elm_validate$Validate$isValidEmail(email) ? _List_Nil : _List_fromArray(
+				[
+					errorFromEmail(email)
+				]);
+		};
+		return getErrors;
+	});
+var $author$project$Main$Functions$logInValidator = $rtfeldman$elm_validate$Validate$firstError(
+	_List_fromArray(
+		[
+			A2(
+			$rtfeldman$elm_validate$Validate$ifBlank,
+			function ($) {
+				return $.V;
+			},
+			_Utils_Tuple2(1, 'Proszę wpisać hasło.')),
+			A2(
+			$rtfeldman$elm_validate$Validate$ifBlank,
+			function ($) {
+				return $.L;
+			},
+			_Utils_Tuple2(0, 'Proszę wpisać email')),
+			A2(
+			$rtfeldman$elm_validate$Validate$ifInvalidEmail,
+			function ($) {
+				return $.L;
+			},
+			function (_v0) {
+				return _Utils_Tuple2(0, 'Proszę wpisać poprawny email');
+			})
+		]));
+var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
+var $elm$browser$Browser$Navigation$pushUrl = _Browser_pushUrl;
+var $elm$url$Url$addPort = F2(
+	function (maybePort, starter) {
+		if (maybePort.$ === 1) {
+			return starter;
+		} else {
+			var port_ = maybePort.a;
+			return starter + (':' + $elm$core$String$fromInt(port_));
+		}
+	});
+var $elm$url$Url$addPrefixed = F3(
+	function (prefix, maybeSegment, starter) {
+		if (maybeSegment.$ === 1) {
+			return starter;
+		} else {
+			var segment = maybeSegment.a;
+			return _Utils_ap(
+				starter,
+				_Utils_ap(prefix, segment));
+		}
+	});
+var $elm$url$Url$toString = function (url) {
+	var http = function () {
+		var _v0 = url.az;
+		if (!_v0) {
+			return 'http://';
+		} else {
+			return 'https://';
+		}
+	}();
+	return A3(
+		$elm$url$Url$addPrefixed,
+		'#',
+		url.am,
+		A3(
+			$elm$url$Url$addPrefixed,
+			'?',
+			url.aA,
+			_Utils_ap(
+				A2(
+					$elm$url$Url$addPort,
+					url.aw,
+					_Utils_ap(http, url.ao)),
+				url.au)));
+};
+var $author$project$Invoice$Functions$update = F2(
+	function (msg, model) {
+		var response = msg;
+		return _Utils_Tuple2(
+			_Utils_update(
+				model,
+				{R: response}),
+			$elm$core$Platform$Cmd$none);
+	});
+var $author$project$TradingPartner$Types$GotNewPartnerResult = function (a) {
+	return {$: 2, a: a};
+};
+var $elm$http$Http$jsonBody = function (value) {
+	return A2(
+		_Http_pair,
+		'application/json',
+		A2($elm$json$Json$Encode$encode, 0, value));
+};
+var $elm$json$Json$Encode$object = function (pairs) {
+	return _Json_wrap(
+		A3(
+			$elm$core$List$foldl,
+			F2(
+				function (_v0, obj) {
+					var k = _v0.a;
+					var v = _v0.b;
+					return A3(_Json_addField, k, v, obj);
+				}),
+			_Json_emptyObject(0),
+			pairs));
+};
+var $elm$http$Http$post = function (r) {
+	return $elm$http$Http$request(
+		{aS: r.aS, a$: r.a$, f: _List_Nil, q: 'POST', h: $elm$core$Maybe$Nothing, aJ: $elm$core$Maybe$Nothing, bC: r.bC});
+};
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $author$project$TradingPartner$API$addNewPartner = function (partner_data) {
+	var body = $elm$json$Json$Encode$object(
+		_List_fromArray(
+			[
+				_Utils_Tuple2(
+				'name',
+				$elm$json$Json$Encode$string(partner_data.be)),
+				_Utils_Tuple2(
+				'nip_number',
+				$elm$json$Json$Encode$string(partner_data.be)),
+				_Utils_Tuple2(
+				'adress',
+				$elm$json$Json$Encode$string(partner_data.aP))
+			]));
+	return $elm$http$Http$post(
+		{
+			aS: $elm$http$Http$jsonBody(body),
+			a$: A2(
+				$elm$http$Http$expectJson,
+				A2($elm$core$Basics$composeR, $krisajenkins$remotedata$RemoteData$fromResult, $author$project$TradingPartner$Types$GotNewPartnerResult),
+				$author$project$TradingPartner$API$partnerDecoder),
+			bC: '/api/tradingpartner'
+		});
+};
+var $author$project$TradingPartner$Functions$update = F2(
+	function (msg, model) {
+		switch (msg.$) {
+			case 3:
+				var response = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{bz: response}),
+					$elm$core$Platform$Cmd$none);
+			case 0:
+				return _Utils_Tuple2(
+					model,
+					$author$project$TradingPartner$API$addNewPartner(model.bf));
+			case 1:
+				var partnerData = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{bf: partnerData}),
+					$elm$core$Platform$Cmd$none);
+			default:
+				return _Utils_Tuple2(model, $author$project$TradingPartner$API$fetchAllPartners);
+		}
+	});
+var $rtfeldman$elm_validate$Validate$Valid = $elm$core$Basics$identity;
+var $rtfeldman$elm_validate$Validate$validate = F2(
+	function (_v0, subject) {
+		var getErrors = _v0;
+		var _v1 = getErrors(subject);
+		if (!_v1.b) {
+			return $elm$core$Result$Ok(subject);
+		} else {
+			var errors = _v1;
+			return $elm$core$Result$Err(errors);
+		}
+	});
+var $author$project$Main$Functions$update = F2(
+	function (msg, model) {
+		switch (msg.$) {
+			case 0:
+				var urlRequest = msg.a;
+				if (!urlRequest.$) {
+					var url = urlRequest.a;
+					return _Utils_Tuple2(
+						model,
+						A2(
+							$elm$browser$Browser$Navigation$pushUrl,
+							model.Z,
+							$elm$url$Url$toString(url)));
+				} else {
+					var url = urlRequest.a;
+					return _Utils_Tuple2(
+						model,
+						$elm$browser$Browser$Navigation$load(url));
+				}
+			case 1:
+				var url = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							W: $author$project$Route$fromUrl(url)
+						}),
+					$elm$core$Platform$Cmd$none);
+			case 2:
+				var tradepartnermsg = msg.a;
+				var _v2 = A2($author$project$TradingPartner$Functions$update, tradepartnermsg, model.O);
+				var tradepartnermodel = _v2.a;
+				var cmd = _v2.b;
+				var outmsg = A2($elm$core$Platform$Cmd$map, $author$project$Main$Types$TradingPartnerMsg, cmd);
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{O: tradepartnermodel}),
+					outmsg);
+			case 3:
+				var subMsg = msg.a;
+				var _v3 = A2($author$project$Invoice$Functions$update, subMsg, model.T);
+				var outmodel = _v3.a;
+				var cmd = _v3.b;
+				var outmsg = A2($elm$core$Platform$Cmd$map, $author$project$Main$Types$InvoiceMsg, cmd);
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{T: outmodel}),
+					outmsg);
+			default:
+				var msginner = msg.a;
+				switch (msginner.$) {
+					case 0:
+						var value = msginner.a;
+						var logform = model.u;
+						var new_logform = _Utils_update(
+							logform,
+							{L: value});
+						return _Utils_Tuple2(
+							_Utils_update(
+								model,
+								{u: new_logform}),
+							$elm$core$Platform$Cmd$none);
+					case 1:
+						var value = msginner.a;
+						var logform = model.u;
+						var new_logform = _Utils_update(
+							logform,
+							{V: value});
+						return _Utils_Tuple2(
+							_Utils_update(
+								model,
+								{u: new_logform}),
+							$elm$core$Platform$Cmd$none);
+					default:
+						var validation_result = A2($rtfeldman$elm_validate$Validate$validate, $author$project$Main$Functions$logInValidator, model.u);
+						if (!validation_result.$) {
+							return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+						} else {
+							return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+						}
+				}
+		}
+	});
+var $author$project$Main$Types$EmailUpdate = function (a) {
+	return {$: 0, a: a};
+};
+var $author$project$Main$Types$Form = function (a) {
+	return {$: 4, a: a};
+};
+var $author$project$Main$Types$PasswordUpdate = function (a) {
+	return {$: 1, a: a};
+};
+var $author$project$Main$Types$SubmitForm = {$: 2};
+var $elm$html$Html$button = _VirtualDom_node('button');
+var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$html$Html$form = _VirtualDom_node('form');
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
 		return A2(
@@ -6754,12 +7048,71 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			key,
 			$elm$json$Json$Encode$string(string));
 	});
+var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
+var $elm$html$Html$input = _VirtualDom_node('input');
+var $elm$html$Html$label = _VirtualDom_node('label');
+var $elm$html$Html$Events$alwaysStop = function (x) {
+	return _Utils_Tuple2(x, true);
+};
+var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
+	return {$: 1, a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $elm$html$Html$Events$stopPropagationOn = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
+	});
+var $elm$html$Html$Events$targetValue = A2(
+	$elm$json$Json$Decode$at,
+	_List_fromArray(
+		['target', 'value']),
+	$elm$json$Json$Decode$string);
+var $elm$html$Html$Events$onInput = function (tagger) {
+	return A2(
+		$elm$html$Html$Events$stopPropagationOn,
+		'input',
+		A2(
+			$elm$json$Json$Decode$map,
+			$elm$html$Html$Events$alwaysStop,
+			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
+};
+var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
+var $author$project$Main$Functions$formField = F4(
+	function (m, name, t, p) {
+		return A2(
+			$elm$html$Html$label,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('form-label')
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text(name),
+					A2(
+					$elm$html$Html$input,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$type_(t),
+							$elm$html$Html$Attributes$placeholder(p),
+							$elm$html$Html$Events$onInput(m)
+						]),
+					_List_Nil)
+				]));
+	});
+var $elm$html$Html$a = _VirtualDom_node('a');
 var $elm$html$Html$Attributes$href = function (url) {
 	return A2(
 		$elm$html$Html$Attributes$stringProperty,
 		'href',
 		_VirtualDom_noJavaScriptUri(url));
 };
+var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$html$Html$img = _VirtualDom_node('img');
 var $elm$html$Html$li = _VirtualDom_node('li');
 var $author$project$Route$routeToString = function (page) {
@@ -6772,8 +7125,10 @@ var $author$project$Route$routeToString = function (page) {
 			return 'invoices';
 		case 3:
 			return 'login';
-		default:
+		case 4:
 			return 'logout';
+		default:
+			return 'register';
 	}
 };
 var $elm$html$Html$Attributes$src = function (url) {
@@ -6782,86 +7137,110 @@ var $elm$html$Html$Attributes$src = function (url) {
 		'src',
 		_VirtualDom_noJavaScriptOrHtmlUri(url));
 };
-var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $elm$html$Html$ul = _VirtualDom_node('ul');
 var $author$project$Main$Functions$header = function (model) {
-	var log_button = function () {
-		var _v0 = model.ap;
+	var log_buttons = function () {
+		var _v0 = model.U;
 		if (!_v0) {
-			return A2(
-				$elm$html$Html$li,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$href(
-						$author$project$Route$routeToString(4))
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Wyloguj')
-					]));
-		} else {
-			return A2(
-				$elm$html$Html$li,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$href(
-						$author$project$Route$routeToString(3))
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Zaloguj')
-					]));
-		}
-	}();
-	return _List_fromArray(
-		[
-			A2(
-			$elm$html$Html$li,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$href(
-					$author$project$Route$routeToString(0))
-				]),
-			_List_fromArray(
+			return _List_fromArray(
 				[
 					A2(
-					$elm$html$Html$img,
+					$elm$html$Html$a,
 					_List_fromArray(
 						[
-							$elm$html$Html$Attributes$src('static/favicon-32x32.png')
+							$elm$html$Html$Attributes$href(
+							$author$project$Route$routeToString(4))
 						]),
 					_List_fromArray(
 						[
-							$elm$html$Html$text('somedescription')
+							$elm$html$Html$text('Wyloguj')
 						]))
-				])),
-			A2(
-			$elm$html$Html$li,
-			_List_fromArray(
+				]);
+		} else {
+			return _List_fromArray(
 				[
-					$elm$html$Html$Attributes$href(
-					$author$project$Route$routeToString(2))
-				]),
-			_List_fromArray(
-				[
-					$elm$html$Html$text('Faktury')
-				])),
-			A2(
-			$elm$html$Html$li,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$href(
-					$author$project$Route$routeToString(1))
-				]),
-			_List_fromArray(
-				[
-					$elm$html$Html$text('Kontrahenci')
-				])),
-			log_button
-		]);
+					A2(
+					$elm$html$Html$a,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$href(
+							$author$project$Route$routeToString(3))
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Zaloguj')
+						])),
+					A2(
+					$elm$html$Html$a,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$href(
+							$author$project$Route$routeToString(5))
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Zarejestruj się')
+						]))
+				]);
+		}
+	}();
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('navigation-bar')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$id('navigation-container')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$img,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$src('static/android-chrome-192x192.png'),
+								$elm$html$Html$Attributes$href(
+								$author$project$Route$routeToString(0)),
+								$elm$html$Html$Attributes$class('logo')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('somedescription')
+							])),
+						A2(
+						$elm$html$Html$ul,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2($elm$html$Html$li, _List_Nil, log_buttons)
+							]))
+					]))
+			]));
 };
-var $elm$html$Html$nav = _VirtualDom_node('nav');
-var $elm$html$Html$ul = _VirtualDom_node('ul');
+var $elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
+var $elm$html$Html$map = $elm$virtual_dom$VirtualDom$map;
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 0, a: a};
+};
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
 var $elm$html$Html$table = _VirtualDom_node('table');
 var $elm$html$Html$tbody = _VirtualDom_node('tbody');
 var $elm$html$Html$td = _VirtualDom_node('td');
@@ -6910,7 +7289,7 @@ var $author$project$TableBuilder$TableBuilder$buildTable = F2(
 				]));
 	});
 var $author$project$TradingPartner$Functions$view = function (model) {
-	var _v0 = model.ab;
+	var _v0 = model.bz;
 	switch (_v0.$) {
 		case 0:
 			return $elm$html$Html$text('');
@@ -6921,10 +7300,10 @@ var $author$project$TradingPartner$Functions$view = function (model) {
 			var listrows = function (row) {
 				return _List_fromArray(
 					[
-						$elm$core$String$fromInt(row.am),
-						row.bd,
-						row.bc,
-						row.aN
+						$elm$core$String$fromInt(row.aq),
+						row.bg,
+						row.be,
+						row.aP
 					]);
 			};
 			return A2(
@@ -6938,52 +7317,72 @@ var $author$project$TradingPartner$Functions$view = function (model) {
 };
 var $author$project$Main$Functions$view = function (model) {
 	var content = function () {
-		var _v0 = $author$project$Route$fromUrl(model.by);
+		var _v0 = model.W;
 		switch (_v0) {
 			case 0:
-				return $elm$html$Html$text('1 ');
+				return $elm$html$Html$text('Vatcalc');
 			case 3:
-				return $elm$html$Html$text('2');
+				return A2(
+					$elm$html$Html$div,
+					_List_Nil,
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$map,
+							$author$project$Main$Types$Form,
+							A2(
+								$elm$html$Html$form,
+								_List_Nil,
+								_List_fromArray(
+									[
+										A4($author$project$Main$Functions$formField, $author$project$Main$Types$EmailUpdate, 'e-mail', 'text', 'E-mail'),
+										A4($author$project$Main$Functions$formField, $author$project$Main$Types$PasswordUpdate, 'hasło', 'password', 'Hasło'),
+										A2(
+										$elm$html$Html$button,
+										_List_fromArray(
+											[
+												$elm$html$Html$Events$onClick($author$project$Main$Types$SubmitForm)
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text('Zaloguj')
+											]))
+									])))
+						]));
+			case 5:
+				return $elm$html$Html$text('Zarejestruj się!');
 			case 4:
-				return $elm$html$Html$text('3');
+				return $elm$html$Html$text('Wylogowałeś się!');
 			case 2:
-				return $elm$html$Html$text('4');
+				var _v1 = model.U;
+				if (!_v1) {
+					return $elm$html$Html$text('Nie jesteś zalogowany - zaloguj się by wyświetlić');
+				} else {
+					return $elm$html$Html$text('Nie jesteś zalogowany - zaloguj się by wyświetlić');
+				}
 			default:
-				return $author$project$TradingPartner$Functions$view(model.P);
+				return $author$project$TradingPartner$Functions$view(model.O);
 		}
 	}();
 	return {
-		aQ: _List_fromArray(
+		aS: _List_fromArray(
 			[
-				A2(
-				$elm$html$Html$nav,
-				_List_Nil,
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$ul,
-						_List_Nil,
-						$author$project$Main$Functions$header(model))
-					])),
-				A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				_List_fromArray(
-					[content]))
+				$author$project$Main$Functions$header(model),
+				content
 			]),
-		bv: 'VatCalc'
+		by: 'VatCalc'
 	};
 };
 var $author$project$Main$main = $elm$browser$Browser$application(
 	{
-		a4: $author$project$Main$Functions$init,
-		bg: $author$project$Main$Types$UrlChange,
-		bh: $author$project$Main$Types$UrlRequest,
-		bu: function (_v0) {
+		a6: $author$project$Main$Functions$init,
+		bj: $author$project$Main$Types$UrlChange,
+		bk: $author$project$Main$Types$UrlRequest,
+		bx: function (_v0) {
 			return $elm$core$Platform$Sub$none;
 		},
-		bx: $author$project$Main$Functions$update,
-		bA: $author$project$Main$Functions$view
+		bB: $author$project$Main$Functions$update,
+		bE: $author$project$Main$Functions$view
 	});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(

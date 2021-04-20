@@ -3,7 +3,7 @@ module TradingPartner.Functions exposing (..)
 -- import Backend.Object.Invoice exposing (partner)
 
 import Html exposing (..)
-import RemoteData
+import RemoteData exposing (WebData)
 import String
 import TableBuilder.TableBuilder exposing (buildTable)
 import TradingPartner.API
@@ -53,14 +53,9 @@ validateNIP nip =
     nipValid
 
 
-init : TradingPartnerModel
-init =
-    { newTradePartner =
-        { name = ""
-        , nipNumber = ""
-        , adress = ""
-        }
-    , tradePartners = RemoteData.Loading
+type alias TradingPartnerModel =
+    { newTradePartner : TradingPartnerNew
+    , tradePartners : WebData (List TradingPartner)
     }
 
 
@@ -102,25 +97,5 @@ view model =
                 [ "ID", "Numer NIP", "Nazwa kontrahenta", "Adres kontrahenta" ]
                 (List.map listrows trade_partners)
 
-        -- { data = trade_partners
-        -- , columns =
-        --     [ { header = Element.text "ID"
-        --       , width = fillPortion 1
-        --       , view = \partner -> Element.text (String.fromInt partner.id)
-        --       }
-        --     , { header = Element.text "Numer NIP"
-        --       , width = fillPortion 2
-        --       , view = \partner -> Element.text partner.nipNumber
-        --       }
-        --     , { header = Element.text "Nazwa kontrahenta"
-        --       , width = fillPortion 5
-        --       , view = \partner -> Element.text partner.name
-        --       }
-        --     , { header = Element.text "Adres kontrahenta"
-        --       , width = fillPortion 5
-        --       , view = \partner -> Element.text partner.adress
-        --       }
-        --     ]
-        -- }
         RemoteData.Failure _ ->
             text "download failed"

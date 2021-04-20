@@ -30,8 +30,3 @@ type alias InvoicePosition =
     , numItems : Float
     , priceNet : Float
     }
-
-
-type alias InvoiceModel =
-    { allInvoices : WebData (List Invoice)
-    }

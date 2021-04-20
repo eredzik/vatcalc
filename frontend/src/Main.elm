@@ -1,11 +1,11 @@
 module Main exposing (main)
 
 import Browser
-import Main.Functions exposing (init, update, view)
-import Main.Types exposing (Flags, Model, Msg(..))
+import Main.Functions exposing (Model, init, update, view)
+import Main.Types exposing (Msg(..))
 
 
-main : Program Flags Model Msg
+main : Program {} Model Msg
 main =
     Browser.application
         { init = init

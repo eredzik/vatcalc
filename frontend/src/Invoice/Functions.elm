@@ -4,12 +4,17 @@ module Invoice.Functions exposing (..)
 
 import Html exposing (..)
 import Invoice.Types exposing (..)
-import RemoteData
+import RemoteData exposing (WebData)
 import TableBuilder.TableBuilder exposing (buildTable)
 import TradingPartner.Types
 
 
-init : Invoice.Types.InvoiceModel
+type alias InvoiceModel =
+    { allInvoices : WebData (List Invoice)
+    }
+
+
+init : InvoiceModel
 init =
     { allInvoices = RemoteData.Loading }
 
@@ -53,7 +58,7 @@ view model =
                 RemoteData.Loading ->
                     text "Wczytywanie danych ..."
 
-                RemoteData.Success data ->
+                RemoteData.Success _ ->
                     buildTable [ "header" ] [ [ "abc" ] ]
 
                 _ ->

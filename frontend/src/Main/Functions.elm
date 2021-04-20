@@ -5,24 +5,76 @@ module Main.Functions exposing (..)
 import Browser
 import Browser.Navigation
 import Html exposing (..)
-import Html.Attributes
+import Html.Attributes exposing (class, id, placeholder, type_)
+import Html.Events exposing (onClick, onInput)
+import Http exposing (header)
 import Invoice.API
 import Invoice.Functions
+import Invoice.Types exposing (Invoice)
 import Main.Types exposing (..)
 import Platform.Cmd
+import RemoteData exposing (WebData)
 import Route exposing (Route(..), fromUrl, routeToString)
 import TradingPartner.API
 import TradingPartner.Functions
+import TradingPartner.Types exposing (TradingPartner, TradingPartnerNew)
 import Url
+import Validate exposing (Validator)
 
 
-init : Main.Types.Flags -> Url.Url -> Browser.Navigation.Key -> ( Model, Cmd Main.Types.Msg )
+type LogInDataModel
+    = Email
+    | Password
+
+
+logInValidator : Validator ( LogInDataModel, String ) LogInData
+logInValidator =
+    Validate.firstError
+        [ Validate.ifBlank .password ( Password, "Proszę wpisać hasło." )
+        , Validate.ifBlank .email ( Email, "Proszę wpisać email" )
+        , Validate.ifInvalidEmail .email (\_ -> ( Email, "Proszę wpisać poprawny email" ))
+        ]
+
+
+type alias LogInData =
+    { email : String
+    , password : String
+    }
+
+
+type alias Model =
+    { key : Browser.Navigation.Key
+    , route : Route.Route
+    , tradingPartners :
+        { newTradePartner : TradingPartnerNew
+        , tradePartners : WebData (List TradingPartner)
+        }
+    , invoices :
+        { allInvoices : WebData (List Invoice)
+        }
+    , loggedStatus : LoggedStatus
+    , logInForm : LogInData
+    }
+
+
+init : {} -> Url.Url -> Browser.Navigation.Key -> ( Model, Cmd Main.Types.Msg )
 init _ url key =
     ( { key = key
-      , url = url
-      , tradingPartners = TradingPartner.Functions.init
+      , route = fromUrl url
+      , tradingPartners =
+            { newTradePartner =
+                { name = ""
+                , nipNumber = ""
+                , adress = ""
+                }
+            , tradePartners = RemoteData.Loading
+            }
       , invoices = Invoice.Functions.init
       , loggedStatus = Visitor
+      , logInForm =
+            { email = ""
+            , password = ""
+            }
       }
     , Platform.Cmd.batch
         [ Cmd.map Main.Types.TradingPartnerMsg TradingPartner.API.fetchAllPartners
@@ -37,7 +89,7 @@ update msg model =
         UrlRequest urlRequest ->
             case urlRequest of
                 Browser.Internal url ->
-                    ( { model | url = url }, Browser.Navigation.pushUrl model.key (Url.toString url) )
+                    ( model, Browser.Navigation.pushUrl model.key (Url.toString url) )
 
                 Browser.External url ->
                     ( model
@@ -45,7 +97,7 @@ update msg model =
                     )
 
         UrlChange url ->
-            ( { model | url = url }, Cmd.none )
+            ( { model | route = fromUrl url }, Cmd.none )
 
         TradingPartnerMsg tradepartnermsg ->
             let
@@ -67,58 +119,126 @@ update msg model =
             in
             ( { model | invoices = outmodel }, outmsg )
 
+        Form msginner ->
+            case msginner of
+                EmailUpdate value ->
+                    let
+                        logform =
+                            model.logInForm
 
-header : Model -> List (Html Msg)
+                        new_logform =
+                            { logform | email = value }
+                    in
+                    ( { model | logInForm = new_logform }, Cmd.none )
+
+                PasswordUpdate value ->
+                    let
+                        logform =
+                            model.logInForm
+
+                        new_logform =
+                            { logform | password = value }
+                    in
+                    ( { model | logInForm = new_logform }, Cmd.none )
+
+                SubmitForm ->
+                    let
+                        validation_result =
+                            Validate.validate logInValidator model.logInForm
+                    in
+                    case validation_result of
+                        Ok _ ->
+                            ( model, Cmd.none )
+
+                        Err _ ->
+                            ( model, Cmd.none )
+
+
+header : Model -> Html Msg
 header model =
     let
-        log_button =
+        log_buttons =
             case model.loggedStatus of
                 Logged ->
-                    li [ Html.Attributes.href <| routeToString LogOut ] [ text "Wyloguj" ]
+                    [ a
+                        [ Html.Attributes.href <| routeToString LogOut ]
+                        [ text "Wyloguj" ]
+                    ]
 
                 Visitor ->
-                    li [ Html.Attributes.href <| routeToString LogIn ] [ text "Zaloguj" ]
+                    [ a
+                        [ Html.Attributes.href <| routeToString LogIn ]
+                        [ text "Zaloguj" ]
+                    , a [ Html.Attributes.href <| routeToString Register ] [ text "Zarejestruj się" ]
+                    ]
     in
-    [ li [ Html.Attributes.href <| routeToString Index ]
-        [ img
-            [ Html.Attributes.src "static/favicon-32x32.png"
+    div [ class "navigation-bar" ]
+        [ div [ id "navigation-container" ]
+            [ img
+                [ Html.Attributes.src "static/android-chrome-192x192.png"
+                , Html.Attributes.href <| routeToString Index
+                , class "logo"
+                ]
+                [ text "somedescription" ]
+            , ul []
+                [ li [] log_buttons
+                ]
             ]
-            [ text "somedescription" ]
         ]
-    , li [ Html.Attributes.href <| routeToString Invoices ] [ text "Faktury" ]
-    , li [ Html.Attributes.href <| routeToString TradePartner ] [ text "Kontrahenci" ]
-    , log_button
-    ]
+
+
+formField : (String -> msg) -> String -> String -> String -> Html msg
+formField m name t p =
+    label [ class "form-label" ]
+        [ text name
+        , input
+            [ type_ t
+            , placeholder p
+            , onInput m
+            ]
+            []
+        ]
 
 
 view : Model -> Browser.Document Msg
 view model =
     let
         content =
-            case fromUrl model.url of
+            case model.route of
                 Index ->
-                    text "1 "
+                    text "Vatcalc"
 
                 LogIn ->
-                    text "2"
+                    div []
+                        [ Html.map Form
+                            (form []
+                                [ formField EmailUpdate "e-mail" "text" "E-mail"
+                                , formField PasswordUpdate "hasło" "password" "Hasło"
+                                , button [ onClick SubmitForm ] [ text "Zaloguj" ]
+                                ]
+                            )
+                        ]
+
+                Register ->
+                    text "Zarejestruj się!"
 
                 LogOut ->
-                    text "3"
+                    text "Wylogowałeś się!"
 
                 Invoices ->
-                    text "4"
+                    case model.loggedStatus of
+                        Logged ->
+                            text "Nie jesteś zalogowany - zaloguj się by wyświetlić"
+
+                        Visitor ->
+                            text "Nie jesteś zalogowany - zaloguj się by wyświetlić"
 
                 TradePartner ->
                     TradingPartner.Functions.view model.tradingPartners
     in
     { title = "VatCalc"
     , body =
-        [ nav []
-            [ ul []
-                (header
-                    model
-                )
-            ]
-        , div [] [ content ]
+        [ header model
+        , content
         ]
     }

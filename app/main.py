@@ -27,7 +27,6 @@ async def shutdown():
 
 # app.include_router(router.index_router)
 app.include_router(router.api_router)
-app.include_router(router.auth_router)
 
 
 # index_router = APIRouter()

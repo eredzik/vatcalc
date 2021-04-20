@@ -13,6 +13,7 @@ type Route
     | Invoices
     | LogIn
     | LogOut
+    | Register
 
 
 parser : Url.Parser.Parser (Route -> a) a
@@ -23,6 +24,7 @@ parser =
         , Url.Parser.map Invoices (Url.Parser.s "invoices")
         , Url.Parser.map LogIn (Url.Parser.s "login")
         , Url.Parser.map LogOut (Url.Parser.s "logout")
+        , Url.Parser.map Register (Url.Parser.s "register")
         ]
 
 
@@ -60,3 +62,6 @@ routeToString page =
 
         LogOut ->
             "logout"
+
+        Register ->
+            "register"

@@ -31,7 +31,7 @@ api_router.include_router(
 auth_router = APIRouter()
 auth_router.include_router(
     fastapi_users.get_auth_router(jwt_authentication),
-    prefix="/auth/jwt",
+    prefix="/auth",
     tags=["auth"],
 )
 auth_router.include_router(
