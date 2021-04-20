@@ -2,10 +2,10 @@ module TradingPartner.Functions exposing (..)
 
 -- import Backend.Object.Invoice exposing (partner)
 
-import Element
 import Html exposing (..)
 import RemoteData
 import String
+import TableBuilder.TableBuilder exposing (buildTable)
 import TradingPartner.API
 import TradingPartner.Types exposing (..)
 
@@ -84,37 +84,43 @@ update msg model =
 -- VIEW
 
 
-view : TradingPartnerModel -> Element.Element msg
+view : TradingPartnerModel -> Html msg
 view model =
     case model.tradePartners of
         RemoteData.NotAsked ->
-            Element.text ""
+            text ""
 
         RemoteData.Loading ->
-            Element.text "Loading..."
+            text "Loading..."
 
         RemoteData.Success trade_partners ->
-            Element.table []
-                { data = trade_partners
-                , columns =
-                    [ { header = Element.text "t1"
-                      , width = Element.fill
-                      , view = \partner -> Element.text (String.fromInt partner.id)
-                      }
-                    , { header = Element.text "t1"
-                      , width = Element.fill
-                      , view = \partner -> Element.text partner.nipNumber
-                      }
-                    , { header = Element.text "t2"
-                      , width = Element.fill
-                      , view = \partner -> Element.text partner.name
-                      }
-                    , { header = Element.text "t1"
-                      , width = Element.fill
-                      , view = \partner -> Element.text partner.adress
-                      }
-                    ]
-                }
+            let
+                listrows row =
+                    [ String.fromInt row.id, row.nipNumber, row.name, row.adress ]
+            in
+            buildTable
+                [ "ID", "Numer NIP", "Nazwa kontrahenta", "Adres kontrahenta" ]
+                (List.map listrows trade_partners)
 
+        -- { data = trade_partners
+        -- , columns =
+        --     [ { header = Element.text "ID"
+        --       , width = fillPortion 1
+        --       , view = \partner -> Element.text (String.fromInt partner.id)
+        --       }
+        --     , { header = Element.text "Numer NIP"
+        --       , width = fillPortion 2
+        --       , view = \partner -> Element.text partner.nipNumber
+        --       }
+        --     , { header = Element.text "Nazwa kontrahenta"
+        --       , width = fillPortion 5
+        --       , view = \partner -> Element.text partner.name
+        --       }
+        --     , { header = Element.text "Adres kontrahenta"
+        --       , width = fillPortion 5
+        --       , view = \partner -> Element.text partner.adress
+        --       }
+        --     ]
+        -- }
         RemoteData.Failure _ ->
-            Element.text "download failed"
+            text "download failed"

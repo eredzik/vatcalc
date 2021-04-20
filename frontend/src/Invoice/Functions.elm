@@ -1,8 +1,11 @@
 module Invoice.Functions exposing (..)
 
-import Element
+-- import Element
+
+import Html exposing (..)
 import Invoice.Types exposing (..)
 import RemoteData
+import TableBuilder.TableBuilder exposing (buildTable)
 import TradingPartner.Types
 
 
@@ -42,28 +45,18 @@ partnerToString partner =
     partner.name ++ " | " ++ partner.nipNumber
 
 
-view : InvoiceModel -> Element.Element InvoiceMsg
+view : InvoiceModel -> Html InvoiceMsg
 view model =
     let
         outbody =
             case model.allInvoices of
                 RemoteData.Loading ->
-                    Element.text "Wczytywanie danych ..."
+                    text "Wczytywanie danych ..."
 
                 RemoteData.Success data ->
-                    Element.table []
-                        { data = data
-                        , columns =
-                            [ { header = Element.text "ID"
-                              , width = Element.fill
-                              , view =
-                                    \row ->
-                                        Element.text (String.fromInt row.id)
-                              }
-                            ]
-                        }
+                    buildTable [ "header" ] [ [ "abc" ] ]
 
                 _ ->
-                    Element.text "Failed loading data"
+                    text "Failed loading data"
     in
     outbody

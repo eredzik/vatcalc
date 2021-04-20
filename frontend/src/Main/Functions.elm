@@ -4,13 +4,10 @@ module Main.Functions exposing (..)
 
 import Browser
 import Browser.Navigation
-import Element exposing (..)
-import Element.Background
-import Element.Border
-import Element.Region
+import Html exposing (..)
+import Html.Attributes
 import Invoice.API
 import Invoice.Functions
-import Main.Styling exposing (blue2, font, lblue)
 import Main.Types exposing (..)
 import Platform.Cmd
 import Route exposing (Route(..), fromUrl, routeToString)
@@ -71,43 +68,27 @@ update msg model =
             ( { model | invoices = outmodel }, outmsg )
 
 
-header : Model -> Element Msg
+header : Model -> List (Html Msg)
 header model =
     let
-        logging_button =
+        log_button =
             case model.loggedStatus of
                 Logged ->
-                    link [] { url = routeToString LogOut, label = text "Wyloguj" }
+                    li [ Html.Attributes.href <| routeToString LogOut ] [ text "Wyloguj" ]
 
                 Visitor ->
-                    link [] { url = routeToString LogIn, label = text "Zaloguj" }
+                    li [ Html.Attributes.href <| routeToString LogIn ] [ text "Zaloguj" ]
     in
-    Element.row
-        [ Element.Region.navigation
-        , width fill
-        , Element.Background.color blue2
-        , spacing 10
-        , padding 15
-        , font
+    [ li [ Html.Attributes.href <| routeToString Index ]
+        [ img
+            [ Html.Attributes.src "static/favicon-32x32.png"
+            ]
+            [ text "somedescription" ]
         ]
-        [ el [] <|
-            link []
-                { url = routeToString Index
-                , label =
-                    image
-                        [ centerX
-                        , centerY
-                        , Element.Border.rounded 50
-                        , clip
-                        , pointer
-                        ]
-                        { src = "static/favicon-32x32.png", description = "logo" }
-                }
-        , link [] { url = routeToString Invoices, label = text "Faktury" }
-        , link [] { url = routeToString TradePartner, label = text "Kontrahenci" }
-        , el [ alignRight ] (text "")
-        , logging_button
-        ]
+    , li [ Html.Attributes.href <| routeToString Invoices ] [ text "Faktury" ]
+    , li [ Html.Attributes.href <| routeToString TradePartner ] [ text "Kontrahenci" ]
+    , log_button
+    ]
 
 
 view : Model -> Browser.Document Msg
@@ -116,7 +97,7 @@ view model =
         content =
             case fromUrl model.url of
                 Index ->
-                    text "1"
+                    text "1 "
 
                 LogIn ->
                     text "2"
@@ -132,15 +113,12 @@ view model =
     in
     { title = "VatCalc"
     , body =
-        [ Element.layout [] <|
-            column [ width fill ]
-                [ header model
-                , el
-                    [ Element.Background.color lblue
-                    , width fill
-                    ]
-                    content
-                , text <| Url.toString model.url
-                ]
+        [ nav []
+            [ ul []
+                (header
+                    model
+                )
+            ]
+        , div [] [ content ]
         ]
     }

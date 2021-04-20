@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from starlette.responses import HTMLResponse
-
 from fastapi_crudrouter import OrmarCRUDRouter
+from starlette.responses import HTMLResponse
 
 from . import models
 from .core.security import fastapi_users, jwt_authentication
@@ -21,6 +20,10 @@ api_router.include_router(
 )
 api_router.include_router(
     OrmarCRUDRouter(schema=models.InvoicePosition, delete_all_route=False),
+)
+
+api_router.include_router(
+    OrmarCRUDRouter(schema=models.Enterprise, delete_all_route=False),
 )
 
 
