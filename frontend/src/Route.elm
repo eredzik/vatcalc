@@ -8,8 +8,11 @@ import Url.Parser
 
 
 type Route
-    = TradePartner
+    = Index
+    | TradePartner
     | Invoices
+    | LogIn
+    | LogOut
 
 
 parser : Url.Parser.Parser (Route -> a) a
@@ -18,6 +21,8 @@ parser =
         [ Url.Parser.map TradePartner Url.Parser.top
         , Url.Parser.map TradePartner (Url.Parser.s "tradepartners")
         , Url.Parser.map Invoices (Url.Parser.s "invoices")
+        , Url.Parser.map LogIn (Url.Parser.s "login")
+        , Url.Parser.map LogOut (Url.Parser.s "logout")
         ]
 
 
@@ -26,10 +31,11 @@ href targetRoute =
     Html.Attributes.href (routeToString targetRoute)
 
 
-fromUrl : Url.Url -> Maybe Route
+fromUrl : Url.Url -> Route
 fromUrl url =
-    { url | path = Maybe.withDefault "" url.fragment, fragment = Nothing }
+    url
         |> Url.Parser.parse parser
+        |> Maybe.withDefault Index
 
 
 replaceUrl : Browser.Navigation.Key -> Route -> Cmd msg
@@ -39,13 +45,18 @@ replaceUrl key route =
 
 routeToString : Route -> String
 routeToString page =
-    let
-        pieces =
-            case page of
-                TradePartner ->
-                    [ "tradepartners" ]
+    case page of
+        Index ->
+            "/"
 
-                Invoices ->
-                    [ "invoices" ]
-    in
-    "#/" ++ String.join "/" pieces
+        TradePartner ->
+            "/tradepartners"
+
+        Invoices ->
+            "invoices"
+
+        LogIn ->
+            "login"
+
+        LogOut ->
+            "logout"

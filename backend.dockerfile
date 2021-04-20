@@ -1,4 +1,4 @@
-FROM python:3.8-slim
+FROM python:3.8
 
 WORKDIR /usr/src/backend/
 COPY Pipfile .
@@ -9,6 +9,7 @@ RUN pip install --no-cache-dir pipenv && \
 ENV WAIT_VERSION 2.7.2
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait /wait
 RUN chmod +x /wait
+ENV PYTHONPATH="/usr/src/backend/app:${PYTHONPATH}"
 
-CMD /wait && aerich upgrade && uvicorn app.main:app --reload --host 0.0.0.0 --port 5000
+CMD pipenv run sh /usr/src/backend/scripts/start_backend.sh
 

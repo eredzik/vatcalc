@@ -15,11 +15,9 @@
             "elm/time": "1.0.0",
             "elm/url": "1.0.0",
             "elm/virtual-dom": "1.0.2",
-            "krisajenkins/remotedata": "6.0.1",
-            "rundis/elm-bootstrap": "5.2.0"
+            "krisajenkins/remotedata": "6.0.1"
         },
         "indirect": {
-            "avh4/elm-color": "1.0.0",
             "elm/bytes": "1.0.8",
             "elm/file": "1.0.5",
             "elm/regex": "1.0.0",
@@ -29,6 +27,8 @@
     },
     "test-dependencies": {
         "direct": {},
-        "indirect": {}
+        "indirect": {
+            "avh4/elm-color": "1.0.0"
+        }
     }
 }

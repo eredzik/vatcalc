@@ -23,5 +23,11 @@ services:
       - WAIT_HOSTS_TIMEOUT=300
       - WAIT_SLEEP_INTERVAL=2
       - WAIT_HOST_CONNECT_TIMEOUT=5
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
+      # - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_SERVER=db
       - JWT_SECRET=somesecret
+    user: 1000:1000
