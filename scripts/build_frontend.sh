@@ -1,5 +1,7 @@
 cd frontend;
 js="../static/main.js"
-elm make src/Main.elm --output=$js --optimize
-minimized="../static/main.min.js"
-uglifyjs $js -o $minimized
+sass "style.sass" "../static/style.css"
+#--optimize
+elm make src/Main.elm --output=$js --optimize #--debug
+# minimized="../static/main.min.js"
+# uglifyjs $js -o $minimized

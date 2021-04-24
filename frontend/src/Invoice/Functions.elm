@@ -5,13 +5,9 @@ module Invoice.Functions exposing (..)
 import Html exposing (..)
 import Invoice.Types exposing (..)
 import RemoteData
+import SiteState.Types exposing (SiteStateModel)
 import TableBuilder.TableBuilder exposing (buildTable)
 import TradingPartner.Types
-
-
-init : Invoice.Types.InvoiceModel
-init =
-    { allInvoices = RemoteData.Loading }
 
 
 update : InvoiceMsg -> InvoiceModel -> ( InvoiceModel, Cmd InvoiceMsg )
@@ -39,21 +35,24 @@ invoiceTypeToString invtype =
         Issued ->
             "Sprzedaż"
 
+        NotChosen ->
+            "Wybierz typ faktury"
+
 
 partnerToString : TradingPartner.Types.TradingPartner -> String
 partnerToString partner =
     partner.name ++ " | " ++ partner.nipNumber
 
 
-view : InvoiceModel -> Html InvoiceMsg
-view model =
+view : InvoiceModel -> SiteStateModel -> Html msg
+view model _ =
     let
         outbody =
             case model.allInvoices of
                 RemoteData.Loading ->
                     text "Wczytywanie danych ..."
 
-                RemoteData.Success data ->
+                RemoteData.Success _ ->
                     buildTable [ "header" ] [ [ "abc" ] ]
 
                 _ ->

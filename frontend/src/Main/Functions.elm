@@ -5,30 +5,17 @@ module Main.Functions exposing (..)
 import Browser
 import Browser.Navigation
 import Html exposing (..)
-import Html.Attributes
-import Invoice.API
+import Html.Attributes exposing (class, id)
+import Http exposing (header)
 import Invoice.Functions
-import Main.Types exposing (..)
-import Platform.Cmd
-import Route exposing (Route(..), fromUrl, routeToString)
-import TradingPartner.API
+import LogIn.Functions
+import Main.Types exposing (Model, Msg(..))
+import Register.Functions
+import Register.Types exposing (RegisterMsg(..))
+import Route exposing (Route(..), routeToString)
+import SiteState.Types exposing (LoggedStatus(..))
 import TradingPartner.Functions
 import Url
-
-
-init : Main.Types.Flags -> Url.Url -> Browser.Navigation.Key -> ( Model, Cmd Main.Types.Msg )
-init _ url key =
-    ( { key = key
-      , url = url
-      , tradingPartners = TradingPartner.Functions.init
-      , invoices = Invoice.Functions.init
-      , loggedStatus = Visitor
-      }
-    , Platform.Cmd.batch
-        [ Cmd.map Main.Types.TradingPartnerMsg TradingPartner.API.fetchAllPartners
-        , Cmd.map Main.Types.InvoiceMsg Invoice.API.fetchAllInvoices
-        ]
-    )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -37,7 +24,7 @@ update msg model =
         UrlRequest urlRequest ->
             case urlRequest of
                 Browser.Internal url ->
-                    ( { model | url = url }, Browser.Navigation.pushUrl model.key (Url.toString url) )
+                    ( model, Browser.Navigation.pushUrl model.key (Url.toString url) )
 
                 Browser.External url ->
                     ( model
@@ -45,7 +32,7 @@ update msg model =
                     )
 
         UrlChange url ->
-            ( { model | url = url }, Cmd.none )
+            ( { model | route = Route.fromUrl url }, Cmd.none )
 
         TradingPartnerMsg tradepartnermsg ->
             let
@@ -67,58 +54,86 @@ update msg model =
             in
             ( { model | invoices = outmodel }, outmsg )
 
+        LogInMsg subMsg ->
+            let
+                ( outmodel, cmd ) =
+                    LogIn.Functions.update subMsg model.logInModel
 
-header : Model -> List (Html Msg)
+                outmsg =
+                    Cmd.map LogInMsg cmd
+            in
+            ( { model | logInModel = outmodel }, outmsg )
+
+        RegisterMsg subMsg ->
+            let
+                ( outmodel, cmd ) =
+                    Register.Functions.update subMsg model.registerModel model.key
+
+                outmsg =
+                    Cmd.map RegisterMsg cmd
+            in
+            ( { model | registerModel = outmodel }, outmsg )
+
+
+header : Model -> Html Msg
 header model =
     let
-        log_button =
-            case model.loggedStatus of
-                Logged ->
-                    li [ Html.Attributes.href <| routeToString LogOut ] [ text "Wyloguj" ]
+        log_buttons =
+            case model.siteState.loggedStatus of
+                Logged _ ->
+                    [ a
+                        [ Html.Attributes.href <| routeToString LogOut ]
+                        [ text "Wyloguj" ]
+                    ]
 
                 Visitor ->
-                    li [ Html.Attributes.href <| routeToString LogIn ] [ text "Zaloguj" ]
+                    [ a
+                        [ Html.Attributes.href <| routeToString LogIn ]
+                        [ text "Zaloguj" ]
+                    , a [ Html.Attributes.href <| routeToString Register ] [ text "Zarejestruj się" ]
+                    ]
     in
-    [ li [ Html.Attributes.href <| routeToString Index ]
-        [ img
-            [ Html.Attributes.src "static/favicon-32x32.png"
+    div [ class "navigation-bar" ]
+        [ div [ id "navigation-container" ]
+            [ img
+                [ Html.Attributes.src "static/android-chrome-192x192.png"
+                , Html.Attributes.href <| routeToString Index
+                , class "logo"
+                ]
+                [ text "somedescription" ]
+            , ul []
+                [ li [] log_buttons
+                ]
             ]
-            [ text "somedescription" ]
         ]
-    , li [ Html.Attributes.href <| routeToString Invoices ] [ text "Faktury" ]
-    , li [ Html.Attributes.href <| routeToString TradePartner ] [ text "Kontrahenci" ]
-    , log_button
-    ]
 
 
 view : Model -> Browser.Document Msg
 view model =
     let
         content =
-            case fromUrl model.url of
+            case model.route of
                 Index ->
-                    text "1 "
+                    text "Vatcalc"
 
                 LogIn ->
-                    text "2"
+                    Html.map LogInMsg (LogIn.Functions.view model.logInModel)
+
+                Register ->
+                    Html.map RegisterMsg (Register.Functions.view model.registerModel)
 
                 LogOut ->
-                    text "3"
+                    text "Wylogowałeś się!"
 
                 Invoices ->
-                    text "4"
+                    Html.map InvoiceMsg (Invoice.Functions.view model.invoices model.siteState)
 
                 TradePartner ->
                     TradingPartner.Functions.view model.tradingPartners
     in
     { title = "VatCalc"
     , body =
-        [ nav []
-            [ ul []
-                (header
-                    model
-                )
-            ]
-        , div [] [ content ]
+        [ header model
+        , content
         ]
     }

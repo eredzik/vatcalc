@@ -35,3 +35,14 @@ type alias TradingPartnerModel =
     { newTradePartner : TradingPartnerNew
     , tradePartners : WebData (List TradingPartner)
     }
+
+
+init : TradingPartnerModel
+init =
+    { newTradePartner =
+        { name = ""
+        , nipNumber = ""
+        , adress = ""
+        }
+    , tradePartners = RemoteData.NotAsked
+    }
