@@ -5,7 +5,7 @@ from fastapi_users.db import OrmarBaseUserModel, OrmarUserDatabase
 
 from .core.config import settings
 
-database = databases.Database(str(settings.SQLALCHEMY_DATABASE_URI))
+database = databases.Database(str(settings.DATABASE_URL))
 metadata = sqlalchemy.MetaData()
 
 

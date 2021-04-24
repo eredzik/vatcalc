@@ -28,7 +28,7 @@ from app.core.config import settings
 
 # set your url here or import from settings
 # note that by default url is in saved sqlachemy.url variable in alembic.ini file
-URL = str(settings.SQLALCHEMY_DATABASE_URI)
+URL = str(settings.DATABASE_URL)
 
 
 def run_migrations_offline():
