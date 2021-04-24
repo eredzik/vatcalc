@@ -3,7 +3,7 @@ module TradingPartner.Functions exposing (..)
 -- import Backend.Object.Invoice exposing (partner)
 
 import Html exposing (..)
-import RemoteData exposing (WebData)
+import RemoteData
 import String
 import TableBuilder.TableBuilder exposing (buildTable)
 import TradingPartner.API
@@ -51,12 +51,6 @@ validateNIP nip =
                 TooShort
     in
     nipValid
-
-
-type alias TradingPartnerModel =
-    { newTradePartner : TradingPartnerNew
-    , tradePartners : WebData (List TradingPartner)
-    }
 
 
 update : TradingPartnerMsg -> TradingPartnerModel -> ( TradingPartnerModel, Cmd TradingPartnerMsg )

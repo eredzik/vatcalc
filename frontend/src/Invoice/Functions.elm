@@ -4,19 +4,10 @@ module Invoice.Functions exposing (..)
 
 import Html exposing (..)
 import Invoice.Types exposing (..)
-import RemoteData exposing (WebData)
+import RemoteData
+import SiteState.Types exposing (SiteStateModel)
 import TableBuilder.TableBuilder exposing (buildTable)
 import TradingPartner.Types
-
-
-type alias InvoiceModel =
-    { allInvoices : WebData (List Invoice)
-    }
-
-
-init : InvoiceModel
-init =
-    { allInvoices = RemoteData.Loading }
 
 
 update : InvoiceMsg -> InvoiceModel -> ( InvoiceModel, Cmd InvoiceMsg )
@@ -44,14 +35,17 @@ invoiceTypeToString invtype =
         Issued ->
             "Sprzedaż"
 
+        NotChosen ->
+            "Wybierz typ faktury"
+
 
 partnerToString : TradingPartner.Types.TradingPartner -> String
 partnerToString partner =
     partner.name ++ " | " ++ partner.nipNumber
 
 
-view : InvoiceModel -> Html InvoiceMsg
-view model =
+view : InvoiceModel -> SiteStateModel -> Html msg
+view model _ =
     let
         outbody =
             case model.allInvoices of

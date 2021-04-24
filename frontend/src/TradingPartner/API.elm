@@ -4,7 +4,7 @@ import Http
 import Json.Decode as JD
 import Json.Encode as JE
 import RemoteData
-import TradingPartner.Types exposing (..)
+import TradingPartner.Types exposing (TradingPartner, TradingPartnerMsg(..), TradingPartnerNew)
 
 
 partnerDecoder : JD.Decoder TradingPartner

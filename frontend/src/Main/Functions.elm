@@ -5,82 +5,17 @@ module Main.Functions exposing (..)
 import Browser
 import Browser.Navigation
 import Html exposing (..)
-import Html.Attributes exposing (class, id, placeholder, type_)
-import Html.Events exposing (onClick, onInput)
+import Html.Attributes exposing (class, id)
 import Http exposing (header)
-import Invoice.API
 import Invoice.Functions
-import Invoice.Types exposing (Invoice)
-import Main.Types exposing (..)
-import Platform.Cmd
-import RemoteData exposing (WebData)
-import Route exposing (Route(..), fromUrl, routeToString)
-import TradingPartner.API
+import LogIn.Functions
+import Main.Types exposing (Model, Msg(..))
+import Register.Functions
+import Register.Types exposing (RegisterMsg(..))
+import Route exposing (Route(..), routeToString)
+import SiteState.Types exposing (LoggedStatus(..))
 import TradingPartner.Functions
-import TradingPartner.Types exposing (TradingPartner, TradingPartnerNew)
 import Url
-import Validate exposing (Validator)
-
-
-type LogInDataModel
-    = Email
-    | Password
-
-
-logInValidator : Validator ( LogInDataModel, String ) LogInData
-logInValidator =
-    Validate.firstError
-        [ Validate.ifBlank .password ( Password, "Proszę wpisać hasło." )
-        , Validate.ifBlank .email ( Email, "Proszę wpisać email" )
-        , Validate.ifInvalidEmail .email (\_ -> ( Email, "Proszę wpisać poprawny email" ))
-        ]
-
-
-type alias LogInData =
-    { email : String
-    , password : String
-    }
-
-
-type alias Model =
-    { key : Browser.Navigation.Key
-    , route : Route.Route
-    , tradingPartners :
-        { newTradePartner : TradingPartnerNew
-        , tradePartners : WebData (List TradingPartner)
-        }
-    , invoices :
-        { allInvoices : WebData (List Invoice)
-        }
-    , loggedStatus : LoggedStatus
-    , logInForm : LogInData
-    }
-
-
-init : {} -> Url.Url -> Browser.Navigation.Key -> ( Model, Cmd Main.Types.Msg )
-init _ url key =
-    ( { key = key
-      , route = fromUrl url
-      , tradingPartners =
-            { newTradePartner =
-                { name = ""
-                , nipNumber = ""
-                , adress = ""
-                }
-            , tradePartners = RemoteData.Loading
-            }
-      , invoices = Invoice.Functions.init
-      , loggedStatus = Visitor
-      , logInForm =
-            { email = ""
-            , password = ""
-            }
-      }
-    , Platform.Cmd.batch
-        [ Cmd.map Main.Types.TradingPartnerMsg TradingPartner.API.fetchAllPartners
-        , Cmd.map Main.Types.InvoiceMsg Invoice.API.fetchAllInvoices
-        ]
-    )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -97,7 +32,7 @@ update msg model =
                     )
 
         UrlChange url ->
-            ( { model | route = fromUrl url }, Cmd.none )
+            ( { model | route = Route.fromUrl url }, Cmd.none )
 
         TradingPartnerMsg tradepartnermsg ->
             let
@@ -119,47 +54,33 @@ update msg model =
             in
             ( { model | invoices = outmodel }, outmsg )
 
-        Form msginner ->
-            case msginner of
-                EmailUpdate value ->
-                    let
-                        logform =
-                            model.logInForm
+        LogInMsg subMsg ->
+            let
+                ( outmodel, cmd ) =
+                    LogIn.Functions.update subMsg model.logInModel
 
-                        new_logform =
-                            { logform | email = value }
-                    in
-                    ( { model | logInForm = new_logform }, Cmd.none )
+                outmsg =
+                    Cmd.map LogInMsg cmd
+            in
+            ( { model | logInModel = outmodel }, outmsg )
 
-                PasswordUpdate value ->
-                    let
-                        logform =
-                            model.logInForm
+        RegisterMsg subMsg ->
+            let
+                ( outmodel, cmd ) =
+                    Register.Functions.update subMsg model.registerModel model.key
 
-                        new_logform =
-                            { logform | password = value }
-                    in
-                    ( { model | logInForm = new_logform }, Cmd.none )
-
-                SubmitForm ->
-                    let
-                        validation_result =
-                            Validate.validate logInValidator model.logInForm
-                    in
-                    case validation_result of
-                        Ok _ ->
-                            ( model, Cmd.none )
-
-                        Err _ ->
-                            ( model, Cmd.none )
+                outmsg =
+                    Cmd.map RegisterMsg cmd
+            in
+            ( { model | registerModel = outmodel }, outmsg )
 
 
 header : Model -> Html Msg
 header model =
     let
         log_buttons =
-            case model.loggedStatus of
-                Logged ->
+            case model.siteState.loggedStatus of
+                Logged _ ->
                     [ a
                         [ Html.Attributes.href <| routeToString LogOut ]
                         [ text "Wyloguj" ]
@@ -187,19 +108,6 @@ header model =
         ]
 
 
-formField : (String -> msg) -> String -> String -> String -> Html msg
-formField m name t p =
-    label [ class "form-label" ]
-        [ text name
-        , input
-            [ type_ t
-            , placeholder p
-            , onInput m
-            ]
-            []
-        ]
-
-
 view : Model -> Browser.Document Msg
 view model =
     let
@@ -209,29 +117,16 @@ view model =
                     text "Vatcalc"
 
                 LogIn ->
-                    div []
-                        [ Html.map Form
-                            (form []
-                                [ formField EmailUpdate "e-mail" "text" "E-mail"
-                                , formField PasswordUpdate "hasło" "password" "Hasło"
-                                , button [ onClick SubmitForm ] [ text "Zaloguj" ]
-                                ]
-                            )
-                        ]
+                    Html.map LogInMsg (LogIn.Functions.view model.logInModel)
 
                 Register ->
-                    text "Zarejestruj się!"
+                    Html.map RegisterMsg (Register.Functions.view model.registerModel)
 
                 LogOut ->
                     text "Wylogowałeś się!"
 
                 Invoices ->
-                    case model.loggedStatus of
-                        Logged ->
-                            text "Nie jesteś zalogowany - zaloguj się by wyświetlić"
-
-                        Visitor ->
-                            text "Nie jesteś zalogowany - zaloguj się by wyświetlić"
+                    Html.map InvoiceMsg (Invoice.Functions.view model.invoices model.siteState)
 
                 TradePartner ->
                     TradingPartner.Functions.view model.tradingPartners

@@ -1,8 +1,8 @@
 module Main exposing (main)
 
 import Browser
-import Main.Functions exposing (Model, init, update, view)
-import Main.Types exposing (Msg(..))
+import Main.Functions exposing (update, view)
+import Main.Types exposing (Model, Msg(..), init)
 
 
 main : Program {} Model Msg
