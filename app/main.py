@@ -25,19 +25,19 @@ async def shutdown():
     await models.database.disconnect()
 
 
-# app.include_router(router.index_router)
+# API section
 app.include_router(router.api_router)
 
-
-# index_router = APIRouter()
 # Frontend section
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
+app.mount("/static", StaticFiles(directory="frontend/public"), name="static")
+
+templates = Jinja2Templates(directory="frontend/public")
 
 
-app.get("/", response_class=HTMLResponse)(get_index)
+# app.get("/", response_class=HTMLResponse)(get_index)
 
 
 @app.get("/", response_class=HTMLResponse)
 async def get_favicon(request: Request):
+    print("test")
     return templates.TemplateResponse("index.html", {"request": request})
