@@ -33,4 +33,4 @@ def test_enterprise_get_for_user(client: TestClient):
         headers=header,
     )
     assert r2.status_code == HTTP_200_OK
-    assert r2.json() == [{"name": "somename", "enterprise_id": 1, "role": "ADMIN"}]
+    assert r2.json() == [{"name": "somename", "enterprise_id": r.json()['id'], "role": "ADMIN"}]

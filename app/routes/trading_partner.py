@@ -28,7 +28,11 @@ class TradingPartnerInput(BaseModel):
         return nip
 
 
-@tradingpartner_router.post("/trading_partner1", status_code=HTTP_201_CREATED)
+@tradingpartner_router.post(
+    "/trading_partner1",
+    status_code=HTTP_201_CREATED,
+    response_model=models.TradingPartner,
+)
 async def add_trading_partner(
     trading_partner: TradingPartnerInput,
     response: Response,
