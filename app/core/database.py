@@ -1,7 +1,15 @@
+import logging
+import os
+
 import databases
 import sqlalchemy
 
 from .config import settings
 
-database = databases.Database(str(settings.DATABASE_URL))
+DB_URL = (
+    f"{settings.DATABASE_URL}_test"
+    if os.environ.get("TESTING")
+    else str(settings.DATABASE_URL)
+)
+database = databases.Database(DB_URL)
 metadata = sqlalchemy.MetaData()

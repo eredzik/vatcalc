@@ -9,9 +9,11 @@ from ..core.security import User, fastapi_users
 
 enterprise_router = APIRouter(tags=["Enterprise1"])
 
-EnterpriseResponse = models.Enterprise.get_pydantic(
-    exclude={"tradingpartners", "userenterprises", "vatrates", "invoices"}
-)
+
+class EnterpriseResponse(BaseModel):
+    enterprise_id: int
+    name: str
+    role: models.UserEnterpriseRoles
 
 
 @enterprise_router.get(
@@ -21,10 +23,19 @@ EnterpriseResponse = models.Enterprise.get_pydantic(
 async def get_user_enterprises(user: User = Depends(fastapi_users.current_user())):
     enterprises = (
         await models.UserEnterprise.objects.filter(user_id=user.id)
-        .fields(["id", "name"])
+        .select_related("enterprise_id")
         .all()
     )
-    return enterprises
+    enterprises_formatted = [
+        {
+            "enterprise_id": enterprise.enterprise_id.id,
+            "name": enterprise.enterprise_id.name,
+            "role": enterprise.role,
+        }
+        for enterprise in enterprises
+    ]
+
+    return enterprises_formatted
 
 
 class EnterpriseCreate(BaseModel):

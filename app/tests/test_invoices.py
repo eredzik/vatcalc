@@ -1,18 +1,22 @@
-def test_add_invoice_failing_unauthorized(client):
+from starlette.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
+from starlette.testclient import TestClient
+
+
+def test_add_invoice_failing_unauthorized(client: TestClient):
     response = client.post("/api/invoice", json={})
-    assert response.status_code == 401
+    assert response.status_code == HTTP_401_UNAUTHORIZED
 
 
-def test_add_invoice_vatrate_success(client):
+def test_add_invoice_vatrate_success(client: TestClient):
     response_vatrate = client.post(
         "/api/vat_rate/", json={"vat_rate": 0.23, "comment": "string"}
     )
-    assert response_vatrate.status_code == 200
+    assert response_vatrate.status_code == HTTP_200_OK
     response_partner = client.post(
         "/api/trading_partner/",
         json={"nip_number": "0000000000", "name": "", "adress": ""},
     )
-    assert response_partner.status_code == 200
+    assert response_partner.status_code == HTTP_200_OK
     response = client.post(
         "/api/invoice/",
         json={

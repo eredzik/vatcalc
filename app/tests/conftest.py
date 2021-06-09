@@ -1,19 +1,12 @@
 import os
 import warnings
-from typing import Generator
 
 import alembic
 import pytest
-import sqlalchemy
 from alembic.config import Config
-from asgi_lifespan import LifespanManager
 from databases import Database
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-from httpx import AsyncClient
-
-from ..core.config import settings
-from ..models import metadata
 
 
 # Apply migrations at beginning and end of testing session
@@ -32,6 +25,7 @@ def apply_migrations():
 def app(apply_migrations: None) -> FastAPI:
     from ..main import app
 
+    print("ABC")
     return app
 
 
