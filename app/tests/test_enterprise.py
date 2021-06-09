@@ -1,15 +1,14 @@
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_401_UNAUTHORIZED
 from starlette.testclient import TestClient
 
-from .auth_utils import get_random_logged_user_token
+from .auth_utils import get_random_user_header
 
 
 def test_enterprise_add(client: TestClient):
-    token = get_random_logged_user_token(client)
     r = client.post(
         "/api/enterprise1",
         json={"name": "somename"},
-        headers={"Authorization": "Bearer " + token},
+        headers=get_random_user_header(client),
     )
     assert r.status_code == HTTP_201_CREATED
 
@@ -23,20 +22,15 @@ def test_enterprise_add_unauthorized(client: TestClient):
 
 
 def test_enterprise_get_for_user(client: TestClient):
-    token = get_random_logged_user_token(client)
+    header = get_random_user_header(client)
     r = client.post(
         "/api/enterprise1",
         json={"name": "somename"},
-        headers={"Authorization": "Bearer " + token},
+        headers=header,
     )
     r2 = client.get(
         "/api/enterprise1",
-        headers={"Authorization": "Bearer " + token},
+        headers=header,
     )
     assert r2.status_code == HTTP_200_OK
-    assert r2.json() == [{
-        "name": "somename",
-        "enterprise_id": 1,
-        "role": "ADMIN"
-    }]
-
+    assert r2.json() == [{"name": "somename", "enterprise_id": 1, "role": "ADMIN"}]

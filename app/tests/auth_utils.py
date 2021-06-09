@@ -32,3 +32,7 @@ def get_random_logged_user_token(client: TestClient):
     r = register_sample_user(client, email, password)
     r2 = login_sample_user(client, email, password)
     return r2.json()['access_token']
+
+def get_random_user_header(client: TestClient):
+    token = get_random_logged_user_token(client)
+    return {"Authorization": "Bearer " + token}
