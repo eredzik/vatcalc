@@ -1,37 +1,48 @@
 import os
+import warnings
 from typing import Generator
 
+import alembic
 import pytest
 import sqlalchemy
+from alembic.config import Config
+from asgi_lifespan import LifespanManager
+from databases import Database
+from fastapi import FastAPI
 from fastapi.testclient import TestClient
+from httpx import AsyncClient
 
-os.environ["JWT_SECRET"] = "abc"
-import sqlalchemy as sa
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, sessionmaker
-
-from ..database import Base, get_db
-from ..main import app
-
-SQLALCHEMY_DB_URL = "sqlite:///./test.db"
-engine = create_engine(SQLALCHEMY_DB_URL, connect_args={"check_same_thread": False})
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+from ..core.config import settings
+from ..models import metadata
 
 
-def override_get_db():
+# Apply migrations at beginning and end of testing session
+@pytest.fixture(scope="session")
+def apply_migrations():
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
+    os.environ["TESTING"] = "1"
+    config = Config("alembic.ini")
+    alembic.command.upgrade(config, "head")  # type: ignore
+    yield
+    alembic.command.downgrade(config, "base")  # type: ignore
 
-    try:
-        db: Session = TestingSessionLocal()
-        yield db
-    finally:
-        db.close()  # type: ignore
+
+# Create a new application for testing
+@pytest.fixture
+def app(apply_migrations: None) -> FastAPI:
+    from ..main import app
+
+    return app
 
 
-@pytest.fixture(scope="module")
-def client() -> Generator:
+# Grab a reference to our database when needed
+@pytest.fixture
+def db(app: FastAPI) -> Database:
+    return app.state._db
 
-    Base.metadata.drop_all(bind=engine)
-    Base.metadata.create_all(bind=engine)
-    app.dependency_overrides[get_db] = override_get_db
-    with TestClient(app) as c:
-        yield c
+
+# Make requests in our tests
+@pytest.fixture
+def client(app: FastAPI) -> TestClient:
+    with (TestClient(app)) as client:
+        yield client

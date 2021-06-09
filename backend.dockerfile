@@ -4,7 +4,7 @@ WORKDIR /usr/src/backend/
 COPY Pipfile .
 COPY Pipfile.lock .
 RUN pip install --no-cache-dir pipenv && \
-    pipenv install --system --ignore-pipfile --deploy --clear
+    pipenv install --system --ignore-pipfile --deploy --clear --dev
 
 ENV WAIT_VERSION 2.7.2
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait /wait

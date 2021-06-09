@@ -1,6 +1,6 @@
-def test_add_invoice_failing(client):
-    response = client.post("/api/invoice/", json={})
-    assert response.status_code == 422
+def test_add_invoice_failing_unauthorized(client):
+    response = client.post("/api/invoice", json={})
+    assert response.status_code == 401
 
 
 def test_add_invoice_vatrate_success(client):

@@ -1,12 +1,11 @@
-import databases
+from enum import Enum
+
 import ormar
 import sqlalchemy
 from fastapi_users.db import OrmarBaseUserModel, OrmarUserDatabase
 
 from .core.config import settings
-
-database = databases.Database(str(settings.DATABASE_URL))
-metadata = sqlalchemy.MetaData()
+from .core.database import database, metadata
 
 
 class BaseMeta:
@@ -68,7 +67,21 @@ class InvoicePosition(ormar.Model):
 
 
 class UserModel(OrmarBaseUserModel):
-    class Meta:
+    class Meta(BaseMeta):
         tablename = "users"
-        metadata = metadata
-        database = database
+
+
+class UserEnterpriseRoles(Enum):
+    viewer = "VIEWER"
+    editor = "EDITOR"
+    admin = "ADMIN"
+
+
+class UserEnterprise(ormar.Model):
+    class Meta(BaseMeta):
+        tablename = "userenterprise"
+
+    id = ormar.Integer(primary_key=True)
+    enterprise_id = ormar.ForeignKey(Enterprise)
+    user_id = ormar.ForeignKey(UserModel)
+    role = ormar.String(max_length=10, choices=UserEnterpriseRoles)

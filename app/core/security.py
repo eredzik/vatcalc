@@ -1,43 +1,8 @@
-# from datetime import datetime, timedelta
-# from typing import Any, Union
-
-# from jose import jwt
-# from passlib.context import CryptContext
-
-# from .config import settings
-
-# pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
-# ALGORITHM = "HS256"
-
-
-# def create_access_token(
-#     subject: Union[str, Any], expires_delta: timedelta = None
-# ) -> str:
-#     if expires_delta:
-#         expire = datetime.utcnow() + expires_delta
-#     else:
-#         expire = datetime.utcnow() + timedelta(
-#             minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
-#         )
-#     to_encode = {"exp": expire, "sub": str(subject)}
-#     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=ALGORITHM)
-#     return encoded_jwt
-
-
-# def verify_password(plain_password: str, hashed_password: str) -> bool:
-#     return pwd_context.verify(plain_password, hashed_password)
-
-
-# def get_password_hash(password: str) -> str:
-#     return pwd_context.hash(password)
-
+from fastapi import APIRouter
 from fastapi_users import FastAPIUsers, models
 from fastapi_users.authentication import CookieAuthentication, JWTAuthentication
 from fastapi_users.db import OrmarUserDatabase
 
-# from .. import models
 from ..models import UserModel
 from .config import settings
 
@@ -65,7 +30,7 @@ auth_backends = []
 # )
 # auth_backends.append(cookie_authentication)
 jwt_authentication = JWTAuthentication(
-    secret=settings.SECRET_KEY, lifetime_seconds=3600
+    secret=settings.SECRET_KEY, lifetime_seconds=3600, tokenUrl="/api/auth/login"
 )
 auth_backends.append(jwt_authentication)
 
@@ -76,4 +41,18 @@ fastapi_users = FastAPIUsers(
     UserCreate,
     UserUpdate,
     UserDB,
+)
+
+
+# Authentication routers
+auth_router = APIRouter()
+auth_router.include_router(
+    fastapi_users.get_auth_router(jwt_authentication),
+    prefix="/auth",
+    tags=["auth"],
+)
+auth_router.include_router(
+    fastapi_users.get_register_router(),
+    prefix="/auth",
+    tags=["auth"],
 )

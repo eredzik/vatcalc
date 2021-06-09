@@ -16,6 +16,7 @@ python-jose = "*"
 psycopg2 = "*"
 ormar = "*"
 fastapi-crudrouter = "*"
+asgi-lifespan = "*"
 
 [dev-packages]
 pytest = "*"
@@ -26,6 +27,7 @@ asynctest = "*"
 pytest-cov = "*"
 requests = "*"
 sqlalchemy2-stubs = "==0.0.1a4"
+httpx = "*"
 
 [requires]
 python_version = "3.8"
