@@ -6,12 +6,9 @@ import Api.Article.Tag exposing (Tag)
 import Api.Data exposing (Data)
 import Api.User exposing (User)
 import Html.Styled as Html exposing (..)
-import Html.Styled.Attributes exposing (class, classList)
-import Html.Styled.Events as Events
-import Page exposing (Page)
+import Page
 import Request exposing (Request)
 import Shared
-import Utils.Maybe
 import View exposing (View)
 
 
@@ -199,7 +196,7 @@ subscriptions _ =
 
 
 view : Shared.Model -> Model -> View Msg
-view shared model =
+view _ _ =
     { title = ""
     , body =
         [ text "Strona glowna" ]

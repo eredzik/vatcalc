@@ -11,13 +11,11 @@ module Shared exposing
 import Api.User exposing (User)
 import Components.Navbar
 import Css
-import Css.Global
 import Html.Styled as Html exposing (..)
 import Html.Styled.Attributes as Attr
 import Json.Decode as Json
 import Ports
 import Request exposing (Request)
-import Tailwind.Utilities as Tw
 import Utils.Route
 import View exposing (View)
 

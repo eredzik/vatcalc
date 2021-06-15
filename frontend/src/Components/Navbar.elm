@@ -7,7 +7,6 @@ module Components.Navbar exposing (view)
 import Api.User exposing (User)
 import Css
 import Gen.Route as Route exposing (Route)
-import Html
 import Html.Styled exposing (..)
 import Html.Styled.Attributes as Attr
 import Html.Styled.Events as Events
@@ -59,7 +58,7 @@ view model =
             ([]
                 ++ (case model.user of
                         Just _ ->
-                            [ viewLink ( "Strona główna", [ hrefAttrib Route.Home_ ] )
+                            [ viewLink ( "Rejestr VAT", [ hrefAttrib Route.Invoices ] )
                             , viewLink ( "Wyloguj się", [ Events.onClick model.onSignOut ] )
                             ]
 

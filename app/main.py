@@ -11,10 +11,7 @@ async def get_index(request: Request, exc=None):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
-app = FastAPI(
-    title="API"
-    # , exception_handlers={404: get_index}
-)
+app = FastAPI(title="API", exception_handlers={404: get_index})
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 

@@ -19,7 +19,6 @@ import Http exposing (stringBody)
 import Json.Decode as Json
 import Json.Encode as Encode
 import Url exposing (percentEncode)
-import Utils.Json
 
 
 type alias User =
