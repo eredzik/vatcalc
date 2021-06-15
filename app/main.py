@@ -37,10 +37,6 @@ app.mount("/static", StaticFiles(directory="frontend/public"), name="static")
 templates = Jinja2Templates(directory="frontend/public")
 
 
-# app.get("/", response_class=HTMLResponse)(get_index)
-
-
 @app.get("/", response_class=HTMLResponse)
-async def get_favicon(request: Request):
-    print("test")
-    return templates.TemplateResponse("index.html", {"request": request})
+async def index(request: Request):
+    return await get_index(request)

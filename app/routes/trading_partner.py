@@ -1,6 +1,8 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, Response
 from pydantic import BaseModel, validator
-from starlette.status import HTTP_201_CREATED, HTTP_401_UNAUTHORIZED
+from starlette.status import HTTP_201_CREATED, HTTP_401_UNAUTHORIZED, HTTP_409_CONFLICT
 
 from .. import models
 from ..core.security import User, fastapi_users
@@ -43,10 +45,35 @@ async def add_trading_partner(
     )
     if permissions is not None:
         if permissions.role in ("EDITOR", "ADMIN"):
-            return await models.TradingPartner(**trading_partner.dict()).save()
+            existing_trading_partner = await models.TradingPartner.objects.get_or_none(
+                nip_number=trading_partner.nip_number
+            )
+            if existing_trading_partner is not None:
+                return await models.TradingPartner(**trading_partner.dict()).save()
+            else:
+                response.status_code = HTTP_409_CONFLICT
+                return
         else:
             response.status_code = HTTP_401_UNAUTHORIZED
             return
     else:
         response.status_code = HTTP_401_UNAUTHORIZED
         return
+
+
+TradingPartnerResponse = models.TradingPartner.get_pydantic(
+    include={"adress", "id", "name", "nip_number"}
+)
+
+
+@tradingpartner_router.get(
+    "/trading_partner1",
+    response_model=List[TradingPartnerResponse],
+)
+async def get_trading_partners(
+    skip: int,
+    limit: int,
+    enterprise_id: int,
+    user: User = Depends(fastapi_users.current_user()),
+):
+    pass
