@@ -3,6 +3,7 @@ module Components.UserForm exposing (Field, view)
 import Api.Data exposing (Data)
 import Api.User exposing (User)
 import Components.ErrorList
+import Components.Form exposing (viewField)
 import Gen.Route as Route exposing (Route)
 import Html.Styled as Html exposing (..)
 import Html.Styled.Attributes exposing (class, href, placeholder, type_, value)
@@ -49,19 +50,4 @@ view options =
                     ]
                 ]
             ]
-        ]
-
-
-viewField : Field msg -> Html msg
-viewField options =
-    fieldset [ class "form-group" ]
-        [ label [] [ text (options.label ++ ": ") ]
-        , input
-            [ class "form-control form-control-lg"
-            , placeholder options.label
-            , type_ options.type_
-            , value options.value
-            , Events.onInput options.onInput
-            ]
-            []
         ]

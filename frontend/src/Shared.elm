@@ -8,6 +8,7 @@ module Shared exposing
     , view
     )
 
+import Api.Enterprise exposing (Enterprise)
 import Api.User exposing (User)
 import Components.Navbar
 import Css

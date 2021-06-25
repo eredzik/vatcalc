@@ -2,6 +2,7 @@ module Api.User exposing
     ( User
     , decoder, encode
     , authentication, registration, update
+    , emptyUser
     )
 
 {-|
@@ -14,7 +15,8 @@ module Api.User exposing
 -}
 
 import Api.Data exposing (Data)
-import Api.Token exposing (Token)
+import Api.Enterprise exposing (Enterprise)
+import Api.Token exposing (Token(..))
 import Http exposing (stringBody)
 import Json.Decode as Json
 import Json.Encode as Encode
@@ -24,22 +26,40 @@ import Url exposing (percentEncode)
 type alias User =
     { email : String
     , token : Token
+    , selectedEnterprise : Maybe Enterprise
     }
+
+
+emptyUser : User
+emptyUser =
+    User "" (Token "") Nothing
 
 
 decoder : Json.Decoder User
 decoder =
-    Json.map2 User
+    Json.map3 User
         (Json.field "email" Json.string)
         (Json.field "token" Api.Token.decoder)
+        (Json.field "selectedEnterprise" Api.Enterprise.decoder)
 
 
 encode : User -> Json.Value
 encode user =
+    let
+        enterprise_encoder =
+            case user.selectedEnterprise of
+                Just enterprise ->
+                    [ ( "selectedEnterprise", Api.Enterprise.encode enterprise ) ]
+
+                Nothing ->
+                    []
+    in
     Encode.object
-        [ ( "email", Encode.string user.email )
-        , ( "token", Api.Token.encode user.token )
-        ]
+        ([ ( "email", Encode.string user.email )
+         , ( "token", Api.Token.encode user.token )
+         ]
+            ++ enterprise_encoder
+        )
 
 
 authentication :

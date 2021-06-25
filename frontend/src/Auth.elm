@@ -29,10 +29,10 @@ beforeProtectedInit shared req =
         Nothing ->
             case req.route of
                 Register ->
-                    Api.User.User "" (Token "") |> ElmSpa.Provide
+                    ElmSpa.Provide Api.User.emptyUser
 
                 Login ->
-                    Api.User.User "" (Token "") |> ElmSpa.Provide
+                    ElmSpa.Provide Api.User.emptyUser
 
                 _ ->
                     ElmSpa.RedirectTo Route.Login

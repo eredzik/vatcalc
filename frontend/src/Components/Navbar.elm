@@ -60,6 +60,7 @@ view model =
                         Just _ ->
                             [ viewLink ( "Rejestr VAT", [ hrefAttrib Route.Invoices ] )
                             , viewLink ( "Rejestr Kontrahentów", [ hrefAttrib Route.Partners ] )
+                            , viewLink ( "Rejestr Firm", [ hrefAttrib Route.Enterprises ] )
                             , viewLink ( "Wyloguj się", [ Events.onClick model.onSignOut ] )
                             ]
 
