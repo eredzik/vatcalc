@@ -3,6 +3,7 @@ module Pages.Register exposing (Model, Msg, page)
 import Api.Data exposing (Data(..))
 import Api.User
 import Effect exposing (Effect)
+import ElmSpa.Page exposing (Protected(..))
 import Gen.Route as Route
 import Html.Styled as Html exposing (..)
 import Html.Styled.Attributes as Attr
@@ -15,12 +16,14 @@ import View exposing (View)
 
 page : Shared.Model -> Request -> Page.With Model Msg
 page shared req =
-    Page.advanced
-        { init = init shared
-        , update = update req
-        , subscriptions = subscriptions
-        , view = view
-        }
+    Page.protected.advanced
+        (\_ ->
+            { init = init shared
+            , update = update req
+            , subscriptions = subscriptions
+            , view = view
+            }
+        )
 
 
 
@@ -29,7 +32,6 @@ page shared req =
 
 type RegisteredState
     = SuccesfulRegister
-    | LoggedIn
     | Registering
 
 
@@ -43,17 +45,8 @@ type alias Model =
 
 
 init : Shared.Model -> ( Model, Effect Msg )
-init shared =
-    let
-        register_state =
-            case shared.user of
-                Just _ ->
-                    LoggedIn
-
-                Nothing ->
-                    Registering
-    in
-    ( { registered = register_state
+init _ =
+    ( { registered = Registering
       , username = ""
       , email = ""
       , password = ""
@@ -139,9 +132,6 @@ view model =
     case model.registered of
         SuccesfulRegister ->
             viewAfterRegister model
-
-        LoggedIn ->
-            Debug.todo "branch 'LoggedIn' not implemented"
 
         Registering ->
             viewRegister model

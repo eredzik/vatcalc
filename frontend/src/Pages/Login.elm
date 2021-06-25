@@ -16,12 +16,14 @@ import View exposing (View)
 
 page : Shared.Model -> Request -> Page.With Model Msg
 page shared req =
-    Page.advanced
-        { init = init shared
-        , update = update req
-        , subscriptions = subscriptions
-        , view = view
-        }
+    Page.protected.advanced
+        (\_ ->
+            { init = init shared
+            , update = update req
+            , subscriptions = subscriptions
+            , view = view
+            }
+        )
 
 
 
@@ -36,15 +38,9 @@ type alias Model =
 
 
 init : Shared.Model -> ( Model, Effect Msg )
-init shared =
+init _ =
     ( Model
-        (case shared.user of
-            Just user ->
-                Api.Data.Success user
-
-            Nothing ->
-                Api.Data.NotAsked
-        )
+        Api.Data.NotAsked
         ""
         ""
     , Effect.none
