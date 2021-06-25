@@ -1,4 +1,4 @@
-module Components.SimpleTable exposing (bootstapTable, createTable, simpleBootstrapTable)
+module Components.SimpleTable exposing (simpleBootstrapTable)
 
 import Html.Styled exposing (..)
 import Html.Styled.Attributes as Attr

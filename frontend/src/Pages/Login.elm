@@ -6,7 +6,6 @@ import Api.User exposing (User)
 import Components.UserForm
 import Effect exposing (Effect)
 import Gen.Route as Route
-import Html.Styled as Html exposing (..)
 import Page
 import Request exposing (Request)
 import Shared

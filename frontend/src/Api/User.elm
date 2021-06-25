@@ -1,7 +1,7 @@
 module Api.User exposing
     ( User
     , decoder, encode
-    , authentication, registration, update
+    , authentication, registration
     , emptyUser
     )
 
@@ -124,49 +124,3 @@ registration options =
 registerResponseDecoder : Json.Decoder String
 registerResponseDecoder =
     Json.field "id" Json.string
-
-
-update :
-    { token : Token
-    , user :
-        { user
-            | username : String
-            , email : String
-            , password : Maybe String
-            , image : String
-            , bio : String
-        }
-    , onResponse : Data User -> msg
-    }
-    -> Cmd msg
-update options =
-    let
-        body : Json.Value
-        body =
-            Encode.object
-                [ ( "user"
-                  , Encode.object
-                        (List.concat
-                            [ [ ( "username", Encode.string options.user.username )
-                              , ( "email", Encode.string options.user.email )
-                              , ( "image", Encode.string options.user.image )
-                              , ( "bio", Encode.string options.user.bio )
-                              ]
-                            , case options.user.password of
-                                Just password ->
-                                    [ ( "password", Encode.string password ) ]
-
-                                Nothing ->
-                                    []
-                            ]
-                        )
-                  )
-                ]
-    in
-    Api.Token.put (Just options.token)
-        { url = "https://conduit.productionready.io/api/user"
-        , body = Http.jsonBody body
-        , expect =
-            Api.Data.expectJson options.onResponse
-                (Json.field "user" decoder)
-        }

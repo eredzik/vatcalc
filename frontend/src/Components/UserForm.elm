@@ -5,8 +5,8 @@ import Api.User exposing (User)
 import Components.ErrorList
 import Components.Form exposing (viewField)
 import Gen.Route as Route exposing (Route)
-import Html.Styled as Html exposing (..)
-import Html.Styled.Attributes exposing (class, href, placeholder, type_, value)
+import Html.Styled exposing (..)
+import Html.Styled.Attributes exposing (href)
 import Html.Styled.Events as Events
 
 

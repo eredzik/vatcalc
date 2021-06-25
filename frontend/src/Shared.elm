@@ -8,11 +8,10 @@ module Shared exposing
     , view
     )
 
-import Api.Enterprise exposing (Enterprise)
 import Api.User exposing (User)
 import Components.Navbar
 import Css
-import Html.Styled as Html exposing (..)
+import Html.Styled exposing (..)
 import Html.Styled.Attributes as Attr
 import Json.Decode as Json
 import Ports

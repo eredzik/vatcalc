@@ -1,6 +1,6 @@
 module Components.NotFound exposing (view)
 
-import Html.Styled as Html exposing (..)
+import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (href)
 
 

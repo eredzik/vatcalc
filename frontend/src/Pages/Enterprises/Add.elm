@@ -8,7 +8,7 @@ import View exposing (View)
 
 
 page : Shared.Model -> Request -> Page.With Model Msg
-page shared req =
+page _ _ =
     Page.element
         { init = init
         , update = update
@@ -50,7 +50,7 @@ update msg model =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
+subscriptions _ =
     Sub.none
 
 
@@ -59,7 +59,7 @@ subscriptions model =
 
 
 view : Model -> View Msg
-view model =
+view _ =
     { title = "Dodaj firmę"
     , body = [ text "Enterprises.Add" ]
     }

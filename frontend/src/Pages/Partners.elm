@@ -3,7 +3,6 @@ module Pages.Partners exposing (Model, Msg, page)
 import Api.TradingPartner exposing (TradingPartner)
 import Components.SimpleTable exposing (simpleBootstrapTable)
 import Effect exposing (Effect)
-import Html.Styled exposing (..)
 import Page
 import Request exposing (Request)
 import Shared

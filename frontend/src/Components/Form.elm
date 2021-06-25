@@ -1,4 +1,4 @@
-module Components.Form exposing (Field, createForm, viewField)
+module Components.Form exposing (Field, viewField)
 
 import Html.Styled exposing (..)
 import Html.Styled.Attributes as Attr
@@ -11,29 +11,6 @@ type alias Field msg =
     , value : String
     , onInput : String -> msg
     }
-
-
-createForm :
-    { label : String
-    , onFormSubmit : msg
-    , fields : List (Field msg)
-    }
-    -> Html msg
-createForm options =
-    div []
-        [ div []
-            [ div []
-                [ div []
-                    [ h1 [] [ text options.label ]
-                    , form [ Events.onSubmit options.onFormSubmit ] <|
-                        List.concat
-                            [ List.map viewField options.fields
-                            , [ button [] [ text options.label ] ]
-                            ]
-                    ]
-                ]
-            ]
-        ]
 
 
 viewField : Field msg -> Html msg

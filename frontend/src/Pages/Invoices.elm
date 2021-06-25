@@ -37,13 +37,9 @@ update _ msg model =
         SelectedTab tab ->
             ( { model | invoiceTabSelected = tab }, Effect.none )
 
-        ReceivedInvoices ->
-            ( model, Effect.none )
-
 
 type Msg
     = SelectedTab InvoiceTabSelected
-    | ReceivedInvoices
 
 
 subscriptions : Model -> Sub msg

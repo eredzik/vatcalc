@@ -1,6 +1,6 @@
 module Pages.Home_ exposing (Model, Msg, page)
 
-import Html.Styled as Html exposing (..)
+import Html.Styled exposing (..)
 import Page
 import Request exposing (Request)
 import Shared

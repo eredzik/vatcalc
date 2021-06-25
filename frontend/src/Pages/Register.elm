@@ -3,9 +3,8 @@ module Pages.Register exposing (Model, Msg, page)
 import Api.Data exposing (Data(..))
 import Api.User
 import Effect exposing (Effect)
-import ElmSpa.Page exposing (Protected(..))
 import Gen.Route as Route
-import Html.Styled as Html exposing (..)
+import Html.Styled exposing (..)
 import Html.Styled.Attributes as Attr
 import Html.Styled.Events as Events
 import Page

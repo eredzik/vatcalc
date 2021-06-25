@@ -1,7 +1,7 @@
 module Pages.NotFound exposing (view)
 
 import Components.NotFound
-import Html.Styled as Html exposing (..)
+import Html.Styled exposing (..)
 
 
 view : { title : String, body : List (Html msg) }
