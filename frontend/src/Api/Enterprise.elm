@@ -11,14 +11,12 @@ type alias Enterprise =
     }
 
 
-decoder : Json.Decoder (Maybe Enterprise)
+decoder : Json.Decoder Enterprise
 decoder =
-    Json.maybe
-        (Json.map3 Enterprise
-            (Json.field "id" Json.string)
-            (Json.field "nip_number" Json.string)
-            (Json.field "name" Json.string)
-        )
+    Json.map3 Enterprise
+        (Json.field "id" Json.string)
+        (Json.field "nip_number" Json.string)
+        (Json.field "name" Json.string)
 
 
 encode : Enterprise -> Encode.Value

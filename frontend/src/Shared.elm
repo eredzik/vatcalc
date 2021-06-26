@@ -38,7 +38,7 @@ init _ json =
     let
         user =
             json
-                |> Json.decodeValue (Json.field "user" Api.User.decoder)
+                |> Json.decodeValue Api.User.decoder
                 |> Result.toMaybe
     in
     ( Model user
@@ -86,10 +86,10 @@ view :
 view req { page, toMsg } model =
     { title =
         if String.isEmpty page.title then
-            "Conduit"
+            "VatCalc"
 
         else
-            page.title ++ " | Conduit"
+            page.title ++ " | VatCalc"
     , body =
         [ div
             [ Attr.css [ Css.margin <| Css.px 0 ] ]

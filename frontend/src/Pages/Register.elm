@@ -107,9 +107,6 @@ update _ msg model =
                 NotAsked ->
                     ( model, Effect.none )
 
-                Loading ->
-                    ( model, Effect.none )
-
                 Failure errors ->
                     ( { model | errors = errors }, Effect.none )
 

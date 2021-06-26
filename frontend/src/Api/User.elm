@@ -18,7 +18,8 @@ import Api.Data exposing (Data)
 import Api.Enterprise exposing (Enterprise)
 import Api.Token exposing (Token(..))
 import Http exposing (stringBody)
-import Json.Decode as Json
+import Json.Decode as Decode exposing (Decoder, nullable, string)
+import Json.Decode.Pipeline exposing (optional, required)
 import Json.Encode as Encode
 import Url exposing (percentEncode)
 
@@ -26,33 +27,40 @@ import Url exposing (percentEncode)
 type alias User =
     { email : String
     , token : Token
-    , selectedEnterprise : Maybe Enterprise
+
+    -- , selectedEnterprise : Maybe Enterprise
     }
 
 
 emptyUser : User
 emptyUser =
-    User "" (Token "") Nothing
+    User "" (Token "")
 
 
-decoder : Json.Decoder User
+
+-- Nothing
+
+
+decoder : Decoder User
 decoder =
-    Json.map3 User
-        (Json.field "email" Json.string)
-        (Json.field "token" Api.Token.decoder)
-        (Json.field "selectedEnterprise" Api.Enterprise.decoder)
+    Decode.succeed User
+        |> required "email" Decode.string
+        |> required "token" Api.Token.decoder
 
 
-encode : User -> Json.Value
+
+-- |> optional "selectedEnterprise" (Decode.map Just Api.Enterprise.decoder) Nothing
+
+
+encode : User -> Encode.Value
 encode user =
     let
         enterprise_encoder =
-            case user.selectedEnterprise of
-                Just enterprise ->
-                    [ ( "selectedEnterprise", Api.Enterprise.encode enterprise ) ]
-
-                Nothing ->
-                    []
+            -- case user.selectedEnterprise of
+            --     Just enterprise ->
+            --         [ ( "selectedEnterprise", Api.Enterprise.encode enterprise ) ]
+            --     Nothing ->
+            []
     in
     Encode.object
         ([ ( "email", Encode.string user.email )
@@ -89,9 +97,9 @@ authentication options =
         }
 
 
-loginDecoder : Json.Decoder String
+loginDecoder : Decoder String
 loginDecoder =
-    Json.field "access_token" Json.string
+    Decode.field "access_token" string
 
 
 registration :
@@ -106,7 +114,7 @@ registration :
     -> Cmd msg
 registration options =
     let
-        body : Json.Value
+        body : Encode.Value
         body =
             Encode.object
                 [ ( "email", Encode.string options.user.email )
@@ -121,6 +129,6 @@ registration options =
         }
 
 
-registerResponseDecoder : Json.Decoder String
+registerResponseDecoder : Decoder String
 registerResponseDecoder =
-    Json.field "id" Json.string
+    Decode.field "id" string
