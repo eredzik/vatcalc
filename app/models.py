@@ -19,6 +19,8 @@ class Enterprise(ormar.Model):
 
     id = ormar.Integer(primary_key=True)
     name = ormar.String(max_length=64)
+    address = ormar.String(max_length=256)
+    nip_number = ormar.String(max_length=10)
 
 
 class TradingPartner(ormar.Model):
@@ -28,8 +30,13 @@ class TradingPartner(ormar.Model):
     id = ormar.Integer(primary_key=True)
     nip_number = ormar.String(max_length=10)
     name = ormar.String(max_length=255)
-    adress = ormar.Text()
+    address = ormar.Text()
     enterprise = ormar.ForeignKey(Enterprise)
+
+
+class InvoiceType(str, Enum):
+    Inbound = "INBOUND"
+    Outbound = "OUTBOUND"
 
 
 class Invoice(ormar.Model):
@@ -39,7 +46,7 @@ class Invoice(ormar.Model):
     id = ormar.Integer(primary_key=True)
     invoice_id = ormar.String(max_length=64)
     invoice_date = ormar.Date()
-    invoice_type = ormar.String(max_length=8, choices=["INBOUND", "OUTBOUND"])
+    invoice_type = ormar.String(max_length=8, choices=[])
     trading_partner = ormar.ForeignKey(TradingPartner)
     enterprise = ormar.ForeignKey(Enterprise)
 
@@ -71,7 +78,7 @@ class UserModel(OrmarBaseUserModel):
         tablename = "users"
 
 
-class UserEnterpriseRoles(Enum):
+class UserEnterpriseRoles(str, Enum):
     viewer = "VIEWER"
     editor = "EDITOR"
     admin = "ADMIN"

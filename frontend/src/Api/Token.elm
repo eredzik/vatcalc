@@ -1,15 +1,8 @@
 module Api.Token exposing
     ( Token(..)
-    , decoder, encode
+    , decoder
+    , encode
     )
-
-{-|
-
-@docs Token
-@docs decoder, encode
-@docs get, put, post, delete
-
--}
 
 import Json.Decode as Json
 import Json.Encode as Encode
@@ -27,7 +20,3 @@ decoder =
 encode : Token -> Json.Value
 encode (Token token) =
     Encode.string token
-
-
-
--- HTTP HELPERS

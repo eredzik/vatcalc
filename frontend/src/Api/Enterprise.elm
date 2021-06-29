@@ -11,8 +11,8 @@ type alias Enterprise =
     }
 
 
-decoder : Json.Decoder Enterprise
-decoder =
+decode : Json.Decoder Enterprise
+decode =
     Json.map3 Enterprise
         (Json.field "id" Json.string)
         (Json.field "nip_number" Json.string)
@@ -26,3 +26,29 @@ encode enterprise =
         , ( "nip_number", Encode.string enterprise.nip_number )
         , ( "name", Encode.string enterprise.name )
         ]
+
+
+
+-- create :
+--     { data :
+--         { nip_number : String
+--         , name : String
+--         }
+--     , onResponse : Data String -> msg
+--     }
+--     -> Cmd msg
+-- create options =
+--     let
+--         body : Encode.Value
+--         body =
+--             Encode.object
+--                 [ ( "nip_number", Encode.string options.data.nip_number )
+--                 , ( "name", Encode.string options.data.name )
+--                 ]
+--     in
+--     Http.post
+--         { url = "api/auth/register"
+--         , body = Http.jsonBody body
+--         , expect =
+--             Api.Data.expectJson options.onResponse registerResponseDecoder
+--         }

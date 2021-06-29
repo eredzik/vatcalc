@@ -93,8 +93,7 @@ update req msg model =
                         user =
                             { email = model.email
                             , token = Token token_
-
-                            -- , selectedEnterprise = Nothing
+                            , selectedEnterprise = Nothing
                             }
                     in
                     ( { model | user = Success user }

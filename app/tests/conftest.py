@@ -10,7 +10,7 @@ from fastapi.testclient import TestClient
 
 
 # Apply migrations at beginning and end of testing session
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def apply_migrations():
     warnings.filterwarnings("ignore", category=DeprecationWarning)
     os.environ["TESTING"] = "1"
@@ -25,7 +25,6 @@ def apply_migrations():
 def app(apply_migrations: None) -> FastAPI:
     from ..main import app
 
-    print("ABC")
     return app
 
 

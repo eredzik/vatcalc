@@ -22,7 +22,7 @@ def upgrade():
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("nip_number", sa.String(length=10), nullable=False),
         sa.Column("name", sa.String(length=255), nullable=False),
-        sa.Column("adress", sa.Text(), nullable=False),
+        sa.Column("address", sa.Text(), nullable=False),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_table(

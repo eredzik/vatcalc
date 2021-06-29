@@ -2,6 +2,7 @@ import random
 import string
 
 from fastapi.testclient import TestClient
+from starlette.status import HTTP_201_CREATED
 
 
 def register_sample_user(cl: TestClient, email: str, password: str):
@@ -31,8 +32,19 @@ def get_random_logged_user_token(client: TestClient):
     password = "somelongpassword"
     r = register_sample_user(client, email, password)
     r2 = login_sample_user(client, email, password)
-    return r2.json()['access_token']
+    return r2.json()["access_token"]
+
 
 def get_random_user_header(client: TestClient):
     token = get_random_logged_user_token(client)
     return {"Authorization": "Bearer " + token}
+
+
+def create_random_enterprise(client: TestClient, user_header: dict):
+    response = client.post(
+        "/api/enterprise",
+        json={"name": "somename", "nip_number": "0623601757", "address": "adres1"},
+        headers=user_header,
+    )
+    assert response.status_code == HTTP_201_CREATED
+    return response.json()

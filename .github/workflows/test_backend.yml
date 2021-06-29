@@ -1,0 +1,24 @@
+name: Run tests
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+jobs:
+  test_backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build the stack
+        run: docker-compose up -d
+      - name: Build coverage file
+        run: |
+          docker exec -ti backend pytest --cache-clear --cov=app --cov-report xml
+
+      - uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          files: ./coverage.xml
+          flags: pytest # optional
+          verbose: true # optional (default = false)

@@ -5,7 +5,6 @@ import Api.User
 import Expect
 import Json.Decode as Json
 import Result exposing (Result(..))
-import Shared
 import Test exposing (..)
 
 

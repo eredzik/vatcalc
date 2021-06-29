@@ -18,13 +18,11 @@ config = alembic.context.config  # type: ignore
 # This line sets up loggers basically.
 fileConfig(config.config_file_name)
 
+from app.core.config import settings
+
 # add your model's MetaData object here (the one used in ormar)
 # for 'autogenerate' support
 from app.models import metadata
-
-target_metadata = metadata
-
-from app.core.config import settings
 
 # set your url here or import from settings
 # note that by default url is in saved sqlachemy.url variable in alembic.ini file
@@ -55,7 +53,7 @@ def run_migrations_online() -> None:
         )
 
     with connectable.connect() as connection:
-        alembic.context.configure(connection=connection, target_metadata=None)  # type: ignore
+        alembic.context.configure(connection=connection, target_metadata=metadata)  # type: ignore
         with alembic.context.begin_transaction():  # type: ignore
             alembic.context.run_migrations()  # type: ignore
 

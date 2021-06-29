@@ -18,7 +18,7 @@ import Api.Data exposing (Data)
 import Api.Enterprise exposing (Enterprise)
 import Api.Token exposing (Token(..))
 import Http exposing (stringBody)
-import Json.Decode as Decode exposing (Decoder, nullable, string)
+import Json.Decode as Decode exposing (Decoder, string)
 import Json.Decode.Pipeline exposing (optional, required)
 import Json.Encode as Encode
 import Url exposing (percentEncode)
@@ -27,18 +27,15 @@ import Url exposing (percentEncode)
 type alias User =
     { email : String
     , token : Token
-
-    -- , selectedEnterprise : Maybe Enterprise
+    , selectedEnterprise : Maybe Enterprise
     }
 
 
 emptyUser : User
 emptyUser =
-    User "" (Token "")
-
-
-
--- Nothing
+    User ""
+        (Token "")
+        Nothing
 
 
 decoder : Decoder User
@@ -46,21 +43,19 @@ decoder =
     Decode.succeed User
         |> required "email" Decode.string
         |> required "token" Api.Token.decoder
-
-
-
--- |> optional "selectedEnterprise" (Decode.map Just Api.Enterprise.decoder) Nothing
+        |> optional "selectedEnterprise" (Decode.map Just Api.Enterprise.decode) Nothing
 
 
 encode : User -> Encode.Value
 encode user =
     let
         enterprise_encoder =
-            -- case user.selectedEnterprise of
-            --     Just enterprise ->
-            --         [ ( "selectedEnterprise", Api.Enterprise.encode enterprise ) ]
-            --     Nothing ->
-            []
+            case user.selectedEnterprise of
+                Just enterprise ->
+                    [ ( "selectedEnterprise", Api.Enterprise.encode enterprise ) ]
+
+                Nothing ->
+                    []
     in
     Encode.object
         ([ ( "email", Encode.string user.email )
