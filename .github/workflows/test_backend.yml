@@ -19,6 +19,7 @@ jobs:
             free -m
             sleep 1
           done
+          ls -la
 
       - uses: codecov/codecov-action@v1
         with:
