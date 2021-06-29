@@ -10,10 +10,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Build the stack
-        run: docker-compose up -d
-      - name: Build coverage file
+      - name: Build the stack and coverage file
         run: |
+          docker-compose up -d;
           docker exec backend pytest --cache-clear --cov=app --cov-report xml
 
       - uses: codecov/codecov-action@v1
