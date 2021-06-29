@@ -17,7 +17,7 @@ jobs:
           docker exec backend pytest --cache-clear --cov=app --cov-report xml &
           while kill -0 $! > /dev/null 2>&1; do
             free -m
-            sleep <interval>
+            sleep 1
           done
 
       - uses: codecov/codecov-action@v1
