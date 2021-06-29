@@ -15,8 +15,8 @@ async def verify_enterprise_permissions(
     )
     if permissions is None:
         return JSONResponse(
-            status_code=HTTP_409_CONFLICT,
-            content={"message": "Enterprise does not exist"},
+            status_code=HTTP_401_UNAUTHORIZED,
+            content={"message": "Unauthorized"},
         )
     elif permissions.role not in (r.value for r in required_permissions):
         return JSONResponse(

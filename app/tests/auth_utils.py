@@ -40,10 +40,16 @@ def get_random_user_header(client: TestClient):
     return {"Authorization": "Bearer " + token}
 
 
-def create_random_enterprise(client: TestClient, user_header: dict):
+def create_random_enterprise(
+    client: TestClient,
+    user_header: dict,
+    name="somename",
+    nip_number="0623601757",
+    address="address1",
+):
     response = client.post(
         "/api/enterprise",
-        json={"name": "somename", "nip_number": "0623601757", "address": "adres1"},
+        json={"name": name, "nip_number": nip_number, "address": address},
         headers=user_header,
     )
     assert response.status_code == HTTP_201_CREATED

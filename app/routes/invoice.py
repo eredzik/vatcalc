@@ -67,7 +67,8 @@ async def add_invoice(
             vatrate_exists = all(
                 [
                     await models.VatRate.objects.get_or_none(
-                        id=pos.vat_rate.dict().get("id")
+                        id=pos.vat_rate.dict().get("id"),
+                        enterprise=invoice.trading_partner.id,
                     )
                     for pos in invoice.invoicepositions
                 ]
@@ -87,7 +88,7 @@ async def add_invoice(
             else:
                 return JSONResponse(
                     status_code=HTTP_409_CONFLICT,
-                    content={"message": "One of vat rates do not exist."},
+                    content={"message": "One of vat rates does not exist."},
                 )
     else:
         return permissions
