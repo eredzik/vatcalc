@@ -23,6 +23,8 @@ jobs:
         run: |
           cd frontend
           npm install -g elm-test
+          npm install -g elm-spa
+          elm-spa gen
           elm-test
 
 #       - name: Build frontend
