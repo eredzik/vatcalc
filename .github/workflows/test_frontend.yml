@@ -14,16 +14,17 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v1
 
+      - name: Setup elm
+        uses: jorelali/setup-elm@v3
+        with:
+          elm-version: 0.19.1
+
       - name: Install dependencies
         run: |
           cd frontend
           npm install -g elm-test
           elm-test
 
-#       - name: Setup elm
-#         uses: jorelali/setup-elm@v3
-#         with:
-#           elm-version: 0.19.1
 #       - name: Build frontend
 #         run: ./scripts/build_frontend.sh
 #       - name: Auto Minify
