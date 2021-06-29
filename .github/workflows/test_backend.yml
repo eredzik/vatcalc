@@ -14,12 +14,7 @@ jobs:
         run: docker-compose up -d
       - name: Build coverage file
         run: |
-          docker exec backend pytest --cache-clear --cov=app --cov-report xml &
-          while kill -0 $! > /dev/null 2>&1; do
-            free -m
-            sleep 1
-          done
-          ls -la
+          docker exec backend pytest --cache-clear --cov=app --cov-report xml
 
       - uses: codecov/codecov-action@v1
         with:
