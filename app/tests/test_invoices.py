@@ -8,21 +8,7 @@ from starlette.testclient import TestClient
 
 from .auth_utils import create_random_enterprise, get_random_user_header
 from .test_trading_partner import create_trading_partner
-
-
-def create_vat_rate(
-    client: TestClient, user_header, enterprise_id, vat_rate=0.23, comment="test1"
-):
-    response_partner = client.post(
-        "/api/vatrate",
-        json={
-            "vat_rate": vat_rate,
-            "comment": comment,
-            "enterprise": enterprise_id,
-        },
-        headers=user_header,
-    )
-    return response_partner
+from .test_vatrate import create_vat_rate
 
 
 def test_add_invoice_failing_unauthorized(client: TestClient):

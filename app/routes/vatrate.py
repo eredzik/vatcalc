@@ -1,4 +1,4 @@
-from typing import Type
+from typing import List, Type
 
 from fastapi import APIRouter, Depends, Response
 from fastapi.responses import JSONResponse
@@ -50,3 +50,32 @@ async def add_vatrate(
 
     else:
         return validated_or_error
+
+
+@vatrate_router.get(
+    "/vatrate",
+    response_model=List[models.VatRate],
+    status_code=200,
+    responses={**get_verify_enterprise_permissions_responses()},
+)
+async def get_vat_rates(
+    page: int,
+    enterprise_id: int,
+    user: User = Depends(fastapi_users.current_user()),
+):
+    permissions = await verify_enterprise_permissions(
+        user,
+        enterprise_id,
+        required_permissions=[
+            models.UserEnterpriseRoles.viewer,
+            models.UserEnterpriseRoles.editor,
+            models.UserEnterpriseRoles.admin,
+        ],
+    )
+    if permissions is True:
+        vatrates = await models.VatRate.objects.paginate(page=page).all(
+            enterprise__id=enterprise_id
+        )
+        return vatrates
+    else:
+        return permissions
