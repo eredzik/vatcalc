@@ -32,4 +32,15 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_SERVER=db
       - JWT_SECRET=somesecret
+      - CORS_ALLOWED_ORIGINS=*
     user: 1000:1000
+  frontend:
+    build:
+      context: frontend/
+      dockerfile:  "Dockerfile"
+    ports:
+      - "1234:1234"
+    volumes:
+      - ./frontend/:/usr/src/frontend
+    environment:
+      - API_SERVER=http://localhost:5000

@@ -1,6 +1,7 @@
 module Pages.Login exposing (Model, Msg, page)
 
 import Api.Data exposing (Data(..))
+import Api.Endpoint exposing (ApiPath)
 import Api.Token exposing (Token(..))
 import Api.User exposing (User)
 import Components.UserForm
@@ -18,7 +19,7 @@ page shared req =
     Page.protected.advanced
         (\_ ->
             { init = init shared
-            , update = update req
+            , update = update req shared.apiPath
             , subscriptions = subscriptions
             , view = view
             }
@@ -61,8 +62,8 @@ type Field
     | Password
 
 
-update : Request -> Msg -> Model -> ( Model, Effect Msg )
-update req msg model =
+update : Request -> ApiPath -> Msg -> Model -> ( Model, Effect Msg )
+update req apiPath msg model =
     case msg of
         Updated Email email ->
             ( { model | email = email }
@@ -83,6 +84,7 @@ update req msg model =
                         , password = model.password
                         }
                     , onResponse = GotToken
+                    , apiPath = apiPath
                     }
             )
 

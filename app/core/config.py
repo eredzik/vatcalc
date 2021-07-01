@@ -1,5 +1,5 @@
 import secrets
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 from pydantic import BaseSettings, PostgresDsn, validator
 from pydantic.networks import AnyUrl
@@ -26,6 +26,8 @@ class Settings(BaseSettings):
             host=values.get("POSTGRES_SERVER", ""),
             path=f"/{values.get('POSTGRES_DB') or ''}",
         )
+
+    CORS_ALLOWED_ORIGINS: str
 
 
 settings = Settings()

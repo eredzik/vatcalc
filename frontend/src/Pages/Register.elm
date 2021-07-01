@@ -1,6 +1,7 @@
 module Pages.Register exposing (Model, Msg, page)
 
 import Api.Data exposing (Data(..))
+import Api.Endpoint exposing (ApiPath)
 import Api.User
 import Effect exposing (Effect)
 import Gen.Route as Route
@@ -18,7 +19,7 @@ page shared req =
     Page.protected.advanced
         (\_ ->
             { init = init shared
-            , update = update req
+            , update = update shared.apiPath
             , subscriptions = subscriptions
             , view = view
             }
@@ -71,8 +72,8 @@ type Field
     | Password
 
 
-update : Request -> Msg -> Model -> ( Model, Effect Msg )
-update _ msg model =
+update : ApiPath -> Msg -> Model -> ( Model, Effect Msg )
+update apiPath msg model =
     case msg of
         Updated Username username ->
             ( { model | username = username }
@@ -99,6 +100,7 @@ update _ msg model =
                         , password = model.password
                         }
                     , onResponse = GotUser
+                    , apiPath = apiPath
                     }
             )
 

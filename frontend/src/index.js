@@ -1,10 +1,16 @@
-// Initial data passed to Elm (should match `Flags` defined in `Shared.elm`)
-// https://guide.elm-lang.org/interop/flags.html
+'use strict';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+var Elm = require('./Main.elm').Elm
 var flags =
-    JSON.parse(localStorage.getItem('user')) || null
+{
+    user: JSON.parse(localStorage.getItem('user')) || null,
+    api_endpoint: process.env.API_SERVER
+}
 
 console.log(flags)
-// Start our Elm application
+
 var app = Elm.Main.init({ flags: flags })
 
 // Ports go here

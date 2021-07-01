@@ -1,39 +1,41 @@
+import logging
+
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.responses import HTMLResponse
 
 from . import models, router
+from .core.config import settings
 
 
-async def get_index(request: Request, exc=None):
-    return templates.TemplateResponse("index.html", {"request": request})
+def get_app() -> FastAPI:
+    app = FastAPI(title="API")
+    app.add_middleware(GZipMiddleware, minimum_size=1000)
+    origins = [settings.CORS_ALLOWED_ORIGINS]
+    logger = logging.getLogger("uvicorn.error")
+    logger.info(f"Allowing origins: {origins=}")
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+    @app.on_event("startup")
+    async def startup():
+        await models.database.connect()
+
+    @app.on_event("shutdown")
+    async def shutdown():
+        await models.database.disconnect()
+
+    # API section
+    app.include_router(router.api_router)
+    return app
 
 
-app = FastAPI(title="API", exception_handlers={404: get_index})
-app.add_middleware(GZipMiddleware, minimum_size=1000)
-
-
-@app.on_event("startup")
-async def startup():
-    await models.database.connect()
-
-
-@app.on_event("shutdown")
-async def shutdown():
-    await models.database.disconnect()
-
-
-# API section
-app.include_router(router.api_router)
-
-# Frontend section
-app.mount("/static", StaticFiles(directory="frontend/public"), name="static")
-
-templates = Jinja2Templates(directory="frontend/public")
-
-
-@app.get("/", response_class=HTMLResponse)
-async def index(request: Request):
-    return await get_index(request)
+app = get_app()

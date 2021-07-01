@@ -8,12 +8,14 @@ module Shared exposing
     , view
     )
 
+import Api.Endpoint exposing (ApiPath(..))
 import Api.User exposing (User)
 import Components.Navbar
 import Css
 import Html.Styled exposing (..)
 import Html.Styled.Attributes as Attr
-import Json.Decode as Json
+import Json.Decode as Decode
+import Json.Decode.Pipeline exposing (optional, required)
 import Ports
 import Request exposing (Request)
 import Utils.Route
@@ -25,23 +27,41 @@ import View exposing (View)
 
 
 type alias Flags =
-    Json.Value
+    Decode.Value
 
 
 type alias Model =
     { user : Maybe User
+    , apiPath : ApiPath
     }
+
+
+flagsDecoder : Decode.Decoder Model
+flagsDecoder =
+    Decode.succeed Model
+        |> optional "user" (Decode.map Just Api.User.decoder) Nothing
+        |> required "api_endpoint" (Decode.map ApiPath Decode.string)
 
 
 init : Request -> Flags -> ( Model, Cmd Msg )
 init _ json =
     let
-        user =
+        parsedResult =
             json
-                |> Json.decodeValue Api.User.decoder
+                |> Decode.decodeValue flagsDecoder
                 |> Result.toMaybe
+
+        model =
+            case parsedResult of
+                Just mod ->
+                    mod
+
+                Nothing ->
+                    { user = Nothing
+                    , apiPath = ApiPath ""
+                    }
     in
-    ( Model user
+    ( model
     , Cmd.none
     )
 

@@ -15,6 +15,7 @@ module Api.User exposing
 -}
 
 import Api.Data exposing (Data)
+import Api.Endpoint exposing (ApiPath, Endpoint(..), endpointToString)
 import Api.Enterprise exposing (Enterprise)
 import Api.Token exposing (Token(..))
 import Http exposing (stringBody)
@@ -68,6 +69,7 @@ encode user =
 authentication :
     { user : { user | email : String, password : String }
     , onResponse : Data String -> msg
+    , apiPath : ApiPath
     }
     -> Cmd msg
 authentication options =
@@ -85,7 +87,7 @@ authentication options =
                 )
     in
     Http.post
-        { url = "api/auth/login"
+        { url = endpointToString Login options.apiPath
         , body = body
         , expect =
             Api.Data.expectJson options.onResponse loginDecoder
@@ -105,6 +107,7 @@ registration :
             , password : String
         }
     , onResponse : Data String -> msg
+    , apiPath : ApiPath
     }
     -> Cmd msg
 registration options =
@@ -117,7 +120,7 @@ registration options =
                 ]
     in
     Http.post
-        { url = "api/auth/register"
+        { url = endpointToString Register options.apiPath
         , body = Http.jsonBody body
         , expect =
             Api.Data.expectJson options.onResponse registerResponseDecoder
