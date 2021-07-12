@@ -10,8 +10,8 @@ then
         echo "Using set api path: ${API_URL}"
     fi
 else
-export API_URL="${URL}/api/openapi.json";
-echo "Using deployment api path: ${API_URL}"
+    export API_URL="${URL}/api/openapi.json";
+    echo "Using deployment api path: ${API_URL}"
 fi
 rm -rf .elm-spa;
 npx elm-spa gen;
