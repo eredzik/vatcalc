@@ -1,8 +1,8 @@
 npm install
 
-if [ -z "${URL}"];
+if [ -z "${URL}" ];
 then
-    if [ -z "${API_URL}"];
+    if [ -z "${API_URL}" ];
     then
         export API_URL="http://localhost:1234/api/openapi.json";
         echo "Using default dev api path: ${API_URL}"
