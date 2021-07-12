@@ -3,8 +3,6 @@ services:
   db:
     container_name: database
     image: postgres:13
-    # volumes:
-      # - ./.app-db-data:/var/lib/postgresql/data/pgdata
     environment:
       - PGDATA=/var/lib/postgresql/data/pgdata
       - POSTGRES_PASSWORD=postgres
@@ -25,14 +23,12 @@ services:
       - WAIT_HOSTS_TIMEOUT=300
       - WAIT_SLEEP_INTERVAL=2
       - WAIT_HOST_CONNECT_TIMEOUT=5
-      # - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
       - POSTGRES_PORT=5432
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=postgres
       - POSTGRES_SERVER=db
       - JWT_SECRET=somesecret
-      - FRONTEND_URL=http://localhost:1234
     user: 1000:1000
   frontend:
     build:
