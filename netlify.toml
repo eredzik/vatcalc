@@ -26,7 +26,7 @@
 [[redirects]]
   from = "/api"
   to = "API_PATH_PLACEHOLDER"
-
+  status = 200
 
   # By default, redirects won’t be applied if there’s a file with the same
   # path as the one defined in the `from` property. Setting `force` to `true`
