@@ -24,8 +24,8 @@
 
 # A redirect rule with many of the supported properties
 [[redirects]]
-  from = "/api"
-  to = "API_PATH_PLACEHOLDER"
+  from = "/api/*"
+  to = "API_PATH_PLACEHOLDER/:splat"
   status = 200
 
   # By default, redirects won’t be applied if there’s a file with the same
