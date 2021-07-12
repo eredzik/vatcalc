@@ -34,8 +34,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Build the stack
-        run: docker-compose up -d
+      # - name: Build the stack
+      #   run: docker-compose up -d
 
       - name: Install node
         uses: actions/setup-node@v1
@@ -43,7 +43,7 @@ jobs:
       - name: Install dependencies and build files
         run: |
           cd frontend
-          ./scripts/build_frontend.sh
+          sh ./scripts/build_frontend.sh
       - name: Run frontend tests
         run: npx elm-test
   #       - name: Build frontend
