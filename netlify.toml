@@ -13,7 +13,7 @@
   publish = "dist"
 
   # Default build command.
-  command = "cp netlify.toml frontend/ && sed -i \"s|HEADER_PLACEHOLDER|${API_URL}|g\" netlify.toml && npm build"
+  command = "sed -i \"s|API_PATH_PLACEHOLDER|${API_URL}|g\" ../netlify.toml && npm build"
 
 # Deploy Preview context: all deploys generated from a pull/merge request will
 # inherit these settings.
