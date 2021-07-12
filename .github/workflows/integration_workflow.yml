@@ -43,7 +43,7 @@ jobs:
       - name: Install dependencies and build files
         run: |
           cd frontend
-          sh ./scripts/build_frontend.sh
+          sh ./scripts/build.sh
       - name: Run frontend tests
         run: npx elm-test
   #       - name: Build frontend
