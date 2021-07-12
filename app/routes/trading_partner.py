@@ -1,12 +1,12 @@
 from typing import List, Type
 
+from app.routes.auth import CurrentUser
 from fastapi import APIRouter, Depends, Response
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, validator
 from starlette.status import HTTP_201_CREATED, HTTP_401_UNAUTHORIZED, HTTP_409_CONFLICT
 
 from .. import models, validators
-from ..core.security import User, fastapi_users
 from .utils import (
     Message,
     get_verify_enterprise_permissions_responses,
@@ -15,15 +15,26 @@ from .utils import (
 
 tradingpartner_router = APIRouter(tags=["Trading Partner"])
 
-TradingPartnerInput: Type[models.TradingPartner] = models.TradingPartner.get_pydantic(
-    exclude={"id"}
-)  # type: ignore
+
+class TradingPartnerInput(BaseModel):
+    nip_number: validators.NipNumber
+    name: str
+    address: str
+    enterprise_id: int
+
+
+class TradingPartnerResponse(BaseModel):
+    id: int
+    nip_number: str
+    name: str
+    address: str
+    enterprise_id: int
 
 
 @tradingpartner_router.post(
     "/trading_partner",
     status_code=HTTP_201_CREATED,
-    response_model=models.TradingPartner,
+    response_model=TradingPartnerResponse,
     responses={
         HTTP_409_CONFLICT: {"model": Message},
         **get_verify_enterprise_permissions_responses(),
@@ -31,11 +42,11 @@ TradingPartnerInput: Type[models.TradingPartner] = models.TradingPartner.get_pyd
 )
 async def add_trading_partner(
     trading_partner: TradingPartnerInput,
-    user: User = Depends(fastapi_users.current_user()),
+    user: models.User = Depends(CurrentUser()),
 ):
     validated_or_error = await verify_enterprise_permissions(
         user,
-        trading_partner.enterprise.id,
+        trading_partner.enterprise_id,
         [models.UserEnterpriseRoles.editor, models.UserEnterpriseRoles.admin],
     )
     if validated_or_error is True:
@@ -43,7 +54,16 @@ async def add_trading_partner(
             nip_number=trading_partner.nip_number
         )
         if existing_trading_partner is None:
-            return await models.TradingPartner(**trading_partner.dict()).save()
+            new_trading_partner = await models.TradingPartner(
+                **trading_partner.dict()
+            ).save()
+            return TradingPartnerResponse(
+                id=new_trading_partner.id,
+                nip_number=new_trading_partner.nip_number,
+                name=new_trading_partner.name,
+                address=new_trading_partner.address,
+                enterprise_id=new_trading_partner.enterprise_id.id,
+            )
         else:
             return JSONResponse(
                 status_code=HTTP_409_CONFLICT, content={"message": "Entity exists"}
@@ -52,21 +72,16 @@ async def add_trading_partner(
         return validated_or_error
 
 
-TradingPartnerResponse = models.TradingPartner.get_pydantic(
-    include={"address", "id", "name", "nip_number"}
-)
-
-
 @tradingpartner_router.get(
     "/trading_partner",
-    response_model=List[models.Invoice],
+    response_model=List[TradingPartnerResponse],
     status_code=200,
     responses={**get_verify_enterprise_permissions_responses()},
 )
-async def get_invoices(
+async def get_trading_partners(
     page: int,
     enterprise_id: int,
-    user: User = Depends(fastapi_users.current_user()),
+    user: models.User = Depends(CurrentUser()),
 ):
     permissions = await verify_enterprise_permissions(
         user,
@@ -79,8 +94,18 @@ async def get_invoices(
     )
     if permissions is True:
         partners = await models.TradingPartner.objects.paginate(page=page).all(
-            enterprise__id=enterprise_id
+            enterprise_id=enterprise_id
         )
-        return partners
+        response = [
+            TradingPartnerResponse(
+                id=trading_partner.id,
+                nip_number=trading_partner.nip_number,
+                name=trading_partner.name,
+                address=trading_partner.address,
+                enterprise_id=trading_partner.enterprise_id.id,
+            )
+            for trading_partner in partners
+        ]
+        return response
     else:
         return permissions

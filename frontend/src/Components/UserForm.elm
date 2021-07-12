@@ -1,26 +1,18 @@
-module Components.UserForm exposing (Field, view)
+module Components.UserForm exposing (view)
 
-import Api.Data exposing (Data)
-import Api.User exposing (User)
+-- import Api.xxData exposing (Data)
+-- import Api.User exposing (User)
+
 import Components.ErrorList
-import Components.Form exposing (viewField)
+import Components.Form exposing (Field, viewField)
 import Gen.Route as Route exposing (Route)
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (href)
 import Html.Styled.Events as Events
 
 
-type alias Field msg =
-    { label : String
-    , type_ : String
-    , value : String
-    , onInput : String -> msg
-    }
-
-
 view :
-    { user : Data User
-    , label : String
+    { label : String
     , onFormSubmit : msg
     , alternateLink : { label : String, route : Route }
     , fields : List (Field msg)
@@ -36,12 +28,6 @@ view options =
                         [ a [ href (Route.toHref options.alternateLink.route) ]
                             [ text options.alternateLink.label ]
                         ]
-                    , case options.user of
-                        Api.Data.Failure reasons ->
-                            Components.ErrorList.view reasons
-
-                        _ ->
-                            text ""
                     , form [ Events.onSubmit options.onFormSubmit ] <|
                         List.concat
                             [ List.map viewField options.fields

@@ -1,21 +1,29 @@
 module Pages.Invoices exposing (Model, Msg, page)
 
-import Api.Invoice exposing (Invoice)
+import Api
+import Api.Data exposing (InvoiceResponse)
+import Api.Request.Invoice
 import Components.SimpleTable exposing (simpleBootstrapTable)
 import Effect exposing (Effect)
 import Html.Styled exposing (..)
 import Html.Styled.Attributes as Attr
 import Html.Styled.Events as Events
+import Http
 import Page
 import Request exposing (Request)
 import Shared
 import View exposing (View)
 
 
+type InvoiceTabSelected
+    = Inbound
+    | Outbound
+    | All
+
+
 type alias Model =
     { invoiceTabSelected : InvoiceTabSelected
-    , inboundInvoices : List Invoice
-    , outboundInvoices : List Invoice
+    , invoices : List InvoiceResponse
     }
 
 
@@ -37,9 +45,18 @@ update _ msg model =
         SelectedTab tab ->
             ( { model | invoiceTabSelected = tab }, Effect.none )
 
+        ReceivedData data ->
+            case data of
+                Ok invoices ->
+                    ( { model | invoices = invoices }, Effect.none )
+
+                Err errors ->
+                    ( model, Effect.none )
+
 
 type Msg
     = SelectedTab InvoiceTabSelected
+    | ReceivedData (Result Http.Error (List InvoiceResponse))
 
 
 subscriptions : Model -> Sub msg
@@ -48,22 +65,14 @@ subscriptions _ =
 
 
 init : Shared.Model -> ( Model, Effect Msg )
-init _ =
-    ( { invoiceTabSelected = Inbound
-      , inboundInvoices =
-            [ Invoice "1" "Przychodzaca"
-            ]
-      , outboundInvoices =
-            [ Invoice "3" "Wychodzaca"
-            ]
+init shared =
+    ( { invoiceTabSelected = All
+      , invoices = []
       }
-    , Effect.none
+    , Api.Request.Invoice.getInvoicesInvoiceGet 1 (Maybe.withDefault 1 shared.selectedEnterpriseId)
+        |> Api.send ReceivedData
+        |> Effect.fromCmd
     )
-
-
-type InvoiceTabSelected
-    = Inbound
-    | Outbound
 
 
 view : Shared.Model -> Model -> View Msg
@@ -104,20 +113,11 @@ view _ model =
                     ]
                 ]
             , div []
-                [ case model.invoiceTabSelected of
-                    Inbound ->
-                        simpleBootstrapTable
-                            [ ( "ID", True, .id )
-                            , ( "Numer NIP", False, .nipNumber )
-                            ]
-                            model.inboundInvoices
-
-                    Outbound ->
-                        simpleBootstrapTable
-                            [ ( "ID", True, .id )
-                            , ( "Numer NIP", False, .nipNumber )
-                            ]
-                            model.outboundInvoices
+                [ simpleBootstrapTable
+                    [ ( "ID", True, .id >> String.fromInt )
+                    , ( "ID Faktury", False, .invoiceBusinessId )
+                    ]
+                    model.invoices
                 ]
             ]
         ]

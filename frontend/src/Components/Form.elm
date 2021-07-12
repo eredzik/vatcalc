@@ -1,4 +1,4 @@
-module Components.Form exposing (Field, viewField)
+module Components.Form exposing (Field, viewField, viewForm)
 
 import Html.Styled exposing (..)
 import Html.Styled.Attributes as Attr
@@ -10,6 +10,7 @@ type alias Field msg =
     , type_ : String
     , value : String
     , onInput : String -> msg
+    , onBlur : msg
     }
 
 
@@ -23,6 +24,14 @@ viewField options =
             , Attr.type_ options.type_
             , Attr.value options.value
             , Events.onInput options.onInput
+            , Events.onBlur options.onBlur
             ]
             []
         ]
+
+
+viewForm : List (Field msg) -> String -> msg -> Html msg
+viewForm fields button_label onSubmitMsg =
+    form [ Events.onSubmit onSubmitMsg ] <|
+        List.map viewField fields
+            ++ [ button [] [ text button_label ] ]

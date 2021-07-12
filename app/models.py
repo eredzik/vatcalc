@@ -1,10 +1,7 @@
 from enum import Enum
 
 import ormar
-import sqlalchemy
-from fastapi_users.db import OrmarBaseUserModel, OrmarUserDatabase
 
-from .core.config import settings
 from .core.database import database, metadata
 
 
@@ -31,7 +28,7 @@ class TradingPartner(ormar.Model):
     nip_number = ormar.String(max_length=10)
     name = ormar.String(max_length=255)
     address = ormar.Text()
-    enterprise = ormar.ForeignKey(Enterprise)
+    enterprise_id = ormar.ForeignKey(Enterprise)
 
 
 class InvoiceType(str, Enum):
@@ -44,11 +41,11 @@ class Invoice(ormar.Model):
         tablename = "invoice"
 
     id = ormar.Integer(primary_key=True)
-    invoice_id = ormar.String(max_length=64)
+    invoice_business_id = ormar.String(max_length=64)
     invoice_date = ormar.Date()
     invoice_type = ormar.String(max_length=8, choices=[])
-    trading_partner = ormar.ForeignKey(TradingPartner)
-    enterprise = ormar.ForeignKey(Enterprise)
+    trading_partner_id = ormar.ForeignKey(TradingPartner)
+    enterprise_id = ormar.ForeignKey(Enterprise)
 
 
 class VatRate(ormar.Model):
@@ -58,7 +55,7 @@ class VatRate(ormar.Model):
     id = ormar.Integer(primary_key=True)
     vat_rate = ormar.Float()
     comment = ormar.String(max_length=255)
-    enterprise = ormar.ForeignKey(Enterprise)
+    enterprise_id = ormar.ForeignKey(Enterprise)
 
 
 class InvoicePosition(ormar.Model):
@@ -67,15 +64,28 @@ class InvoicePosition(ormar.Model):
 
     id = ormar.Integer(primary_key=True)
     name = ormar.String(max_length=50)
-    vat_rate = ormar.ForeignKey(VatRate)
+    vat_rate_id = ormar.ForeignKey(VatRate)
     num_items = ormar.Float()
     price_net = ormar.Float()
-    invoice = ormar.ForeignKey(Invoice)
+    invoice_id = ormar.ForeignKey(Invoice)
 
 
-class UserModel(OrmarBaseUserModel):
+class User(ormar.Model):
     class Meta(BaseMeta):
-        tablename = "users"
+        tablename = "user"
+
+    id = ormar.Integer(primary_key=True)
+    username = ormar.String(index=True, nullable=False, max_length=255)
+    email = ormar.String(index=True, unique=True, nullable=False, max_length=255)
+    hashed_password = ormar.String(nullable=False, max_length=255)
+    # is_active = ormar.Boolean(default=True, nullable=False)
+    # is_superuser = ormar.Boolean(default=False, nullable=False)
+    # is_verified = ormar.Boolean(default=False, nullable=False)
+
+
+# class UserModel(OrmarBaseUserModel):
+#     class Meta(BaseMeta):
+#         tablename = "users"
 
 
 class UserEnterpriseRoles(str, Enum):
@@ -90,5 +100,5 @@ class UserEnterprise(ormar.Model):
 
     id = ormar.Integer(primary_key=True)
     enterprise_id = ormar.ForeignKey(Enterprise)
-    user_id = ormar.ForeignKey(UserModel)
+    user_id = ormar.ForeignKey(User)
     role = ormar.String(max_length=10, choices=UserEnterpriseRoles)

@@ -1,13 +1,29 @@
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_401_UNAUTHORIZED
 from starlette.testclient import TestClient
 
-from .auth_utils import get_random_user_header, create_random_enterprise
+from .test_auth import get_random_logged_user
+
+
+def create_enterprise(
+    client: TestClient,
+    name="somename",
+    nip_number="0623601757",
+    address="address1",
+):
+    response = client.post(
+        "/api/enterprise",
+        json={"name": name, "nip_number": nip_number, "address": address},
+        cookies=client.cookies.get_dict(),
+    )
+    assert response.status_code == HTTP_201_CREATED
+    return response
 
 
 def test_enterprise_add(client: TestClient):
-    r = create_random_enterprise(client, get_random_user_header(client))
+    user = get_random_logged_user(client)
+    r = create_enterprise(client)
     assert r is not None
-    r2 = create_random_enterprise(client, get_random_user_header(client))
+    r2 = create_enterprise(client)
     assert r2 is not None
 
 
@@ -20,15 +36,18 @@ def test_enterprise_add_unauthorized(client: TestClient):
 
 
 def test_enterprise_get_for_user(client: TestClient):
-    header = get_random_user_header(client)
-    r = client.post(
-        "/api/enterprise",
-        json={"name": "somename", "nip_number": "0623601757", "address": "adres1"},
-        headers=header,
-    )
+    user_response = get_random_logged_user(client)
+    r = create_enterprise(client)
     r2 = client.get(
-        "/api/enterprise",
-        headers=header,
+        "/api/enterprise?page=1", cookies=client.cookies.get_dict()
     )
     assert r2.status_code == HTTP_200_OK
-    assert r2.json() == [{"name": "somename", "enterprise_id": r.json()['id'], "role": "ADMIN"}]
+    assert r2.json() == [
+        {
+            "name": "somename",
+            "enterprise_id": r.json()["id"],
+            "role": "ADMIN",
+            "nip_number": "0623601757",
+            "address": "address1",
+        }
+    ]

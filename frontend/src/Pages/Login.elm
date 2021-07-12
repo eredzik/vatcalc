@@ -1,12 +1,16 @@
 module Pages.Login exposing (Model, Msg, page)
 
-import Api.Data exposing (Data(..))
-import Api.Endpoint exposing (ApiPath)
-import Api.Token exposing (Token(..))
-import Api.User exposing (User)
+-- import Api.xxData exposing (Data(..))
+-- import Api.Endpoint exposing (ApiPath)
+-- import Api.Token exposing (Token(..))
+-- import Api.User exposing (User)
+
+import Api
+import Api.Request.Authentication
 import Components.UserForm
 import Effect exposing (Effect)
 import Gen.Route as Route
+import Http
 import Page
 import Request exposing (Request)
 import Shared
@@ -16,14 +20,12 @@ import View exposing (View)
 
 page : Shared.Model -> Request -> Page.With Model Msg
 page shared req =
-    Page.protected.advanced
-        (\_ ->
-            { init = init shared
-            , update = update req shared.apiPath
-            , subscriptions = subscriptions
-            , view = view
-            }
-        )
+    Page.advanced
+        { init = init shared
+        , update = update req
+        , subscriptions = subscriptions
+        , view = view
+        }
 
 
 
@@ -31,8 +33,7 @@ page shared req =
 
 
 type alias Model =
-    { user : Data User
-    , email : String
+    { username : String
     , password : String
     }
 
@@ -40,7 +41,6 @@ type alias Model =
 init : Shared.Model -> ( Model, Effect Msg )
 init _ =
     ( Model
-        Api.Data.NotAsked
         ""
         ""
     , Effect.none
@@ -54,58 +54,56 @@ init _ =
 type Msg
     = Updated Field String
     | AttemptedSignIn
-    | GotToken (Data String)
+    | LoggedIn (Result Http.Error ())
+    | DeactivatedField Field
 
 
 type Field
-    = Email
+    = Username
     | Password
 
 
-update : Request -> ApiPath -> Msg -> Model -> ( Model, Effect Msg )
-update req apiPath msg model =
+update : Request -> Msg -> Model -> ( Model, Effect Msg )
+update req msg model =
     case msg of
-        Updated Email email ->
-            ( { model | email = email }
+        Updated Username username ->
+            ( { model | username = username }
             , Effect.none
             )
+
+        DeactivatedField Username ->
+            ( model, Effect.none )
 
         Updated Password password ->
             ( { model | password = password }
             , Effect.none
             )
 
+        DeactivatedField Password ->
+            ( model, Effect.none )
+
         AttemptedSignIn ->
             ( model
-            , Effect.fromCmd <|
-                Api.User.authentication
-                    { user =
-                        { email = model.email
-                        , password = model.password
-                        }
-                    , onResponse = GotToken
-                    , apiPath = apiPath
+            , Effect.fromCmd
+                (Api.Request.Authentication.loginUserLoginPost
+                    { username = model.username
+                    , password = model.password
                     }
+                    |> Api.send LoggedIn
+                )
             )
 
-        GotToken token ->
-            case Api.Data.toMaybe token of
-                Just token_ ->
-                    let
-                        user =
-                            { email = model.email
-                            , token = Token token_
-                            , selectedEnterprise = Nothing
-                            }
-                    in
-                    ( { model | user = Success user }
+        LoggedIn response ->
+            case response of
+                Ok () ->
+                    ( model
                     , Effect.batch
                         [ Effect.fromCmd (Utils.Route.navigate req.key Route.Home_)
-                        , Effect.fromShared (Shared.SignedInUser user)
+                        , Effect.fromShared Shared.SignedInUser
                         ]
                     )
 
-                Nothing ->
+                Err err ->
                     ( model
                     , Effect.none
                     )
@@ -125,20 +123,21 @@ view model =
     { title = "Sign in"
     , body =
         [ Components.UserForm.view
-            { user = model.user
-            , label = "Sign in"
+            { label = "Sign in"
             , onFormSubmit = AttemptedSignIn
             , alternateLink = { label = "Need an account?", route = Route.Register }
             , fields =
-                [ { label = "Email"
-                  , type_ = "email"
-                  , value = model.email
-                  , onInput = Updated Email
+                [ { label = "username"
+                  , type_ = "username"
+                  , value = model.username
+                  , onInput = Updated Username
+                  , onBlur = DeactivatedField Username
                   }
                 , { label = "Password"
                   , type_ = "password"
                   , value = model.password
                   , onInput = Updated Password
+                  , onBlur = DeactivatedField Password
                   }
                 ]
             }

@@ -4,7 +4,6 @@ module Components.Navbar exposing (view)
 -- import Html.Styled.Attributes exposing (class, classList, css, href, src)
 -- import Html.Styled.Events as Events
 
-import Api.User exposing (User)
 import Css
 import Gen.Route as Route exposing (Route)
 import Html.Styled exposing (..)
@@ -20,12 +19,12 @@ theme =
 
 
 view :
-    { user : Maybe User
+    { isLoggedIn : Bool
     , currentRoute : Route
     , onSignOut : msg
     }
     -> Html msg
-view model =
+view options =
     nav
         [ Attr.css
             [ Css.displayFlex
@@ -56,18 +55,17 @@ view model =
                 ]
             ]
             ([]
-                ++ (case model.user of
-                        Just _ ->
-                            [ viewLink ( "Rejestr VAT", [ hrefAttrib Route.Invoices ] )
-                            , viewLink ( "Rejestr Kontrahentów", [ hrefAttrib Route.Partners ] )
-                            , viewLink ( "Rejestr Firm", [ hrefAttrib Route.Enterprises ] )
-                            , viewLink ( "Wyloguj się", [ Events.onClick model.onSignOut ] )
-                            ]
+                ++ (if options.isLoggedIn then
+                        [ viewLink ( "Rejestr VAT", [ hrefAttrib Route.Invoices ] )
+                        , viewLink ( "Rejestr Kontrahentów", [ hrefAttrib Route.Partners ] )
+                        , viewLink ( "Rejestr Firm", [ hrefAttrib Route.Enterprises ] )
+                        , viewLink ( "Wyloguj się", [ Events.onClick options.onSignOut ] )
+                        ]
 
-                        Nothing ->
-                            [ viewLink ( "Zaloguj się", [ hrefAttrib Route.Login ] )
-                            , viewLink ( "Zarejestruj się", [ hrefAttrib Route.Register ] )
-                            ]
+                    else
+                        [ viewLink ( "Zaloguj się", [ hrefAttrib Route.Login ] )
+                        , viewLink ( "Zarejestruj się", [ hrefAttrib Route.Register ] )
+                        ]
                    )
             )
         ]

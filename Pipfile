@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 uvicorn = "*"
 fastapi = "*"
-pydantic = "*"
 passlib = "*"
 aiofiles = "*"
 Jinja2 = "*"
@@ -15,8 +14,8 @@ alembic = "*"
 python-jose = "*"
 psycopg2 = "*"
 ormar = "*"
-fastapi-crudrouter = "*"
 asgi-lifespan = "*"
+fastapi-jwt-auth = "*"
 
 [dev-packages]
 pytest = "*"
@@ -32,8 +31,8 @@ httpx = "*"
 [requires]
 python_version = "3.8"
 
+[packages.pydantic]
+extras = [ "email",]
+
 [packages.databases]
 extras = [ "postgresql",]
-
-[packages.fastapi-users]
-extras = [ "ormar",]

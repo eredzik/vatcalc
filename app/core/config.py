@@ -6,9 +6,9 @@ from pydantic.networks import AnyUrl
 
 
 class Settings(BaseSettings):
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
-    SECRET_KEY: str = secrets.token_urlsafe(32)
-    CORS_ALLOWED_ORIGINS: str = "localhost"
+    ACCESS_TOKEN_EXPIRE_SECONDS: int = 60 * 60 * 24 * 7  # 7 days
+    JWT_SECRET: str
+    # CORS_ALLOWED_ORIGINS: str
 
     POSTGRES_SERVER: Optional[str]
     POSTGRES_USER: Optional[str]

@@ -1,12 +1,13 @@
-from typing import List, Type
+import dataclasses
+from typing import List
 
-from fastapi import APIRouter, Depends, Response
+from app.routes.auth import CurrentUser
+from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, validator
 from starlette.status import HTTP_201_CREATED, HTTP_401_UNAUTHORIZED, HTTP_409_CONFLICT
 
 from .. import models, validators
-from ..core.security import User, fastapi_users
 from .utils import (
     Message,
     get_verify_enterprise_permissions_responses,
@@ -16,13 +17,23 @@ from .utils import (
 vatrate_router = APIRouter(tags=["Vat Rate"])
 
 
-VatrateInput: Type[models.VatRate] = models.VatRate.get_pydantic(exclude={"id"})  # type: ignore
+class VatrateInput(BaseModel):
+    vat_rate: float
+    comment: str
+    enterprise_id: int
+
+
+class VatRateResponse(BaseModel):
+    id: int
+    vat_rate: float
+    comment: str
+    enterprise_id: int
 
 
 @vatrate_router.post(
     "/vatrate",
     status_code=HTTP_201_CREATED,
-    response_model=models.VatRate,
+    response_model=VatRateResponse,
     responses={
         HTTP_409_CONFLICT: {"model": Message},
         **get_verify_enterprise_permissions_responses(),
@@ -30,11 +41,11 @@ VatrateInput: Type[models.VatRate] = models.VatRate.get_pydantic(exclude={"id"})
 )
 async def add_vatrate(
     vatrate: VatrateInput,
-    user: User = Depends(fastapi_users.current_user()),
+    user: models.User = Depends(CurrentUser()),
 ):
     validated_or_error = await verify_enterprise_permissions(
         user,
-        vatrate.enterprise.id,
+        vatrate.enterprise_id,
         [models.UserEnterpriseRoles.editor, models.UserEnterpriseRoles.admin],
     )
     if validated_or_error is True:
@@ -42,7 +53,15 @@ async def add_vatrate(
             vat_rate=vatrate.vat_rate
         )
         if existing_vatrate is None:
-            return await models.VatRate(**vatrate.dict()).save()
+            created_vatrate = await models.VatRate(**vatrate.dict()).save()
+
+            response = VatRateResponse(
+                id=created_vatrate.id,
+                vat_rate=created_vatrate.vat_rate,
+                comment=created_vatrate.comment,
+                enterprise_id=created_vatrate.enterprise_id.id,
+            )
+            return response
         else:
             return JSONResponse(
                 status_code=HTTP_409_CONFLICT, content={"message": "Entity exists"}
@@ -54,14 +73,14 @@ async def add_vatrate(
 
 @vatrate_router.get(
     "/vatrate",
-    response_model=List[models.VatRate],
+    response_model=List[VatRateResponse],
     status_code=200,
     responses={**get_verify_enterprise_permissions_responses()},
 )
 async def get_vat_rates(
     page: int,
     enterprise_id: int,
-    user: User = Depends(fastapi_users.current_user()),
+    user: models.User = Depends(CurrentUser()),
 ):
     permissions = await verify_enterprise_permissions(
         user,
@@ -74,8 +93,17 @@ async def get_vat_rates(
     )
     if permissions is True:
         vatrates = await models.VatRate.objects.paginate(page=page).all(
-            enterprise__id=enterprise_id
+            enterprise_id=enterprise_id
         )
-        return vatrates
+        response = [
+            VatRateResponse(
+                id=vatrate.id,
+                vat_rate=vatrate.vat_rate,
+                comment=vatrate.comment,
+                enterprise_id=vatrate.enterprise_id.id,
+            )
+            for vatrate in vatrates
+        ]
+        return response
     else:
         return permissions

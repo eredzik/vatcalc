@@ -1,6 +1,6 @@
 module Pages.Partners exposing (Model, Msg, page)
 
-import Api.TradingPartner exposing (TradingPartner)
+import Api.Data exposing (TradingPartnerResponse)
 import Components.SimpleTable exposing (simpleBootstrapTable)
 import Effect exposing (Effect)
 import Page
@@ -10,7 +10,7 @@ import View exposing (View)
 
 
 type alias Model =
-    { partners : List TradingPartner
+    { partners : List TradingPartnerResponse
     }
 
 
@@ -20,7 +20,7 @@ type Msg
 
 init : Shared.Model -> ( Model, Effect Msg )
 init _ =
-    ( { partners = [ TradingPartner "abb" "" "" "" ]
+    ( { partners = []
       }
     , Effect.none
     )
@@ -48,8 +48,8 @@ view _ model =
     View
         "Partners"
         [ simpleBootstrapTable
-            [ ( "ID", True, .id )
-            , ( "Numer NIP", False, .nip_number )
+            [ ( "ID", True, .id >> String.fromInt )
+            , ( "Numer NIP", False, .nipNumber )
             ]
             model.partners
         ]

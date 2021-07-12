@@ -1,4 +1,5 @@
 import os
+import secrets
 import warnings
 
 import alembic
@@ -14,6 +15,9 @@ from fastapi.testclient import TestClient
 def apply_migrations():
     warnings.filterwarnings("ignore", category=DeprecationWarning)
     os.environ["TESTING"] = "1"
+    os.environ["JWT_SECRET"] = secrets.token_urlsafe(32)
+    os.environ["CORS_ALLOWED_ORIGINS"] = "localhost"
+
     config = Config("alembic.ini")
     alembic.command.upgrade(config, "head")  # type: ignore
     yield
@@ -23,6 +27,7 @@ def apply_migrations():
 # Create a new application for testing
 @pytest.fixture
 def app(apply_migrations: None) -> FastAPI:
+
     from ..main import app
 
     return app

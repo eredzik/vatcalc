@@ -11,3 +11,5 @@ build/
 coverage.xml
 .venv/
 .test_env
+tmp/
+.generated-api/

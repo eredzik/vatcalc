@@ -1,15 +1,19 @@
 import pytest
+from pydantic import BaseModel
 
-from ..validators import validate_nip
+from ..validators import NipNumber
 
 
 def test_nip_validation():
     # Valid case
+    class TestModel(BaseModel):
+        nip: NipNumber
+
     nip1 = "0000000000"
-    assert validate_nip(nip1) == nip1
+    assert TestModel(nip=nip1).nip == nip1
     with pytest.raises(ValueError):
         # Too short
-        validate_nip("123")
+        TestModel(nip="123")
         # Good length but not valid
     with pytest.raises(ValueError):
-        validate_nip("1234567890")
+        TestModel(nip="1234567890")

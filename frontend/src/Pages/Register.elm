@@ -1,13 +1,15 @@
 module Pages.Register exposing (Model, Msg, page)
 
-import Api.Data exposing (Data(..))
-import Api.Endpoint exposing (ApiPath)
-import Api.User
+import Api
+import Api.Data
+import Api.Request.Authentication
 import Effect exposing (Effect)
+import ElmSpa.Page exposing (Protected(..))
 import Gen.Route as Route
 import Html.Styled exposing (..)
 import Html.Styled.Attributes as Attr
 import Html.Styled.Events as Events
+import Http
 import Page
 import Request exposing (Request)
 import Shared
@@ -16,14 +18,12 @@ import View exposing (View)
 
 page : Shared.Model -> Request -> Page.With Model Msg
 page shared req =
-    Page.protected.advanced
-        (\_ ->
-            { init = init shared
-            , update = update shared.apiPath
-            , subscriptions = subscriptions
-            , view = view
-            }
-        )
+    Page.advanced
+        { init = init req shared
+        , update = update
+        , subscriptions = subscriptions
+        , view = view
+        }
 
 
 
@@ -44,15 +44,24 @@ type alias Model =
     }
 
 
-init : Shared.Model -> ( Model, Effect Msg )
-init _ =
+init : Request -> Shared.Model -> ( Model, Effect Msg )
+init req shared =
+    let
+        redirect_if_logged =
+            case shared.user of
+                Just user ->
+                    Request.pushRoute Route.Home_ req
+
+                Nothing ->
+                    Cmd.none
+    in
     ( { registered = Registering
       , username = ""
       , email = ""
       , password = ""
       , errors = []
       }
-    , Effect.none
+    , Effect.fromCmd redirect_if_logged
     )
 
 
@@ -63,7 +72,7 @@ init _ =
 type Msg
     = Updated Field String
     | AttemptedSignUp
-    | GotUser (Data String)
+    | GotUser (Result Http.Error Api.Data.RegisterResponse)
 
 
 type Field
@@ -72,8 +81,8 @@ type Field
     | Password
 
 
-update : ApiPath -> Msg -> Model -> ( Model, Effect Msg )
-update apiPath msg model =
+update : Msg -> Model -> ( Model, Effect Msg )
+update msg model =
     case msg of
         Updated Username username ->
             ( { model | username = username }
@@ -92,28 +101,23 @@ update apiPath msg model =
 
         AttemptedSignUp ->
             ( model
-            , Effect.fromCmd <|
-                Api.User.registration
-                    { user =
-                        { username = model.username
-                        , email = model.email
-                        , password = model.password
-                        }
-                    , onResponse = GotUser
-                    , apiPath = apiPath
+            , Effect.fromCmd
+                (Api.Request.Authentication.registerUserRegisterPost
+                    { username = model.username
+                    , email = model.email
+                    , password = model.password
                     }
+                    |> Api.send GotUser
+                )
             )
 
-        GotUser id ->
-            case id of
-                NotAsked ->
-                    ( model, Effect.none )
-
-                Failure errors ->
-                    ( { model | errors = errors }, Effect.none )
-
-                Success _ ->
+        GotUser result ->
+            case result of
+                Ok user ->
                     ( { model | registered = SuccesfulRegister }, Effect.none )
+
+                Err err ->
+                    ( model, Effect.none )
 
 
 subscriptions : Model -> Sub Msg

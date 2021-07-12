@@ -2,21 +2,23 @@ module Shared exposing
     ( Flags
     , Model
     , Msg(..)
+    , User
     , init
     , subscriptions
     , update
     , view
     )
 
-import Api.Endpoint exposing (ApiPath(..))
-import Api.User exposing (User)
+import Api
+import Api.Data
+import Api.Request.Authentication
+import Api.Request.User
 import Components.Navbar
 import Css
 import Html.Styled exposing (..)
 import Html.Styled.Attributes as Attr
+import Http
 import Json.Decode as Decode
-import Json.Decode.Pipeline exposing (optional, required)
-import Ports
 import Request exposing (Request)
 import Utils.Route
 import View exposing (View)
@@ -26,43 +28,29 @@ import View exposing (View)
 -- INIT
 
 
+type alias User =
+    { email : String
+    , username : String
+    }
+
+
 type alias Flags =
     Decode.Value
 
 
 type alias Model =
     { user : Maybe User
-    , apiPath : ApiPath
+    , selectedEnterpriseId : Maybe Int
     }
 
 
-flagsDecoder : Decode.Decoder Model
-flagsDecoder =
-    Decode.succeed Model
-        |> optional "user" (Decode.map Just Api.User.decoder) Nothing
-        |> required "api_endpoint" (Decode.map ApiPath Decode.string)
-
-
 init : Request -> Flags -> ( Model, Cmd Msg )
-init _ json =
-    let
-        parsedResult =
-            json
-                |> Decode.decodeValue flagsDecoder
-                |> Result.toMaybe
-
-        model =
-            case parsedResult of
-                Just mod ->
-                    mod
-
-                Nothing ->
-                    { user = Nothing
-                    , apiPath = ApiPath ""
-                    }
-    in
-    ( model
-    , Cmd.none
+init _ _ =
+    ( { user = Nothing
+      , selectedEnterpriseId = Nothing
+      }
+    , Api.Request.User.getUserDataUserMeGet
+        |> Api.send GotUserData
     )
 
 
@@ -72,21 +60,40 @@ init _ json =
 
 type Msg
     = ClickedSignOut
-    | SignedInUser User
+    | SignedInUser
+    | GotUserData (Result Http.Error Api.Data.CurrentUserResponse)
+    | LoggedOut (Result Http.Error ())
 
 
 update : Request -> Msg -> Model -> ( Model, Cmd Msg )
 update _ msg model =
     case msg of
-        SignedInUser user ->
-            ( { model | user = Just user }
-            , Ports.saveUser user
+        SignedInUser ->
+            ( model
+            , Api.Request.User.getUserDataUserMeGet
+                |> Api.send GotUserData
             )
 
         ClickedSignOut ->
             ( { model | user = Nothing }
-            , Ports.clearUser
+            , Api.Request.Authentication.logoutLogoutPost |> Api.send LoggedOut
             )
+
+        LoggedOut _ ->
+            ( -- { user = Nothing
+              --   , selectedEnterpriseId = Nothing
+              --   }
+              model
+            , Cmd.none
+            )
+
+        GotUserData userResponse ->
+            case userResponse of
+                Ok userData ->
+                    ( { model | user = Just userData }, Cmd.none )
+
+                Err _ ->
+                    ( { model | user = Nothing }, Cmd.none )
 
 
 subscriptions : Request -> Model -> Sub Msg
@@ -114,7 +121,13 @@ view req { page, toMsg } model =
         [ div
             [ Attr.css [ Css.margin <| Css.px 0 ] ]
             [ Components.Navbar.view
-                { user = model.user
+                { isLoggedIn =
+                    case model.user of
+                        Just _ ->
+                            True
+
+                        Nothing ->
+                            False
                 , currentRoute = Utils.Route.fromUrl req.url
                 , onSignOut = toMsg ClickedSignOut
                 }

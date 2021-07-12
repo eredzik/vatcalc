@@ -11,11 +11,12 @@
   },
   "scripts": {
     "dev": "webpack --mode development --config webpack.config.js",
-    "server": "webpack serve --host 0.0.0.0 --port 1234 --mode development",
-    "build": "webpack --mode production"
+    "server": "webpack serve --host 0.0.0.0 --port 1234 --mode development"
   },
   "dependencies": {
+    "@openapitools/openapi-generator-cli": "^2.3.6",
     "bootstrap": "^5.0.2",
+    "elm-spa": "^6.0.4",
     "elm-webpack-loader": "^8.0.0"
   }
 }
