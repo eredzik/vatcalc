@@ -1,18 +1,13 @@
 npm install
 
-if [ -z "${URL}" ];
+if [ -z "${API_URL}" ];
 then
-    if [ -z "${API_URL}" ];
-    then
-        export API_URL="http://localhost:1234/api/openapi.json";
-        echo "Using default dev api path: ${API_URL}"
-    else
-        echo "Using set api path: ${API_URL}"
-    fi
+    export API_URL="http://localhost:1234/api/openapi.json";
+    echo "Using default dev api path: ${API_URL}"
 else
-    export API_URL="${URL}/api/openapi.json";
-    echo "Using deployment api path: ${API_URL}"
+    echo "Using set api path: ${API_URL}"
 fi
+
 rm -rf .elm-spa;
 npx elm-spa gen;
 rm -rf .generated-api;
