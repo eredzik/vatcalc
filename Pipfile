@@ -11,11 +11,10 @@ aiofiles = "*"
 Jinja2 = "*"
 SQLAlchemy = "*"
 alembic = "*"
-python-jose = "*"
 psycopg2 = "*"
 ormar = "*"
 asgi-lifespan = "*"
-fastapi-jwt-auth = "*"
+pyjwt = "*"
 
 [dev-packages]
 pytest = "*"

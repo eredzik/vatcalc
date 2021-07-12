@@ -14,7 +14,7 @@ from .test_vatrate import create_vat_rate
 
 def create_invoice(client: TestClient, enterprise, trading_partner):
     return client.post(
-        "/api/invoice",
+        "/invoice",
         cookies=client.cookies.get_dict(),
         json={
             "invoice_type": "INBOUND",
@@ -35,7 +35,7 @@ def create_invoice(client: TestClient, enterprise, trading_partner):
 
 
 def test_add_invoice_failing_unauthorized(client: TestClient):
-    response = client.post("/api/invoice", json={})
+    response = client.post("/invoice", json={})
     assert response.status_code == HTTP_401_UNAUTHORIZED
 
 
@@ -58,7 +58,7 @@ def test_nonexistant_partner(client: TestClient):
 
     assert r_trading_partner.status_code == HTTP_201_CREATED
     r_invoice = client.post(
-        "/api/invoice",
+        "/invoice",
         cookies=client.cookies.get_dict(),
         json={
             "invoice_type": "INBOUND",
@@ -96,7 +96,7 @@ def test_nonexistant_vatrate(client: TestClient):
 
     assert r_trading_partner.status_code == HTTP_201_CREATED
     r_invoice = client.post(
-        "/api/invoice",
+        "/invoice",
         cookies=user.cookies.get_dict(),
         json={
             "invoice_type": "INBOUND",
@@ -133,7 +133,7 @@ def test_not_enough_permissions(client: TestClient):
 
     assert r_trading_partner.status_code == HTTP_201_CREATED
     r_invoice = client.post(
-        "/api/invoice",
+        "/invoice",
         cookies=user_header1.cookies.get_dict(),
         json={
             "invoice_type": "INBOUND",
@@ -171,7 +171,7 @@ def test_add_invoice_vatrate_success(client: TestClient):
     assert r_trading_partner.status_code == HTTP_201_CREATED
     vat_rate = create_vat_rate(client, enterprise)
     r_invoice = client.post(
-        "/api/invoice",
+        "/invoice",
         cookies=user_header.cookies.get_dict(),
         json={
             "invoice_type": "INBOUND",
@@ -197,7 +197,7 @@ def test_add_invoice_vatrate_success(client: TestClient):
     )
     assert r_invoice.status_code == HTTP_201_CREATED
     r_invoice_get = client.get(
-        "/api/invoice",
+        "/invoice",
         cookies=user_header.cookies.get_dict(),
         params={"page": 1, "enterprise_id": enterprise.json()["id"]},
     )
@@ -211,7 +211,7 @@ def test_get_invoice_no_permissions(client: TestClient):
     enterprise = create_enterprise(client)
     user_header1 = get_random_logged_user(client)
     r_invoice_get = client.get(
-        "/api/invoice",
+        "/invoice",
         cookies=user_header1.cookies.get_dict(),
         params={"page": 1, "enterprise_id": enterprise.json()["id"]},
     )

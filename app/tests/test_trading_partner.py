@@ -19,7 +19,7 @@ def create_trading_partner(
     address="address",
 ):
     response_partner = client.post(
-        "/api/trading_partner",
+        "/trading_partner",
         json={
             "nip_number": nip_number,
             "name": name,
@@ -32,7 +32,7 @@ def create_trading_partner(
 
 
 def test_add_trading_partner_failing_unauthorized(client: TestClient):
-    response = client.post("/api/trading_partner", json={})
+    response = client.post("/trading_partner", json={})
     assert response.status_code == HTTP_401_UNAUTHORIZED
 
 
@@ -82,8 +82,8 @@ def test_add_trading_partner_multiple(client: TestClient):
         client, enterprise1, nip_number="4645037591"
     )
     assert trading_partner2.status_code == HTTP_201_CREATED
-    enterprise_id=enterprise1.json()['id']
-    query=f"/api/trading_partner?page=1&enterprise_id={enterprise_id}"
+    enterprise_id = enterprise1.json()["id"]
+    query = f"/trading_partner?page=1&enterprise_id={enterprise_id}"
     trading_partners = client.get(
         query,
         cookies=client.cookies.get_dict(),

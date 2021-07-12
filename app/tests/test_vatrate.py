@@ -12,7 +12,7 @@ from .test_enterprise import create_enterprise
 
 def create_vat_rate(client: TestClient, enterprise, vat_rate=0.23, comment="test1"):
     response_partner = client.post(
-        "/api/vatrate",
+        "/vatrate",
         json={
             "vat_rate": vat_rate,
             "comment": comment,
@@ -47,7 +47,7 @@ def test_create_only_one_vatrate(client: TestClient):
     r = create_vat_rate(client, enterprise)
     assert r.status_code == HTTP_409_CONFLICT
     r_get = client.get(
-        "/api/vatrate",
+        "/vatrate",
         cookies=client.cookies.get_dict(),
         params={"page": 1, "enterprise_id": enterprise.json()["id"]},
     )
@@ -63,7 +63,7 @@ def test_create_multiple_vat_rates(client: TestClient):
     vatrate2 = create_vat_rate(client, enterprise, vat_rate=0.22)
     assert vatrate2.status_code == HTTP_201_CREATED
     r_get = client.get(
-        "/api/vatrate",
+        "/vatrate",
         cookies=client.cookies.get_dict(),
         params={"page": 1, "enterprise_id": enterprise.json()["id"]},
     )

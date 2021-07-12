@@ -15,15 +15,15 @@ from starlette.status import (
 # Utility functions
 def login_sample_user(client: TestClient, email: str, password: str):
     response = client.post(
-        "/api/login",
-        data={"username": email, "password": password},
+        "/login",
+        json={"username": email, "password": password},
     )
     return response
 
 
 def register_sample_user(cl: TestClient, email: str, password: str):
     response = cl.post(
-        "/api/register", data={"username": email, "email": email, "password": password}
+        "/register", json={"username": email, "email": email, "password": password}
     )
     return response
 
