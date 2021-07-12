@@ -5,17 +5,13 @@ on:
     branches:
       - master
 jobs:
-  setup:
+  test_backend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Build the stack
         run: docker-compose up -d
-  test_backend:
-    runs-on: ubuntu-latest
-    needs: setup
-    steps:
       - name: Setup python
         uses: actions/setup-python@v2
         with:
@@ -33,15 +29,23 @@ jobs:
           flags: pytest
   test_frontend:
     runs-on: ubuntu-latest
-    needs: setup
+    needs: test_backend
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build the stack
+        run: docker-compose up -d
+
       - name: Install node
         uses: actions/setup-node@v1
 
-      - name: Install dependencies
+      - name: Install dependencies and build files
         run: |
           cd frontend
-          npm install
+          ./scripts/build_frontend.sh
+      - name: Run frontend tests
+        run: npx elm-test
   #       - name: Build frontend
   #         run: ./scripts/build_frontend.sh
   #       - name: Auto Minify
@@ -53,20 +57,23 @@ jobs:
   #         with:
   #           commit_message: "Github Action: Auto Minified JS and CSS files"
   #           branch: ${{ github.ref }}\
+  deploy_backend:
+    runs-on: ubuntu-latest
+    needs: test_frontend
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "vatcalc-test" #Must be unique in Heroku
+          heroku_email: "kseromanyja@gmail.com"
   deploy_frontend:
     runs-on: ubuntu-latest
-    needs: setup
+    needs: deploy_backend
     steps:
-      - name: Install node
-        uses: actions/setup-node@v1
-
-      - name: Install dependencies
-        run: |
-          cd frontend
-          sh scripts/build.sh
-      - name: Deploy frontend to netlify
-        uses: jsmrcaga/action-netlify-deploy@master
+      - uses: actions/checkout@v2
+      - uses: jsmrcaga/action-netlify-deploy@v1.1.0
         with:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          build_directory: dist
+          NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_API_KEY}}
+          NETLIFY_SITE_ID: true
+          build_directory: "frontend/dist"
