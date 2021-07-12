@@ -103,7 +103,7 @@ update req msg model =
                         ]
                     )
 
-                Err err ->
+                Err _ ->
                     ( model
                     , Effect.none
                     )

@@ -1,7 +1,6 @@
 module Example exposing (..)
 
 import Expect
-import Result exposing (Result(..))
 import Test exposing (..)
 
 

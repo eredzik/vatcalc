@@ -4,7 +4,6 @@ import Api
 import Api.Data
 import Api.Request.Authentication
 import Effect exposing (Effect)
-import ElmSpa.Page exposing (Protected(..))
 import Gen.Route as Route
 import Html.Styled exposing (..)
 import Html.Styled.Attributes as Attr
@@ -49,7 +48,7 @@ init req shared =
     let
         redirect_if_logged =
             case shared.user of
-                Just user ->
+                Just _ ->
                     Request.pushRoute Route.Home_ req
 
                 Nothing ->
@@ -113,10 +112,10 @@ update msg model =
 
         GotUser result ->
             case result of
-                Ok user ->
+                Ok _ ->
                     ( { model | registered = SuccesfulRegister }, Effect.none )
 
-                Err err ->
+                Err _ ->
                     ( model, Effect.none )
 
 

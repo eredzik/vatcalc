@@ -39,12 +39,8 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v1
 
-      - name: Install dependencies
-        run: |
-          npm install
-
-      - name: Run frontend tests
-        run: npx elm-test
+  #       - name: Run frontend tests
+  #         run: npx elm-test
   #       - name: Build frontend
   #         run: ./scripts/build_frontend.sh
   #       - name: Auto Minify

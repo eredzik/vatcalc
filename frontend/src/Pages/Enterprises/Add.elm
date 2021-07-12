@@ -4,7 +4,6 @@ import Api
 import Api.Data exposing (EnterpriseCreateResponse)
 import Api.Request.Enterprise
 import Components.Form exposing (Field, viewForm)
-import Html.Styled exposing (..)
 import Http
 import Page
 import Request exposing (Request)
@@ -15,7 +14,7 @@ import View exposing (View)
 page : Shared.Model -> Request -> Page.With Model Msg
 page shared _ =
     Page.protected.element
-        (\user ->
+        (\_ ->
             { init = init
             , update = update
             , view = view

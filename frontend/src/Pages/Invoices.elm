@@ -50,7 +50,7 @@ update _ msg model =
                 Ok invoices ->
                     ( { model | invoices = invoices }, Effect.none )
 
-                Err errors ->
+                Err _ ->
                     ( model, Effect.none )
 
 

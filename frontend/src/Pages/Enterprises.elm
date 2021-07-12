@@ -17,7 +17,7 @@ import View exposing (View)
 page : Shared.Model -> Request -> Page.With Model Msg
 page shared _ =
     Page.protected.element
-        (\user ->
+        (\_ ->
             { init = init shared
             , update = update shared
             , view = view
@@ -58,7 +58,7 @@ update shared msg model =
                 Ok enterprises ->
                     ( { model | enterprises = enterprises }, Cmd.none )
 
-                Err err ->
+                Err _ ->
                     ( model, Cmd.none )
 
 

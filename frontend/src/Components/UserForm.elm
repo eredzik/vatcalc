@@ -3,7 +3,6 @@ module Components.UserForm exposing (view)
 -- import Api.xxData exposing (Data)
 -- import Api.User exposing (User)
 
-import Components.ErrorList
 import Components.Form exposing (Field, viewField)
 import Gen.Route as Route exposing (Route)
 import Html.Styled exposing (..)
