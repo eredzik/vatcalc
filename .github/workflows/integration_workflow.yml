@@ -42,7 +42,7 @@ jobs:
       - name: Install dependencies and build files
         run: |
           cd frontend
-          export API_PATH="http://localhost:5000"
+          export API_URL="http://localhost:5000"
           sh ./scripts/build.sh
 
       - name: Run frontend tests
