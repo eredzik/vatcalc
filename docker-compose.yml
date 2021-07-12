@@ -15,7 +15,7 @@ services:
       context: ./
       dockerfile: "backend.dockerfile"
     ports:
-      - "5000:5000"
+      - 5000:5000
     volumes:
       - ./:/usr/src/backend
     environment:
@@ -35,8 +35,12 @@ services:
       context: frontend/
       dockerfile:  "Dockerfile"
     ports:
-      - "1234:1234"
+      - 1234:1234
     volumes:
       - ./frontend/:/usr/src/frontend
     environment:
-      - URL=http://localhost:1234/
+      - API_URL=http://backend:5000/openapi.json
+      - WAIT_HOSTS=backend:5000
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=2
+      - WAIT_HOST_CONNECT_TIMEOUT=5
