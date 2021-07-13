@@ -1,5 +1,9 @@
-from starlette.status import (HTTP_200_OK, HTTP_201_CREATED,
-                              HTTP_401_UNAUTHORIZED)
+from starlette.status import (
+    HTTP_200_OK,
+    HTTP_201_CREATED,
+    HTTP_401_UNAUTHORIZED,
+    HTTP_409_CONFLICT,
+)
 from starlette.testclient import TestClient
 
 from .test_auth import get_random_logged_user
@@ -16,16 +20,15 @@ def create_enterprise(
         json={"name": name, "nip_number": nip_number, "address": address},
         cookies=client.cookies.get_dict(),
     )
-    assert response.status_code == HTTP_201_CREATED
     return response
 
 
 def test_enterprise_add(client: TestClient):
     user = get_random_logged_user(client)
     r = create_enterprise(client)
-    assert r is not None
+    assert r.status_code == HTTP_201_CREATED
     r2 = create_enterprise(client)
-    assert r2 is not None
+    assert r2.status_code == HTTP_409_CONFLICT
 
 
 def test_enterprise_add_unauthorized(client: TestClient):
@@ -39,9 +42,7 @@ def test_enterprise_add_unauthorized(client: TestClient):
 def test_enterprise_get_for_user(client: TestClient):
     user_response = get_random_logged_user(client)
     r = create_enterprise(client)
-    r2 = client.get(
-        "/enterprise?page=1", cookies=client.cookies.get_dict()
-    )
+    r2 = client.get("/enterprise?page=1", cookies=client.cookies.get_dict())
     assert r2.status_code == HTTP_200_OK
     assert r2.json() == [
         {

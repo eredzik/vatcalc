@@ -4,6 +4,8 @@ import Api
 import Api.Data exposing (EnterpriseCreateResponse)
 import Api.Request.Enterprise
 import Components.Form exposing (Field, viewForm)
+import Components.Validator exposing (NipValidationResult(..), validateNip)
+import Html.Styled.Attributes as Attr
 import Http
 import Page
 import Request exposing (Request)
@@ -29,8 +31,11 @@ page shared _ =
 
 type alias Model =
     { name : String
+    , nameError : List String
     , nipNumber : String
+    , nipNumberError : List String
     , address : String
+    , addressError : List String
     }
 
 
@@ -42,7 +47,7 @@ type Field
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model "" "" "", Cmd.none )
+    ( Model "" [] "" [] "" [], Cmd.none )
 
 
 
@@ -73,13 +78,36 @@ update msg model =
         DeactivatedField fieldname ->
             case fieldname of
                 Name ->
-                    ( model, Cmd.none )
+                    if String.isEmpty model.name then
+                        ( { model | nameError = [ "Nazwa firmy nie może być pusta" ] }, Cmd.none )
+
+                    else
+                        ( { model | nameError = [] }, Cmd.none )
 
                 NipNumber ->
-                    ( model, Cmd.none )
+                    let
+                        validationResult =
+                            case validateNip model.nipNumber of
+                                InvalidNipLength ->
+                                    [ "Nip musi mieć równo 10 znaków." ]
+
+                                InvalidNipControlNumber ->
+                                    [ "Niepoprawny numer nip - błąd walidacji cyfry kontrolnej." ]
+
+                                InvalidNipSymbols ->
+                                    [ "Numer nip powinien składać się tylko z cyfr" ]
+
+                                CorrectNipNumber ->
+                                    []
+                    in
+                    ( { model | nipNumberError = validationResult }, Cmd.none )
 
                 Address ->
-                    ( model, Cmd.none )
+                    if String.isEmpty model.address then
+                        ( { model | addressError = [ "Adres firmy nie może być pusty" ] }, Cmd.none )
+
+                    else
+                        ( { model | addressError = [] }, Cmd.none )
 
         Submitted ->
             ( model
@@ -118,21 +146,27 @@ view model =
               , value = model.name
               , onInput = \val -> UpdatedField Name val
               , onBlur = DeactivatedField Name
+              , errorList = model.nameError
+              , otherAttrsInput = []
               }
             , { label = "Numer NIP"
               , type_ = "string"
               , value = model.nipNumber
               , onInput = \val -> UpdatedField NipNumber val
               , onBlur = DeactivatedField NipNumber
+              , errorList = model.nipNumberError
+              , otherAttrsInput = [ Attr.maxlength 10 ]
               }
             , { label = "Adres"
               , type_ = "string"
               , value = model.address
               , onInput = \val -> UpdatedField Address val
               , onBlur = DeactivatedField Address
+              , errorList = model.addressError
+              , otherAttrsInput = []
               }
             ]
-            "Dodaj"
+            ( "Dodaj", List.any (\a -> List.isEmpty a |> not) [ model.addressError, model.nameError, model.nipNumberError ] )
             Submitted
         ]
     }

@@ -1,9 +1,11 @@
 from typing import List, Type
 
+from app.routes.utils import Message
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel, validator
 from pydantic.errors import PydanticValueError
-from starlette.status import HTTP_201_CREATED
+from starlette.responses import JSONResponse
+from starlette.status import HTTP_201_CREATED, HTTP_409_CONFLICT
 
 from .. import models, validators
 from .auth import CurrentUser, current_user_responses
@@ -64,18 +66,27 @@ def get_enterprise_router():
         "/enterprise",
         response_model=EnterpriseCreateResponse,
         status_code=HTTP_201_CREATED,
-        responses={**current_user_responses()},
+        responses={**current_user_responses(), HTTP_409_CONFLICT: {"model": Message}},
     )
     async def create_enterprise(
         enterprise: EnterpriseCreateInput,
         user: models.User = Depends(CurrentUser()),
     ):
-        new_enterprise = await models.Enterprise(**enterprise.dict()).save()
-        user_enterprise_connection = await models.UserEnterprise(
-            user_id=user.id,
-            enterprise_id=new_enterprise.id,
-            role=models.UserEnterpriseRoles.admin.value,
-        ).save()
-        return new_enterprise.dict()
+        existing_enterprise = await models.UserEnterprise.objects.select_related(
+            [models.UserEnterprise.enterprise_id]
+        ).get_or_none(enterprise_id__nip_number=enterprise.nip_number)
+        if existing_enterprise is None:
+            new_enterprise = await models.Enterprise(**enterprise.dict()).save()
+            user_enterprise_connection = await models.UserEnterprise(
+                user_id=user.id,
+                enterprise_id=new_enterprise.id,
+                role=models.UserEnterpriseRoles.admin.value,
+            ).save()
+            return new_enterprise.dict()
+        else:
+            return JSONResponse(
+                Message(message="Enterprise exists").json(),
+                status_code=HTTP_409_CONFLICT,
+            )
 
     return enterprise_router
