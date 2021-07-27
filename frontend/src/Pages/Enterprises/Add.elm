@@ -35,7 +35,7 @@ type alias Model =
     { name : FormField
     , nipNumber : FormField
     , address : FormField
-    , responseError : String
+    , responseError : Maybe String
     }
 
 
@@ -51,7 +51,7 @@ init =
         (ToBeValidated "")
         (ToBeValidated "")
         (ToBeValidated "")
-        ""
+        Nothing
     , Cmd.none
     )
 
@@ -90,7 +90,7 @@ update req msg model =
                     ( { model | nipNumber = model.nipNumber |> validateWith nipValidator }, Cmd.none )
 
                 Address ->
-                    ( { model | name = model.address |> validateWith nameValidator }, Cmd.none )
+                    ( { model | address = model.address |> validateWith nameValidator }, Cmd.none )
 
         Submitted ->
             ( model
@@ -108,7 +108,7 @@ update req msg model =
                     ( model, Request.pushRoute Gen.Route.Enterprises req )
 
                 Err error ->
-                    ( { model | responseError = apiErrorToStr error }, Cmd.none )
+                    ( { model | responseError = Just (apiErrorToStr error) }, Cmd.none )
 
 
 nameValidator : String -> FormField
@@ -209,7 +209,7 @@ view model =
                 , getErrors model.nipNumber
                 ]
             )
-            model.responseError
+            (model.responseError |> Maybe.withDefault "")
             Submitted
         ]
     }

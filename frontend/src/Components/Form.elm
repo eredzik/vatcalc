@@ -1,5 +1,7 @@
 module Components.Form exposing (Field, FormField(..), validateWith, viewField, viewForm)
 
+import Components.Color exposing (errorColor)
+import Css
 import Html.Styled exposing (..)
 import Html.Styled.Attributes as Attr
 import Html.Styled.Events as Events
@@ -73,6 +75,6 @@ viewForm :
 viewForm fields ( button_label, buttonDisabled ) errorFeedback onSubmitMsg =
     form [ Events.onSubmit onSubmitMsg, Attr.class "needs-validation" ] <|
         List.map viewField fields
-            ++ [ div [ Attr.class "is-valid" ] [ text errorFeedback ]
+            ++ [ div [ Attr.class "is-valid" ] [ div [ Attr.css [ Css.color errorColor ] ] [ text errorFeedback ] ]
                , button [ Attr.disabled buttonDisabled ] [ text button_label ]
                ]
