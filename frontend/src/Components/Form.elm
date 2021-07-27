@@ -1,4 +1,4 @@
-module Components.Form exposing (Field, viewField, viewForm)
+module Components.Form exposing (Field, FormField(..), validateWith, viewField, viewForm)
 
 import Html.Styled exposing (..)
 import Html.Styled.Attributes as Attr
@@ -14,6 +14,25 @@ type alias Field msg =
     , onBlur : msg
     , otherAttrsInput : List (Attribute msg)
     }
+
+
+type FormField
+    = Valid String
+    | Invalid String (List String)
+    | ToBeValidated String
+
+
+validateWith : (String -> FormField) -> FormField -> FormField
+validateWith func fieldToValidate =
+    case fieldToValidate of
+        ToBeValidated str ->
+            func str
+
+        Invalid a b ->
+            Invalid a b
+
+        Valid a ->
+            Valid a
 
 
 viewField : Field msg -> Html msg
@@ -45,8 +64,15 @@ viewField options =
         ]
 
 
-viewForm : List (Field msg) -> ( String, Bool ) -> msg -> Html msg
-viewForm fields ( button_label, buttonDisabled ) onSubmitMsg =
+viewForm :
+    List (Field msg)
+    -> ( String, Bool )
+    -> String
+    -> msg
+    -> Html msg
+viewForm fields ( button_label, buttonDisabled ) errorFeedback onSubmitMsg =
     form [ Events.onSubmit onSubmitMsg, Attr.class "needs-validation" ] <|
         List.map viewField fields
-            ++ [ button [ Attr.disabled buttonDisabled ] [ text button_label ] ]
+            ++ [ div [ Attr.class "is-valid" ] [ text errorFeedback ]
+               , button [ Attr.disabled buttonDisabled ] [ text button_label ]
+               ]

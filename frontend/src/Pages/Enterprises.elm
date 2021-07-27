@@ -35,7 +35,7 @@ type alias Model =
 
 
 init : Shared.Model -> ( Model, Cmd Msg )
-init shared =
+init _ =
     ( { enterprises = [] }
     , Api.Request.Enterprise.getUserEnterprisesEnterpriseGet 1
         |> Api.send GotEnterprisesData
@@ -51,7 +51,7 @@ type Msg
 
 
 update : Shared.Model -> Msg -> Model -> ( Model, Cmd Msg )
-update shared msg model =
+update _ msg model =
     case msg of
         GotEnterprisesData data ->
             case data of
