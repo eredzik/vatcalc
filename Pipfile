@@ -15,6 +15,7 @@ psycopg2 = "*"
 ormar = "*"
 asgi-lifespan = "*"
 pyjwt = "*"
+bcrypt = "*"
 
 [dev-packages]
 pytest = "*"

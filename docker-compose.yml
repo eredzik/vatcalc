@@ -39,7 +39,7 @@ services:
     volumes:
       - ./frontend/:/usr/src/frontend
     environment:
-      - API_URL=http://backend:5000/openapi.json
+      - API_URL=http://backend:5000
       - WAIT_HOSTS=backend:5000
       - WAIT_HOSTS_TIMEOUT=300
       - WAIT_SLEEP_INTERVAL=2

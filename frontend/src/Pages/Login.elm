@@ -132,12 +132,16 @@ view model =
                   , value = model.username
                   , onInput = Updated Username
                   , onBlur = DeactivatedField Username
+                  , errorList = []
+                  , otherAttrsInput = []
                   }
                 , { label = "Password"
                   , type_ = "password"
                   , value = model.password
                   , onInput = Updated Password
                   , onBlur = DeactivatedField Password
+                  , errorList = []
+                  , otherAttrsInput = []
                   }
                 ]
             }

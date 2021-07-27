@@ -11,7 +11,7 @@ type alias User =
 
 
 beforeProtectedInit : Shared.Model -> Request -> ElmSpa.Protected User Route
-beforeProtectedInit shared req =
+beforeProtectedInit shared _ =
     case shared.user of
         Just user ->
             ElmSpa.Provide user

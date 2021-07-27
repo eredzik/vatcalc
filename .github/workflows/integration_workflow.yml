@@ -1,9 +1,6 @@
 name: Run tests
 on:
-  pull_request:
   push:
-    branches:
-      - master
 jobs:
   test_backend:
     runs-on: ubuntu-latest
@@ -53,6 +50,7 @@ jobs:
   #           commit_message: "Github Action: Auto Minified JS and CSS files"
   #           branch: ${{ github.ref }}\
   deploy_backend:
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     needs:
       - test_backend
@@ -65,6 +63,7 @@ jobs:
           heroku_app_name: "vatcalc-test" #Must be unique in Heroku
           heroku_email: "kseromanyja@gmail.com"
   deploy_frontend:
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     needs: deploy_backend
     steps:
