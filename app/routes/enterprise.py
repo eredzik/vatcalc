@@ -75,7 +75,7 @@ def get_enterprise_router():
         existing_enterprise = await models.UserEnterprise.objects.select_related(
             [models.UserEnterprise.enterprise_id]
         ).all(user_id=user.id, enterprise_id__nip_number=enterprise.nip_number)
-        if existing_enterprise is None:
+        if existing_enterprise == []:
             new_enterprise = await models.Enterprise(**enterprise.dict()).save()
             user_enterprise_connection = await models.UserEnterprise(
                 user_id=user.id,
