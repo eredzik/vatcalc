@@ -11,5 +11,5 @@ ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERS
 RUN chmod +x /wait
 ENV PYTHONPATH="/usr/src/backend/app:${PYTHONPATH}"
 
-CMD pipenv run sh /usr/src/backend/scripts/start_backend.sh
+CMD sh /usr/src/backend/scripts/start_backend.sh
 
