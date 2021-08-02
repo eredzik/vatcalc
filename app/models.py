@@ -78,6 +78,7 @@ class User(ormar.Model):
     username = ormar.String(index=True, nullable=False, max_length=255)
     email = ormar.String(index=True, unique=True, nullable=False, max_length=255)
     hashed_password = ormar.String(nullable=False, max_length=255)
+    fav_enterprise_id = ormar.ForeignKey(Enterprise)
     # is_active = ormar.Boolean(default=True, nullable=False)
     # is_superuser = ormar.Boolean(default=False, nullable=False)
     # is_verified = ormar.Boolean(default=False, nullable=False)
