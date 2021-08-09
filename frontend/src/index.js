@@ -1,7 +1,7 @@
 'use strict';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-
+// import 'bootstrap/dist/css/bootstrap.min.css';
+import './style.scss';
 var Elm = require('./Main.elm').Elm
 var app = Elm.Main.init()
 

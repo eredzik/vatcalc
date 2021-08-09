@@ -38,6 +38,7 @@ validateNip nipNumber =
                 |> List.take 9
                 |> List.map2 (*) [ 6, 5, 7, 2, 3, 4, 5, 6, 7 ]
                 |> List.sum
+                |> modBy 11
                 |> (==) (listOfNums |> List.drop 9 |> List.take 1 |> List.sum)
         then
             CorrectNipNumber
