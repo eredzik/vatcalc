@@ -63,6 +63,7 @@ type Msg
     | SignedInUser
     | GotUserData (Result Http.Error Api.Data.CurrentUserResponse)
     | LoggedOut (Result Http.Error ())
+    | SelectedFavouriteEnterprise (Maybe Int)
 
 
 update : Request -> Msg -> Model -> ( Model, Cmd Msg )
@@ -94,6 +95,9 @@ update _ msg model =
 
                 Err _ ->
                     ( { model | user = Nothing }, Cmd.none )
+
+        SelectedFavouriteEnterprise enterprise_id ->
+            ( { model | selectedEnterpriseId = enterprise_id }, Cmd.none )
 
 
 subscriptions : Request -> Model -> Sub Msg

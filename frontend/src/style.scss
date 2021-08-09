@@ -9,6 +9,9 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 body {
     background-color: #c2bdba73;
 }
+h1 {
+    margin: 1em;
+}
 .button-primary {
     display: inline-block;
     padding: 0.3em 1.2em;
@@ -23,18 +26,9 @@ body {
     text-align: center;
     transition: all 0.2s;
 }
-.ticker-icon {
-    background-image: url("static/checked.svg");
-    display: inline-block;
-    content: "";
-    vertical-align: -0.125em;
-    background-repeat: no-repeat;
-    background-size: 1rem 1rem;
-}
-
 .styled-table {
     border-collapse: collapse;
-    margin: 25px 0;
+    margin: 25px;
     font-size: 0.9em;
     font-family: sans-serif;
     min-width: 400px;

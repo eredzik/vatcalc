@@ -1,6 +1,5 @@
 module Components.Buttons exposing (..)
 
-import Browser.Events exposing (onClick)
 import Html.Styled exposing (..)
 import Html.Styled.Events exposing (onSubmit)
 import Svg.Styled.Attributes exposing (class)
