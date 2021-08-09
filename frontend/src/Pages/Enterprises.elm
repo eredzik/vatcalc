@@ -129,6 +129,10 @@ view shared model =
                                         ]
                                         [ text "" ]
                           )
+                        , ( "Opcje"
+                          , \row ->
+                                i [ Attr.class "secondary-button" ] [ text "" ]
+                          )
                         ]
                         model.enterprises
                     ]
