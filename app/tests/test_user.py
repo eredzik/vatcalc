@@ -30,7 +30,7 @@ def set_fav_enterprise(client: TestClient,
 def test_set_fav_enterprise(client: TestClient):
     _ = get_random_logged_user(client)
     enterprise = create_enterprise(client)
-    r = set_fav_enterprise(client, fav_enterprise=enterprise.json().id)
+    r = set_fav_enterprise(client, fav_enterprise=enterprise.json()['id'])
     assert r.status_code == HTTP_200_OK
 
 
@@ -42,13 +42,13 @@ def test_set_fav_enterprise_unauthorised(client: TestClient, fav_enterprise):
 def test_get_fav_enterprise(client: TestClient):
     _ = get_random_logged_user(client)
     enterprise = create_enterprise(client)
-    r = set_fav_enterprise(client, fav_enterprise=enterprise.json().id)
+    r = set_fav_enterprise(client, fav_enterprise=enterprise.json()['id'])
     r2 = client.get("user/me/preferred_enterprise", cookies=client.cookies.get_dict())
     assert r2.status_code == HTTP_200_OK
 
 def test_no_fav_enterprise(client: TestClient):
     _ = get_random_logged_user(client)
     r = client.get("user/me/preferred_enterprise", cookies=client.cookies.get_dict())
-    assert r.status_code == HTTP_409_CONFLICT
+    assert r.status_code == HTTP_404_NOT_FOUND
 
 
