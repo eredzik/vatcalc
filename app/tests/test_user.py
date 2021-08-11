@@ -1,8 +1,4 @@
-from starlette.status import (
-    HTTP_200_OK,
-    HTTP_401_UNAUTHORIZED,
-    HTTP_402_PAYMENT_REQUIRED,
-)
+from starlette.status import *
 from starlette.testclient import TestClient
 from .test_enterprise import create_enterprise
 
@@ -24,7 +20,7 @@ def set_fav_enterprise(client: TestClient,
                        fav_enterprise,
     ):
     response = client.patch(
-        "/preferred_enterprise",
+        "/user/me/preferred_enterprise",
         json={"fav_enterprise": fav_enterprise},
         cookies=client.cookies.get_dict(),
     )
@@ -37,8 +33,22 @@ def test_set_fav_enterprise(client: TestClient):
     r = set_fav_enterprise(client, fav_enterprise=enterprise.json().id)
     assert r.status_code == HTTP_200_OK
 
-    #TODO: test na faile
-    #TODO: wyjebać śmieci z gita
-    #TODO: napisać get na enterprise
-    #TODO: sprawdzić, czy reszta testów się nie wywala
-    #TODO: migracje dopisać
+
+def test_set_fav_enterprise_unauthorised(client: TestClient, fav_enterprise):
+    r = client.patch("user/me/preferred_enterprise",
+                     json={"fav_enterprise": fav_enterprise})
+    assert r.status_code == HTTP_401_UNAUTHORIZED
+
+def test_get_fav_enterprise(client: TestClient):
+    _ = get_random_logged_user(client)
+    enterprise = create_enterprise(client)
+    r = set_fav_enterprise(client, fav_enterprise=enterprise.json().id)
+    r2 = client.get("user/me/preferred_enterprise", cookies=client.cookies.get_dict())
+    assert r2.status_code == HTTP_200_OK
+
+def test_no_fav_enterprise(client: TestClient):
+    _ = get_random_logged_user(client)
+    r = client.get("user/me/preferred_enterprise", cookies=client.cookies.get_dict())
+    assert r.status_code == HTTP_409_CONFLICT
+
+

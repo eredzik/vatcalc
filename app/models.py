@@ -94,7 +94,6 @@ class UserEnterpriseRoles(str, Enum):
     editor = "EDITOR"
     admin = "ADMIN"
 
-
 class UserEnterprise(ormar.Model):
     class Meta(BaseMeta):
         tablename = "userenterprise"
