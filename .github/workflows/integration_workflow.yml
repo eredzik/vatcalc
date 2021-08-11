@@ -1,0 +1,75 @@
+name: Run tests
+on:
+  push:
+jobs:
+  test_backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build the stack
+        run: docker-compose up -d
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+      - name: Setup dependencies
+        run: |
+          pip3 install pipenv
+          pipenv install --dev
+      - name: Build coverage file
+        run: DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres pipenv run  pytest --cache-clear --cov=app --cov-report xml
+      - uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          flags: pytest
+  test_frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build the stack
+        run: docker-compose up -d
+
+      - name: Install node
+        uses: actions/setup-node@v1
+
+  #       - name: Run frontend tests
+  #         run: npx elm-test
+  #       - name: Build frontend
+  #         run: ./scripts/build_frontend.sh
+  #       - name: Auto Minify
+  #         uses: nizarmah/auto-minify@master
+  #         with:
+  #           directory: "static"
+  #       - name: Auto committing minified files
+  #         uses: stefanzweifel/git-auto-commit-action@v3.0.0
+  #         with:
+  #           commit_message: "Github Action: Auto Minified JS and CSS files"
+  #           branch: ${{ github.ref }}\
+  deploy_backend:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs:
+      - test_backend
+      - test_frontend
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "vatcalc-test" #Must be unique in Heroku
+          heroku_email: "kseromanyja@gmail.com"
+  deploy_frontend:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs: deploy_backend
+    steps:
+      - uses: actions/checkout@v2
+      - uses: jsmrcaga/action-netlify-deploy@v1.1.0
+        with:
+          NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_API_KEY}}
+          NETLIFY_SITE_ID: true
+          build_directory: "frontend/dist"
