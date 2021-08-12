@@ -33,12 +33,15 @@ def get_user_router():
         )
         return user_data
 
-    class UserFavEnterprise(CurrentUserResponse):
+    class UserUpdateEnterprise(CurrentUserResponse):
+        email: Optional[str] = None
+        username: Optional[str] = None
         fav_enterprise_id: int
 
     @user_router.patch(
-        "/user/me/preferred_enterprise/",
-        response_model=UserFavEnterprise,
+        "/user/me/preferred_enterprise",
+        response_model=UserUpdateEnterprise,
+        responses={status.HTTP_401_UNAUTHORIZED: {'model': Message}}
     )
     async def update_enterprise(
         fav_enterprise: int, user: models.User = Depends(CurrentUser())
@@ -54,26 +57,21 @@ def get_user_router():
         )
         if permissions is True:
             await user.update(fav_enterprise_id=fav_enterprise)
-        else:
-            return JSONResponse(
-                status_code=HTTP_401_UNAUTHORIZED,
-                content={"message": "Permissions error"}
-            )
         return user
+
+    class FavEnterpriseResponse(BaseModel):
+        fav_enterprise: int
 
     @user_router.get(
         "user/me/preferred_enterprise",
-        response_model=UserFavEnterprise,
+        response_model=FavEnterpriseResponse,
+        responses={status.HTTP_409_CONFLICT: {"model": Message}}
         )
     async def get_fav_enterprise(user: models.User = Depends(CurrentUser)):
         if user.fav_enterprise_id is not None:
-            fav_enterprise = UserFavEnterprise(
+            fav_enterprise = FavEnterpriseResponse(
                 fav_enterprise=user.fav_enterprise_id
             )
             return fav_enterprise
-        return JSONResponse(
-            status_code=HTTP_409_CONFLICT,
-            content={'message': "No favourite enterprise set for user"}
-        )
 
     return user_router

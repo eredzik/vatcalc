@@ -17,7 +17,7 @@ def test_me_path_failure(client: TestClient):
 
 
 def set_fav_enterprise(client: TestClient,
-                       fav_enterprise,
+                       fav_enterprise="123",
     ):
     response = client.patch(
         "/user/me/preferred_enterprise",
@@ -28,27 +28,27 @@ def set_fav_enterprise(client: TestClient,
 
 
 def test_set_fav_enterprise(client: TestClient):
-    _ = get_random_logged_user(client)
+    user = get_random_logged_user(client)
     enterprise = create_enterprise(client)
     r = set_fav_enterprise(client, fav_enterprise=enterprise.json()['id'])
     assert r.status_code == HTTP_200_OK
 
 
-def test_set_fav_enterprise_unauthorised(client: TestClient, fav_enterprise):
-    r = client.patch("user/me/preferred_enterprise",
+def test_set_fav_enterprise_unauthorised(client: TestClient, fav_enterprise="123"):
+    r = client.patch("/user/me/preferred_enterprise",
                      json={"fav_enterprise": fav_enterprise})
     assert r.status_code == HTTP_401_UNAUTHORIZED
 
 def test_get_fav_enterprise(client: TestClient):
-    _ = get_random_logged_user(client)
+    user = get_random_logged_user(client)
     enterprise = create_enterprise(client)
     r = set_fav_enterprise(client, fav_enterprise=enterprise.json()['id'])
-    r2 = client.get("user/me/preferred_enterprise", cookies=client.cookies.get_dict())
+    r2 = client.get("/user/me/preferred_enterprise", cookies=user.cookies.get_dict())
     assert r2.status_code == HTTP_200_OK
 
 def test_no_fav_enterprise(client: TestClient):
     _ = get_random_logged_user(client)
-    r = client.get("user/me/preferred_enterprise", cookies=client.cookies.get_dict())
+    r = client.get("/user/me/preferred_enterprise", cookies=client.cookies.get_dict())
     assert r.status_code == HTTP_404_NOT_FOUND
 
 
