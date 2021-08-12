@@ -31,6 +31,7 @@ import View exposing (View)
 type alias User =
     { email : String
     , username : String
+    , favEnterpriseId : Maybe Int
     }
 
 

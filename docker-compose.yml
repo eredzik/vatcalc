@@ -29,7 +29,6 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_SERVER=db
       - JWT_SECRET=somesecret
-    user: ${UID}:${GID}
   frontend:
     build:
       context: frontend/

@@ -85,7 +85,7 @@ def get_enterprise_router():
             return new_enterprise.dict()
         else:
             return JSONResponse(
-                Message(message="Enterprise exists").json(),
+                Message(detail="Enterprise exists").json(),
                 status_code=HTTP_409_CONFLICT,
             )
 
