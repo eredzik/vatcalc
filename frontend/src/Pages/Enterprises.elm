@@ -131,7 +131,16 @@ view shared model =
                           )
                         , ( "Opcje"
                           , \row ->
-                                i [ Attr.class "secondary-button" ] [ text "" ]
+                                a
+                                    [ Route.Enterprises__Id_ { id = String.fromInt row.enterpriseId }
+                                        |> Route.toHref
+                                        |> Attr.href
+                                    ]
+                                    [ i
+                                        [ Attr.class "fas fa-cog fa-lg"
+                                        ]
+                                        [ text "" ]
+                                    ]
                           )
                         ]
                         model.enterprises

@@ -4,10 +4,11 @@ import ElmSpa.Page as ElmSpa
 import Gen.Route as Route exposing (Route)
 import Request exposing (Request)
 import Shared
+import User
 
 
 type alias User =
-    Shared.User
+    User.User
 
 
 beforeProtectedInit : Shared.Model -> Request -> ElmSpa.Protected User Route
