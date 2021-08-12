@@ -13,6 +13,31 @@ body {
 h1 {
     margin: 1em;
 }
+nav {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(14, 72, 127, 1);
+    a {
+        align-items: center;
+        display: flex;
+        font-weight: bold;
+        font-size: 30px;
+        text-decoration: none;
+        padding-left: 10px;
+        color: rgba(255, 240, 138, 1);
+    }
+    ul {
+        display: flex;
+        align-items: center;
+        a {
+            font-size: 25px;
+            padding: 10px;
+            color: rgba(255, 240, 138, 1);
+            text-decoration: none;
+            cursor: pointer;
+        }
+    }
+}
 .button-primary {
     display: inline-block;
     padding: 0.3em 1.2em;

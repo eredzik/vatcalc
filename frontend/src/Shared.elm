@@ -44,12 +44,20 @@ init _ flags =
     let
         user =
             Storage.fromJson flags |> .user
+
+        cmds =
+            case user of
+                Just _ ->
+                    Api.Request.User.getUserDataUserMeGet
+                        |> Api.send GotUserData
+
+                Nothing ->
+                    Cmd.none
     in
     ( { user = user
       , selectedEnterpriseId = Nothing
       }
-    , Api.Request.User.getUserDataUserMeGet
-        |> Api.send GotUserData
+    , cmds
     )
 
 
@@ -81,7 +89,7 @@ update _ msg model =
 
         LoggedOut _ ->
             ( model
-            , Storage.saveToLocalStorage { user = Nothing }
+            , Cmd.batch [ Storage.saveToLocalStorage { user = Nothing } ]
             )
 
         GotUserData userResponse ->
@@ -92,7 +100,9 @@ update _ msg model =
                     )
 
                 Err _ ->
-                    ( { model | user = Nothing }, Cmd.none )
+                    ( { model | user = Nothing }
+                    , Storage.saveToLocalStorage { user = Nothing }
+                    )
 
         SelectedFavouriteEnterprise enterprise_id ->
             ( { model | selectedEnterpriseId = enterprise_id }, Cmd.none )
