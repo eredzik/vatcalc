@@ -39,7 +39,7 @@ def get_auth_router():
         user = await User.objects.get_or_none(username=login_input.username)
         if user is None:
             return JSONResponse(
-                Message(message="User not found.").json(),
+                Message(detail="User not found.").json(),
                 status_code=HTTP_401_UNAUTHORIZED,
             )
         verified, updated_password_hash = pwd_context.verify_and_update(

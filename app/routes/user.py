@@ -1,15 +1,15 @@
+from typing import Optional
+
 from app.routes.auth import CurrentUser
 from app.routes.utils import Message
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from fastapi.param_functions import Depends
 from pydantic.main import BaseModel
 from starlette import status
-from typing import Optional
-from .utils import verify_enterprise_permissions
-from starlette.responses import JSONResponse
-from starlette.status import HTTP_201_CREATED, HTTP_401_UNAUTHORIZED, HTTP_409_CONFLICT
+from starlette.status import HTTP_404_NOT_FOUND
 
 from .. import models
+from .utils import verify_enterprise_permissions
 
 
 def get_user_router():
@@ -33,15 +33,15 @@ def get_user_router():
         )
         return user_data
 
-    class UserUpdateEnterprise(CurrentUserResponse):
+    class UserUpdateEnterpriseResponse(CurrentUserResponse):
         email: Optional[str] = None
         username: Optional[str] = None
         fav_enterprise_id: int
 
     @user_router.patch(
         "/user/me/preferred_enterprise",
-        response_model=UserUpdateEnterprise,
-        responses={status.HTTP_401_UNAUTHORIZED: {'model': Message}}
+        response_model=UserUpdateEnterpriseResponse,
+        responses={status.HTTP_401_UNAUTHORIZED: {"model": Message}},
     )
     async def update_enterprise(
         fav_enterprise: int, user: models.User = Depends(CurrentUser())
@@ -52,26 +52,35 @@ def get_user_router():
             required_permissions=[
                 models.UserEnterpriseRoles.editor,
                 models.UserEnterpriseRoles.admin,
-                models.UserEnterpriseRoles.viewer
+                models.UserEnterpriseRoles.viewer,
             ],
         )
         if permissions is True:
             await user.update(fav_enterprise_id=fav_enterprise)
-        return user
+        return UserUpdateEnterpriseResponse(
+            email=user.email,
+            username=user.username,
+            fav_enterprise_id=user.fav_enterprise_id.id,
+        )
 
     class FavEnterpriseResponse(BaseModel):
         fav_enterprise: int
 
     @user_router.get(
-        "user/me/preferred_enterprise",
+        "/user/me/preferred_enterprise",
         response_model=FavEnterpriseResponse,
-        responses={status.HTTP_409_CONFLICT: {"model": Message}}
-        )
-    async def get_fav_enterprise(user: models.User = Depends(CurrentUser)):
+        responses={
+            status.HTTP_409_CONFLICT: {"model": Message},
+            HTTP_404_NOT_FOUND: {"model": Message},
+        },
+    )
+    async def get_fav_enterprise(user: models.User = Depends(CurrentUser())):
         if user.fav_enterprise_id is not None:
             fav_enterprise = FavEnterpriseResponse(
-                fav_enterprise=user.fav_enterprise_id
+                fav_enterprise=user.fav_enterprise_id.id
             )
             return fav_enterprise
+        else:
+            raise HTTPException(HTTP_404_NOT_FOUND, "Not found favorite enterprise.")
 
     return user_router
