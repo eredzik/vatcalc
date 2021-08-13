@@ -35,7 +35,6 @@ type alias Flags =
 
 type alias Model =
     { user : Maybe User
-    , selectedEnterpriseId : Maybe Int
     }
 
 
@@ -55,7 +54,6 @@ init _ flags =
                     Cmd.none
     in
     ( { user = user
-      , selectedEnterpriseId = Nothing
       }
     , cmds
     )
@@ -105,7 +103,19 @@ update _ msg model =
                     )
 
         SelectedFavouriteEnterprise enterprise_id ->
-            ( { model | selectedEnterpriseId = enterprise_id }, Cmd.none )
+            case model.user of
+                Just user ->
+                    let
+                        new_user =
+                            user
+                                |> (\z -> { z | favEnterpriseId = enterprise_id })
+                    in
+                    ( { model | user = Just new_user }
+                    , Storage.saveToLocalStorage { user = Just new_user }
+                    )
+
+                Nothing ->
+                    ( model, Cmd.none )
 
 
 subscriptions : Request -> Model -> Sub Msg

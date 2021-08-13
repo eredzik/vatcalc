@@ -14,8 +14,8 @@ type alias User =
 decodeUser : Decode.Decoder User
 decodeUser =
     Decode.map3 User
-        (Decode.field "username" Decode.string)
         (Decode.field "email" Decode.string)
+        (Decode.field "username" Decode.string)
         (Decode.maybe (Decode.field "favEnterpriseId" Decode.int))
 
 

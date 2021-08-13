@@ -6,8 +6,6 @@ module View exposing
     )
 
 import Browser
-import Css
-import Css.Global
 import Html.Styled
 
 

@@ -12,6 +12,7 @@ import Http
 import Page
 import Request exposing (Request)
 import Shared
+import User
 import View exposing (View)
 
 
@@ -30,8 +31,8 @@ type alias Model =
 page : Shared.Model -> Request -> Page.With Model Msg
 page shared req =
     Page.protected.advanced
-        (\_ ->
-            { init = init shared
+        (\user ->
+            { init = init user
             , update = update req
             , subscriptions = subscriptions
             , view = view shared
@@ -64,12 +65,12 @@ subscriptions _ =
     Sub.none
 
 
-init : Shared.Model -> ( Model, Effect Msg )
-init shared =
+init : User.User -> ( Model, Effect Msg )
+init user =
     ( { invoiceTabSelected = All
       , invoices = []
       }
-    , Api.Request.Invoice.getInvoicesInvoiceGet 1 (Maybe.withDefault 1 shared.selectedEnterpriseId)
+    , Api.Request.Invoice.getInvoicesInvoiceGet 1 (Maybe.withDefault -1 user.favEnterpriseId)
         |> Api.send ReceivedData
         |> Effect.fromCmd
     )

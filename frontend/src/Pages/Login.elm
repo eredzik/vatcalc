@@ -1,15 +1,12 @@
 module Pages.Login exposing (Model, Msg, page)
 
--- import Api.xxData exposing (Data(..))
--- import Api.Endpoint exposing (ApiPath)
--- import Api.Token exposing (Token(..))
--- import Api.User exposing (User)
-
 import Api
 import Api.Request.Authentication
 import Components.UserForm
 import Effect exposing (Effect)
 import Gen.Route as Route
+import Html.Styled exposing (..)
+import Html.Styled.Attributes as Attr
 import Http
 import Page
 import Request exposing (Request)
@@ -35,12 +32,14 @@ page shared req =
 type alias Model =
     { username : String
     , password : String
+    , errors : String
     }
 
 
 init : Shared.Model -> ( Model, Effect Msg )
 init _ =
     ( Model
+        ""
         ""
         ""
     , Effect.none
@@ -104,7 +103,7 @@ update req msg model =
                     )
 
                 Err _ ->
-                    ( model
+                    ( { model | errors = "err" }
                     , Effect.none
                     )
 
@@ -145,5 +144,6 @@ view model =
                   }
                 ]
             }
+        , a [ Attr.class "error" ] [ text model.errors ]
         ]
     }

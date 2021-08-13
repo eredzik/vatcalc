@@ -6,7 +6,7 @@ import Html.Styled exposing (..)
 import Html.Styled.Attributes as Attr
 import Maybe
 import Page
-import Request exposing (Request)
+import Request
 import Shared
 import View exposing (View)
 
@@ -29,7 +29,7 @@ init req =
         Just id ->
             ( { edited_enterprise_id = id
               , tabs =
-                    [ Tab True "Opcje" (text "Jakis szajs")
+                    [ Tab True "Dane firmy" (text "Jakis szajs")
                     , Tab False "Stawki VAT" (text "Jakis szajs")
                     ]
               }
@@ -47,7 +47,9 @@ init req =
 
 
 type alias Model =
-    { edited_enterprise_id : Int, tabs : List (Tab Msg) }
+    { edited_enterprise_id : Int
+    , tabs : List (Tab Msg)
+    }
 
 
 type Msg
@@ -81,16 +83,26 @@ type alias Tab msg =
 viewTabs : List (Tab msg) -> Html msg
 viewTabs tabs =
     div []
-        [ div [ Attr.class "tab" ]
-            (List.map
-                (\t -> button [ Attr.classList [ ( "active", t.is_active ) ] ] [ text t.tabname ])
-                tabs
-            )
-        , div
-            []
-            [ List.filter .is_active tabs
-                |> List.map .contents
-                |> List.head
-                |> Maybe.withDefault (text "")
+        [ div [ Attr.class "tab-container" ]
+            [ div []
+                (List.map
+                    (\t ->
+                        button
+                            [ Attr.classList
+                                [ ( "active", t.is_active )
+                                , ( "tab", True )
+                                ]
+                            ]
+                            [ text t.tabname ]
+                    )
+                    tabs
+                )
+            , div
+                [ Attr.class "tab-content-container" ]
+                [ List.filter .is_active tabs
+                    |> List.map .contents
+                    |> List.head
+                    |> Maybe.withDefault (text "")
+                ]
             ]
         ]

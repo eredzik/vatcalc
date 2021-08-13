@@ -1,4 +1,4 @@
-module Components.Validator exposing (NipValidationResult(..), validateNip)
+module Components.Validate.Nip exposing (NipValidationResult(..), validateNip, validateToErrorList)
 
 
 type NipValidationResult
@@ -47,5 +47,17 @@ validateNip nipNumber =
             InvalidNipControlNumber
 
 
+validateToErrorList : String -> List String
+validateToErrorList nip =
+    case validateNip nip of
+        InvalidNipLength ->
+            [ "Nip musi mieć równo 10 znaków." ]
 
--- [ 6, 5, 7, 2, 3, 4, 5, 6, 7 ]
+        InvalidNipControlNumber ->
+            [ "Niepoprawny numer nip - błąd walidacji cyfry kontrolnej." ]
+
+        InvalidNipSymbols ->
+            [ "Numer nip powinien składać się tylko z cyfr" ]
+
+        CorrectNipNumber ->
+            []

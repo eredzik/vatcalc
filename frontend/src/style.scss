@@ -1,22 +1,27 @@
-@import url("https://fonts.googleapis.com/css2?family=Hahmlet:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap");
 $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import "~@fortawesome/fontawesome-free/scss/fontawesome";
 @import "~@fortawesome/fontawesome-free/scss/solid";
 @import "~@fortawesome/fontawesome-free/scss/regular";
+$navbar-color: rgba(14, 72, 127, 1);
+$navbar-font-color: rgba(255, 240, 138, 1);
+$background-color: #c2bdba73;
+$primary-button-font-color: #ffffff;
+$primary-button-color: #4eb5f1;
+$table-primary-color: #cec7c7;
+$table-secondary-color: #f3f3f3;
 * {
-    font-family: "Hahmlet", serif;
+    font-family: "Lato", sans-serif;
 }
 body {
-    background-color: #c2bdba73;
+    background-color: $background-color;
     margin: 0;
-}
-h1 {
-    margin: 1em;
 }
 nav {
     display: flex;
     justify-content: space-between;
-    background-color: rgba(14, 72, 127, 1);
+    background-color: $navbar-color;
+    margin: 0;
     a {
         align-items: center;
         display: flex;
@@ -24,66 +29,113 @@ nav {
         font-size: 30px;
         text-decoration: none;
         padding-left: 10px;
-        color: rgba(255, 240, 138, 1);
+        color: $navbar-font-color;
     }
     ul {
         display: flex;
         align-items: center;
         a {
             font-size: 25px;
-            padding: 10px;
-            color: rgba(255, 240, 138, 1);
-            text-decoration: none;
             cursor: pointer;
         }
     }
 }
-.button-primary {
-    display: inline-block;
-    padding: 0.3em 1.2em;
-    margin: 0 0.3em 0.3em 0;
-    border-radius: 1em;
-    box-sizing: border-box;
-    text-decoration: none;
-    font-family: "Roboto", sans-serif;
-    font-weight: 300;
-    color: #ffffff;
-    background-color: #4eb5f1;
-    text-align: center;
-    transition: all 0.2s;
-}
-.styled-table {
-    border-collapse: collapse;
-    margin: 25px;
-    font-size: 0.9em;
-    font-family: sans-serif;
-    min-width: 400px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-    thead tr {
-        background-color: #009879;
-        color: #ffffff;
-        text-align: left;
-    }
-    th,
-    td {
-        padding: 12px 15px;
-        .clickable:hover {
+.page {
+    margin: 1em;
+
+    button,
+    a {
+        display: inline-block;
+        padding: 0.3em 1.2em;
+        margin: 0 0.3em 0.3em 0;
+        border-radius: 1em;
+        box-sizing: border-box;
+        text-decoration: none;
+        font-family: "Roboto", sans-serif;
+        font-weight: 300;
+        text-align: center;
+        border: none;
+        transition: all 0.2s;
+        &:hover {
             cursor: pointer;
         }
+        &.primary {
+            color: $primary-button-font-color;
+            background-color: $primary-button-color;
+        }
     }
-    tbody tr {
-        border-bottom: thin solid #dddddd;
+    .tab-container {
+        .tab-content-container {
+            background-color: $primary-button-color;
+            border-radius: 0 1em 1em 1em;
+            padding: 1em;
+        }
+        button.tab,
+        a.tab {
+            border-radius: 1em 1em 0 0;
+            margin: 0;
+            margin-right: -1em;
+
+            &.active {
+                color: $primary-button-font-color;
+                background-color: $primary-button-color;
+                z-index: 1;
+                position: relative;
+            }
+        }
     }
-    tbody {
-        tr:nth-of-type(even) {
-            background-color: #f3f3f3;
+    .styled-table {
+        // width: 100%- 1em;
+        border-collapse: collapse;
+        margin: 1em;
+        font-size: 0.9em;
+        // min-width: 400px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        border-radius: 0.5em 0.5em 0.5em 0.5em;
+        background-color: $table-primary-color;
+        thead tr {
+            background-color: #009879;
+            text-align: left;
         }
-        tr:last-of-type {
-            border-bottom: 2px solid #009879;
+        thead th:first-child {
+            border-radius: 0.5em 0 0 0.5em;
         }
-        tr.active-row {
-            font-weight: bold;
-            color: #009879;
+
+        thead th:last-child {
+            border-radius: 0 0.5em 0.5em 0;
         }
+        th {
+            background-color: $primary-button-color;
+        }
+        th,
+        td {
+            padding: 12px 15px;
+            .clickable:hover {
+                cursor: pointer;
+            }
+        }
+        tbody {
+            tr:nth-of-type(even) {
+                background-color: $table-secondary-color;
+            }
+            tr:nth-of-type(2n + 1) {
+                background-color: $table-primary-color;
+            }
+            tr {
+                td:first-child {
+                    border-radius: 0 0 0 0.5em;
+                }
+                td:last-child {
+                    border-radius: 0 0 0.5em 0;
+                }
+            }
+        }
+        :visited {
+            color: inherit;
+        }
+    }
+    .error {
+        color: red;
+        font-weight: bold;
     }
 }
