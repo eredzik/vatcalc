@@ -3,6 +3,7 @@ module Pages.Enterprises exposing (Model, Msg, page)
 import Api
 import Api.Data exposing (EnterpriseResponse, UserEnterpriseRoles(..))
 import Api.Request.Enterprise
+import Api.Request.User
 import Effect exposing (Effect)
 import Gen.Route as Route
 import Html.Styled exposing (..)
@@ -12,16 +13,17 @@ import Http
 import Page
 import Request exposing (Request)
 import Shared
+import User
 import View exposing (View)
 
 
 page : Shared.Model -> Request -> Page.With Model Msg
-page shared _ =
+page _ _ =
     Page.protected.advanced
-        (\_ ->
-            { init = init shared
-            , update = update shared
-            , view = view shared
+        (\user ->
+            { init = init
+            , update = update
+            , view = view user
             , subscriptions = subscriptions
             }
         )
@@ -36,8 +38,8 @@ type alias Model =
     }
 
 
-init : Shared.Model -> ( Model, Effect Msg )
-init _ =
+init : ( Model, Effect Msg )
+init =
     ( { enterprises = [] }
     , Api.Request.Enterprise.getUserEnterprisesEnterpriseGet 1
         |> Api.send GotEnterprisesData
@@ -52,10 +54,11 @@ init _ =
 type Msg
     = GotEnterprisesData (Result Http.Error (List EnterpriseResponse))
     | ClickedSelectEnterprise Int
+    | GotSelectEnterpriseResponse (Result Http.Error Api.Data.UserUpdateEnterpriseResponse)
 
 
-update : Shared.Model -> Msg -> Model -> ( Model, Effect Msg )
-update _ msg model =
+update : Msg -> Model -> ( Model, Effect Msg )
+update msg model =
     case msg of
         GotEnterprisesData data ->
             case data of
@@ -67,9 +70,21 @@ update _ msg model =
 
         ClickedSelectEnterprise selected_id ->
             ( model
-            , Just selected_id
-                |> Shared.SelectedFavouriteEnterprise
-                |> Effect.fromShared
+            , Api.Request.User.updateEnterpriseUserMePreferredEnterprisePatch selected_id
+                |> Api.send GotSelectEnterpriseResponse
+                |> Effect.fromCmd
+            )
+
+        GotSelectEnterpriseResponse response ->
+            ( model
+            , case response of
+                Ok user ->
+                    Just user.favEnterpriseId
+                        |> Shared.SelectedFavouriteEnterprise
+                        |> Effect.fromShared
+
+                Err _ ->
+                    Effect.none
             )
 
 
@@ -86,8 +101,8 @@ subscriptions _ =
 -- VIEW
 
 
-view : Shared.Model -> Model -> View Msg
-view shared model =
+view : User.User -> Model -> View Msg
+view user model =
     let
         table =
             div []
@@ -116,7 +131,7 @@ view shared model =
                         , ( "Aktywuj"
                           , \row ->
                                 if
-                                    (shared.selectedEnterpriseId |> Maybe.withDefault -1)
+                                    (user.favEnterpriseId |> Maybe.withDefault -1)
                                         == row.enterpriseId
                                 then
                                     text ""
@@ -131,7 +146,16 @@ view shared model =
                           )
                         , ( "Opcje"
                           , \row ->
-                                i [ Attr.class "secondary-button" ] [ text "" ]
+                                a
+                                    [ Route.Enterprises__Id_ { id = String.fromInt row.enterpriseId }
+                                        |> Route.toHref
+                                        |> Attr.href
+                                    ]
+                                    [ i
+                                        [ Attr.class "fas fa-cog fa-lg"
+                                        ]
+                                        [ text "" ]
+                                    ]
                           )
                         ]
                         model.enterprises
@@ -144,7 +168,7 @@ view shared model =
             [ table
             , div []
                 [ a
-                    [ Attr.classList [ ( "button-primary", True ) ]
+                    [ Attr.classList [ ( "primary", True ) ]
                     , Attr.href <| Route.toHref Route.Enterprises__Add
                     ]
                     [ text "Stwórz firmę" ]

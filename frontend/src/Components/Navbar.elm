@@ -1,21 +1,9 @@
 module Components.Navbar exposing (view)
 
--- import Html.Styled as Html exposing (..)
--- import Html.Styled.Attributes exposing (class, classList, css, href, src)
--- import Html.Styled.Events as Events
-
-import Css
 import Gen.Route as Route exposing (Route)
 import Html.Styled exposing (..)
 import Html.Styled.Attributes as Attr
 import Html.Styled.Events as Events
-
-
-theme : { secondary : Css.Color, primary : Css.Color }
-theme =
-    { primary = Css.rgba 14 72 127 1
-    , secondary = Css.rgba 255 240 138 1
-    }
 
 
 view :
@@ -26,45 +14,23 @@ view :
     -> Html msg
 view options =
     nav
-        [ Attr.css
-            [ Css.displayFlex
-            , Css.justifyContent Css.spaceBetween
-            , Css.width <| Css.pct 100
-            , Css.height <| Css.px 70
-            , Css.backgroundColor theme.primary
-            ]
-        ]
+        []
         [ a
-            [ Attr.href <| Route.toHref Route.Home_
-            , Attr.css
-                [ Css.alignItems Css.center
-                , Css.displayFlex
-                , Css.fontWeight Css.bold
-                , Css.fontSize (Css.px 30)
-                , Css.textDecoration Css.none
-                , Css.paddingLeft <| Css.px 10
-                , Css.color theme.secondary
-                ]
-            ]
+            [ Attr.href <| Route.toHref Route.Home_ ]
             [ text "VatCalc" ]
         , ul
-            [ Attr.css
-                [ Css.displayFlex
-                , Css.alignItems Css.center
-                , Css.listStyleType Css.none
-                ]
-            ]
+            []
             ([]
                 ++ (if options.isLoggedIn then
-                        [ viewLink ( "Rejestr VAT", [ hrefAttrib Route.Invoices ] )
-                        , viewLink ( "Rejestr Kontrahentów", [ hrefAttrib Route.Partners ] )
-                        , viewLink ( "Rejestr Firm", [ hrefAttrib Route.Enterprises ] )
-                        , viewLink ( "Wyloguj się", [ Events.onClick options.onSignOut ] )
+                        [ a [ hrefAttrib Route.Invoices ] [ text "Rejestr VAT" ]
+                        , a [ hrefAttrib Route.Partners ] [ text "Rejestr Kontrahentów" ]
+                        , a [ hrefAttrib Route.Enterprises ] [ text "Rejestr Firm" ]
+                        , a [ Events.onClick options.onSignOut ] [ text "Wyloguj się" ]
                         ]
 
                     else
-                        [ viewLink ( "Zaloguj się", [ hrefAttrib Route.Login ] )
-                        , viewLink ( "Zarejestruj się", [ hrefAttrib Route.Register ] )
+                        [ a [ hrefAttrib Route.Login ] [ text "Zaloguj się" ]
+                        , a [ hrefAttrib Route.Register ] [ text "Zarejestruj się" ]
                         ]
                    )
             )
@@ -74,27 +40,3 @@ view options =
 hrefAttrib : Route -> Html.Styled.Attribute msg
 hrefAttrib route =
     Attr.href <| Route.toHref route
-
-
-viewLink : ( String, List (Html.Styled.Attribute msg) ) -> Html msg
-viewLink ( label, action ) =
-    let
-        attributesDefault =
-            action
-                ++ [ Attr.css
-                        [ Css.fontSize <| Css.px 25
-                        , Css.padding <| Css.px 10
-                        , Css.color <| theme.secondary
-                        , Css.textDecoration Css.none
-                        ]
-                   ]
-    in
-    a
-        attributesDefault
-        [ text label ]
-
-
-
--- { url = Route.toHref route
--- , label = text label
--- }

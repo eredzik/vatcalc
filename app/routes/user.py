@@ -26,10 +26,13 @@ def get_user_router():
         responses={status.HTTP_401_UNAUTHORIZED: {"model": Message}},
     )
     async def get_user_data(user: models.User = Depends(CurrentUser())):
+
         user_data = CurrentUserResponse(
             email=user.email,
             username=user.username,
-            fav_enterprise=user.fav_enterprise_id,
+            fav_enterprise_id=user.fav_enterprise_id.id
+            if user.fav_enterprise_id
+            else None,
         )
         return user_data
 
