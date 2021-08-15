@@ -167,7 +167,7 @@ view user model =
         [ div []
             [ table
             , div []
-                [ button
+                [ a
                     [ Attr.classList [ ( "primary", True ) ]
                     , Attr.href <| Route.toHref Route.Enterprises__Add
                     ]

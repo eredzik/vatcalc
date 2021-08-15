@@ -6,8 +6,8 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 $navbar-color: rgba(14, 72, 127, 1);
 $navbar-font-color: rgba(255, 240, 138, 1);
 $background-color: #c2bdba73;
-$primary-button-font-color: #ffffff;
-$primary-button-color: #4eb5f1;
+$primary-button-font-color: $navbar-font-color;
+$primary-button-color: #3d9cd3;
 $table-primary-color: #cec7c7;
 $table-secondary-color: #f3f3f3;
 * {
@@ -56,6 +56,8 @@ nav {
         text-align: center;
         border: none;
         transition: all 0.2s;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
         &:hover {
             cursor: pointer;
         }
