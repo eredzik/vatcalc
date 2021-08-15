@@ -1,12 +1,10 @@
-from typing import List, Type
+from typing import List
 
 from app.routes.auth import CurrentUser
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends
 from fastapi.exceptions import HTTPException
-from fastapi.responses import JSONResponse
 from pydantic import BaseModel, validator
-from requests.models import HTTPError
-from starlette.status import HTTP_201_CREATED, HTTP_401_UNAUTHORIZED, HTTP_409_CONFLICT
+from starlette.status import HTTP_201_CREATED, HTTP_409_CONFLICT
 
 from .. import models, validators
 from .utils import (
