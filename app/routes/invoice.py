@@ -196,9 +196,8 @@ async def get_invoices(
 
 @invoice_router.delete(
     "/invoice",
-    status_code=200
-    responses={**get_verify_enterprise_permissions_responses(),
-               status.HTTP_401_UNAUTHORIZED: {"model": Message}}
+    status_code=200,
+    responses={**get_verify_enterprise_permissions_responses(), status.HTTP_401_UNAUTHORIZED: {"model": Message}}
 )
 async def delete_invoice(
     invoice_id: int,
