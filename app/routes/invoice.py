@@ -1,7 +1,9 @@
 from datetime import date
-from typing import List, Type
+from typing import List, Type, Optional
 
 from app.routes.auth import CurrentUser
+from app.routes.utils import Message
+from starlette import status
 from fastapi import APIRouter, Depends, Response
 from fastapi.responses import JSONResponse
 from ormar.fields.model_fields import JSON
@@ -32,6 +34,14 @@ class InvoiceInput(BaseModel):
     invoice_date: date
     invoice_business_id: str
     invoicepositions: List[InvoicePositionInput]
+
+class InvoiceUpdateResponse(BaseModel):
+    enterprise_id: Optional[int] = None
+    trading_partner_id: Optional[int] = None
+    invoice_type: Optional[models.InvoiceType] = None
+    invoice_date: Optional[date] = None
+    invoice_business_id: Optional[str] = None
+    invoicepositions: Optional[List[InvoicePositionInput]] = None
 
 
 class InvoicePositionResponse(BaseModel):
@@ -183,3 +193,74 @@ async def get_invoices(
         return invoices_output
     else:
         return permissions
+
+@invoice_router.delete(
+    "/invoice",
+    status_code=200
+    responses={**get_verify_enterprise_permissions_responses(),
+               status.HTTP_401_UNAUTHORIZED: {"model": Message}}
+)
+async def delete_invoice(
+    invoice_id: int,
+    user: models.User = Depends(CurrentUser())
+):
+    permissions = await verify_enterprise_permissions(
+        user,
+        models.Invoice.objects.get_or_none(id=invoice_id).enterprise_id,
+        required_permissions=[
+            models.UserEnterpriseRoles.editor,
+            models.UserEnterpriseRoles.admin,
+        ],
+    )
+    if permissions is True:
+        invoice = models.Invoice.objects.get_or_none(id=invoice_id)
+        invoice.delete()
+
+        return JSONResponse({'detail': f'Invoice ID {invoice.id} successfully deleted'})
+
+@invoice_router.patch(
+    "/invoice",
+    status_code=200,
+    response_model=InvoiceUpdateResponse,
+    responses={**get_verify_enterprise_permissions_responses()}
+)
+async def update_invoice(
+    invoice_id: int,
+    request: InvoiceUpdateResponse,
+    user: models.User = Depends(CurrentUser())
+):
+    permissions = await verify_enterprise_permissions(
+        user,
+        request.enterprise_id,
+        required_permissions=[
+            models.UserEnterpriseRoles.editor,
+            models.UserEnterpriseRoles.admin,
+        ]
+    )
+    if permissions is True:
+        update_data = request.dict(exclude_unset=True)
+        invoice = models.Invoice.objects.get_or_none(id=invoice_id)
+        invoice.update(**update_data)
+        invoice_output = InvoiceResponse(
+            id=invoice.id,
+            enterprise_id=invoice.enterprise_id.id,
+            trading_partner_id=invoice.trading_partner_id.id,
+            invoice_type=invoice.invoice_type,
+            invoice_date=invoice.invoice_date,
+            invoice_business_id=invoice.invoice_business_id,
+            invoicepositions=[
+                InvoicePositionResponse(
+                    id=pos.id,
+                    name=pos.name,
+                    num_items=pos.num_items,
+                    price_net=pos.price_net,
+                    vat_rate_id=pos.vat_rate_id.id,
+                )
+                for pos in invoice.invoicepositions
+            ],
+        )
+        return invoice_output
+
+    return permissions
+
+
