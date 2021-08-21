@@ -75,8 +75,7 @@ module.exports = {
                 pathRewrite: { '^/api': '' },
             },
         },
-        contentBase: path.join(__dirname, "src"),
-        stats: 'errors-only',
+        static: path.join(__dirname, "src"),
         historyApiFallback: {
             rewrites: [
                 { from: /\.*.bundle.js/, to: '/main.bundle.js' },
@@ -84,19 +83,5 @@ module.exports = {
 
             ],
         },
-        before: function (app) {
-            app.get('/api', async function (req, res) {
-                try {
-                    const queryURL = req.query.q;
-                    const resp = await fetch(queryURL);
-                    const body = await resp.text();
-                    res.send(body);
-                } catch (e) {
-                    res.status(500);
-                    res.send(e);
-                }
-            });
-        }
-        ,
     },
 };

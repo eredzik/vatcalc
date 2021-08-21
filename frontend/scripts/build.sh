@@ -17,5 +17,5 @@ npx openapi-generator-cli generate -i ${API_URL} -g elm -o .generated-api
 mv .generated-api/src/* .elm-spa/generated;
 rm -rf .generated-api;
 sed -E -i "s|basePath = \"[A-Za-z\/:\.0-9\-]*\"|basePath = \"/api\"|g"  .elm-spa/generated/Api.elm;
-cat .elm-spa/generated/Api.elm;
+# cat .elm-spa/generated/Api.elm;
 npx webpack --mode production;
