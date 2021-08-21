@@ -7,6 +7,8 @@ from sqlalchemy import create_engine, engine_from_config, pool
 import alembic
 
 # add app folder to system path (alternative is running it from parent folder with python -m ...)
+myPath = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, myPath + "/../../")
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

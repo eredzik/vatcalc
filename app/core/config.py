@@ -1,10 +1,8 @@
 import secrets
 from typing import Any, Dict, List, Optional, Union
-from starlette.config import Config
 from pydantic import BaseSettings, PostgresDsn, validator
 from pydantic.networks import AnyUrl
 
-config = Config(".env")
 
 class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_SECONDS: int = 60 * 60 * 24 * 7  # 7 days
