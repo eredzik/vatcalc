@@ -6,8 +6,6 @@ module View exposing
     )
 
 import Browser
-import Css
-import Css.Global
 import Html.Styled
 
 
@@ -41,7 +39,5 @@ toBrowserDocument view =
     { title = view.title
     , body =
         List.map Html.Styled.toUnstyled
-            (view.body
-                ++ [ Css.Global.global [ Css.Global.selector "body" [ Css.margin <| Css.px 0 ] ] ]
-            )
+            view.body
     }

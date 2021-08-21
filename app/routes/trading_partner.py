@@ -1,10 +1,10 @@
-from typing import List, Type
+from typing import List
 
 from app.routes.auth import CurrentUser
-from fastapi import APIRouter, Depends, Response
-from fastapi.responses import JSONResponse
+from fastapi import APIRouter, Depends
+from fastapi.exceptions import HTTPException
 from pydantic import BaseModel, validator
-from starlette.status import HTTP_201_CREATED, HTTP_401_UNAUTHORIZED, HTTP_409_CONFLICT
+from starlette.status import HTTP_201_CREATED, HTTP_409_CONFLICT
 
 from .. import models, validators
 from .utils import (
@@ -51,7 +51,8 @@ async def add_trading_partner(
     )
     if validated_or_error is True:
         existing_trading_partner = await models.TradingPartner.objects.get_or_none(
-            nip_number=trading_partner.nip_number
+            nip_number=trading_partner.nip_number,
+            enterprise_id=trading_partner.enterprise_id,
         )
         if existing_trading_partner is None:
             new_trading_partner = await models.TradingPartner(
@@ -65,9 +66,7 @@ async def add_trading_partner(
                 enterprise_id=new_trading_partner.enterprise_id.id,
             )
         else:
-            return JSONResponse(
-                status_code=HTTP_409_CONFLICT, content={"message": "Entity exists"}
-            )
+            raise HTTPException(HTTP_409_CONFLICT, "Entity exists")
     else:
         return validated_or_error
 

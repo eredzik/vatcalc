@@ -2,7 +2,6 @@ module Shared exposing
     ( Flags
     , Model
     , Msg(..)
-    , User
     , init
     , subscriptions
     , update
@@ -20,6 +19,8 @@ import Html.Styled.Attributes as Attr
 import Http
 import Json.Decode as Decode
 import Request exposing (Request)
+import Storage
+import User exposing (User)
 import Utils.Route
 import View exposing (View)
 
@@ -28,30 +29,33 @@ import View exposing (View)
 -- INIT
 
 
-type alias User =
-    { email : String
-    , username : String
-    , favEnterpriseId : Maybe Int
-    }
-
-
 type alias Flags =
     Decode.Value
 
 
 type alias Model =
     { user : Maybe User
-    , selectedEnterpriseId : Maybe Int
     }
 
 
 init : Request -> Flags -> ( Model, Cmd Msg )
-init _ _ =
-    ( { user = Nothing
-      , selectedEnterpriseId = Nothing
+init _ flags =
+    let
+        user =
+            Storage.fromJson flags |> .user
+
+        cmds =
+            case user of
+                Just _ ->
+                    Api.Request.User.getUserDataUserMeGet
+                        |> Api.send GotUserData
+
+                Nothing ->
+                    Cmd.none
+    in
+    ( { user = user
       }
-    , Api.Request.User.getUserDataUserMeGet
-        |> Api.send GotUserData
+    , cmds
     )
 
 
@@ -82,23 +86,36 @@ update _ msg model =
             )
 
         LoggedOut _ ->
-            ( -- { user = Nothing
-              --   , selectedEnterpriseId = Nothing
-              --   }
-              model
-            , Cmd.none
+            ( model
+            , Cmd.batch [ Storage.saveToLocalStorage { user = Nothing } ]
             )
 
         GotUserData userResponse ->
             case userResponse of
                 Ok userData ->
-                    ( { model | user = Just userData }, Cmd.none )
+                    ( { model | user = Just userData }
+                    , Storage.saveToLocalStorage { user = Just userData }
+                    )
 
                 Err _ ->
-                    ( { model | user = Nothing }, Cmd.none )
+                    ( { model | user = Nothing }
+                    , Storage.saveToLocalStorage { user = Nothing }
+                    )
 
         SelectedFavouriteEnterprise enterprise_id ->
-            ( { model | selectedEnterpriseId = enterprise_id }, Cmd.none )
+            case model.user of
+                Just user ->
+                    let
+                        new_user =
+                            user
+                                |> (\z -> { z | favEnterpriseId = enterprise_id })
+                    in
+                    ( { model | user = Just new_user }
+                    , Storage.saveToLocalStorage { user = Just new_user }
+                    )
+
+                Nothing ->
+                    ( model, Cmd.none )
 
 
 subscriptions : Request -> Model -> Sub Msg

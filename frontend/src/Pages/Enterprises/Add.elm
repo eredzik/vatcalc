@@ -4,7 +4,7 @@ import Api
 import Api.Data exposing (EnterpriseCreateResponse)
 import Api.Request.Enterprise
 import Components.Form exposing (Field, FormField(..), validateWith, viewForm)
-import Components.Validator exposing (NipValidationResult(..), validateNip)
+import Components.Validate.Nip exposing (NipValidationResult(..), validateNip)
 import ElmSpa.Page exposing (Protected(..))
 import Gen.Route
 import Html.Styled.Attributes as Attr

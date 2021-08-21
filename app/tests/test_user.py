@@ -1,19 +1,8 @@
-from starlette.status import *
+from starlette.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED, HTTP_404_NOT_FOUND
 from starlette.testclient import TestClient
 
 from .test_auth import get_random_logged_user
 from .test_enterprise import create_enterprise
-
-
-def test_me_path_success(client: TestClient):
-    r_user = get_random_logged_user(client)
-    r_user = client.get("/user/me", cookies=client.cookies.get_dict())
-    assert r_user.status_code == HTTP_200_OK
-
-
-def test_me_path_failure(client: TestClient):
-    r_user = client.get("/user/me", cookies=client.cookies.get_dict())
-    assert r_user.status_code == HTTP_401_UNAUTHORIZED
 
 
 def set_fav_enterprise(
@@ -27,11 +16,28 @@ def set_fav_enterprise(
     return response
 
 
+def get_user_me(client: TestClient):
+    return client.get("/user/me", cookies=client.cookies.get_dict())
+
+
+def test_me_path_success(client: TestClient):
+    r_user = get_random_logged_user(client)
+    r_user_me = get_user_me(client)
+    assert r_user_me.status_code == HTTP_200_OK
+
+
+def test_me_path_failure(client: TestClient):
+    r_user = get_user_me(client)
+    assert r_user.status_code == HTTP_401_UNAUTHORIZED
+
+
 def test_set_fav_enterprise(client: TestClient):
     user = get_random_logged_user(client)
     enterprise = create_enterprise(client)
+    assert get_user_me(client).json()["fav_enterprise_id"] == None
     r = set_fav_enterprise(client, fav_enterprise=enterprise.json()["id"])
     assert r.status_code == HTTP_200_OK
+    assert get_user_me(client).json()["fav_enterprise_id"] == enterprise.json()["id"]
 
 
 def test_set_fav_enterprise_unauthorised(client: TestClient, fav_enterprise="123"):
