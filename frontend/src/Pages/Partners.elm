@@ -3,7 +3,6 @@ module Pages.Partners exposing (Model, Msg, page)
 import Api
 import Api.Data exposing (TradingPartnerResponse)
 import Api.Request.TradingPartner
-import Components.SimpleTable exposing (simpleBootstrapTable)
 import Effect exposing (Effect)
 import Gen.Route as Route
 import Html.Styled exposing (..)
