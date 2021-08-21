@@ -1,4 +1,4 @@
-module Components.SimpleTable exposing (simpleBootstrapTable)
+module Components.SimpleTable exposing (simpleBootstrapTable, viewTable)
 
 import Html.Styled exposing (..)
 import Html.Styled.Attributes as Attr
@@ -76,3 +76,22 @@ createTable options data =
 simpleBootstrapTable : List ( String, Bool, a -> String ) -> List a -> Html msg
 simpleBootstrapTable options data =
     createTable options data |> bootstapTable
+
+
+viewTable : List ( String, a -> Html msg ) -> List a -> Html msg
+viewTable table_columns data =
+    table [ Attr.class "styled-table" ]
+        [ thead []
+            (List.map (\( name, _ ) -> th [] [ text name ]) table_columns)
+        , tbody []
+            (List.map
+                (\row ->
+                    tr []
+                        (List.map
+                            (\( _, getter ) -> td [] [ getter row ])
+                            table_columns
+                        )
+                )
+                data
+            )
+        ]

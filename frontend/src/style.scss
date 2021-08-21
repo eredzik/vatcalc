@@ -8,6 +8,7 @@ $navbar-font-color: rgba(255, 240, 138, 1);
 $background-color: #c2bdba73;
 $primary-button-font-color: $navbar-font-color;
 $primary-button-color: #3d9cd3;
+$secondary-button-font-color: rgb(15, 28, 85);
 $table-primary-color: #cec7c7;
 $table-secondary-color: #f3f3f3;
 * {
@@ -73,10 +74,11 @@ nav {
             padding: 1em;
         }
         button.tab,
-        a.tab {
+        a.button.tab {
             border-radius: 1em 1em 0 0;
             margin: 0;
             margin-right: -1em;
+            color: $secondary-button-font-color;
 
             &.active {
                 color: $primary-button-font-color;

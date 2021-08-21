@@ -2,6 +2,7 @@ module View exposing
     ( View
     , map
     , none
+    , placeholder
     , toBrowserDocument
     )
 

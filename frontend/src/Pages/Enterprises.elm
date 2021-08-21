@@ -4,6 +4,7 @@ import Api
 import Api.Data exposing (EnterpriseResponse, UserEnterpriseRoles(..))
 import Api.Request.Enterprise
 import Api.Request.User
+import Components.SimpleTable exposing (viewTable)
 import Effect exposing (Effect)
 import Gen.Route as Route
 import Html.Styled exposing (..)
@@ -168,7 +169,7 @@ view user model =
             [ table
             , div []
                 [ a
-                    [ Attr.classList [ ( "primary", True ) ]
+                    [ Attr.classList [ ( "primary", True ), ( "button", True ) ]
                     , Attr.href <| Route.toHref Route.Enterprises__Add
                     ]
                     [ text "Stwórz firmę" ]
@@ -176,22 +177,3 @@ view user model =
             ]
         ]
     }
-
-
-viewTable : List ( String, a -> Html msg ) -> List a -> Html msg
-viewTable table_columns data =
-    table [ Attr.class "styled-table" ]
-        [ thead []
-            (List.map (\( name, _ ) -> th [] [ text name ]) table_columns)
-        , tbody []
-            (List.map
-                (\row ->
-                    tr []
-                        (List.map
-                            (\( _, getter ) -> td [] [ getter row ])
-                            table_columns
-                        )
-                )
-                data
-            )
-        ]
