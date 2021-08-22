@@ -30,3 +30,9 @@ httpx = "*"
 
 [requires]
 python_version = "3.8"
+
+[packages.pydantic]
+extras = [ "email",]
+
+[packages.databases]
+extras = [ "postgresql",]
