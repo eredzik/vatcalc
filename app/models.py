@@ -28,7 +28,7 @@ class TradingPartner(ormar.Model):
     nip_number = ormar.String(max_length=10)
     name = ormar.String(max_length=255)
     address = ormar.Text()
-    enterprise_id = ormar.ForeignKey(Enterprise)
+    enterprise_id = ormar.ForeignKey(Enterprise, ondelete="CASCADE")
 
 
 class InvoiceType(str, Enum):
@@ -45,7 +45,7 @@ class Invoice(ormar.Model):
     invoice_date = ormar.Date()
     invoice_type = ormar.String(max_length=8, choices=[])
     trading_partner_id = ormar.ForeignKey(TradingPartner)
-    enterprise_id = ormar.ForeignKey(Enterprise)
+    enterprise_id = ormar.ForeignKey(Enterprise, ondelete="CASCADE")
 
 
 class VatRate(ormar.Model):
@@ -55,7 +55,7 @@ class VatRate(ormar.Model):
     id = ormar.Integer(primary_key=True)
     vat_rate = ormar.Float()
     comment = ormar.String(max_length=255)
-    enterprise_id = ormar.ForeignKey(Enterprise)
+    enterprise_id = ormar.ForeignKey(Enterprise, ondelete="CASCADE")
 
 
 class InvoicePosition(ormar.Model):
@@ -94,11 +94,12 @@ class UserEnterpriseRoles(str, Enum):
     editor = "EDITOR"
     admin = "ADMIN"
 
+
 class UserEnterprise(ormar.Model):
     class Meta(BaseMeta):
         tablename = "userenterprise"
 
     id = ormar.Integer(primary_key=True)
-    enterprise_id = ormar.ForeignKey(Enterprise)
+    enterprise_id = ormar.ForeignKey(Enterprise, ondelete="CASCADE")
     user_id = ormar.ForeignKey(User)
     role = ormar.String(max_length=10, choices=UserEnterpriseRoles)

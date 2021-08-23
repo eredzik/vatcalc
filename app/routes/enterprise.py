@@ -1,4 +1,4 @@
-from typing import List, Type, Optional
+from typing import List, Optional, Type
 
 from app.routes.utils import Message
 from fastapi import APIRouter, Depends, HTTPException
@@ -14,10 +14,6 @@ from .utils import (
     get_verify_enterprise_permissions_responses,
     verify_enterprise_permissions,
 )
-
-# class CurrentUserEnterpriseRoles():
-#     def __init__(roles : List[ models.UserEnterpriseRoles], request: Request):
-
 
 def get_enterprise_router():
     enterprise_router = APIRouter(tags=["Enterprise"])
@@ -44,7 +40,6 @@ def get_enterprise_router():
         name: Optional[str]
         address: Optional[str]
         nip_number: Optional[validators.NipNumber]
-
 
     @enterprise_router.get(
         "/enterprise",
@@ -103,27 +98,29 @@ def get_enterprise_router():
         "/enterprise/{enterprise_id}",
         status_code=200,
         response_model=EnterpriseUpdateResponse,
-        responses={**get_verify_enterprise_permissions_responses()}
+        responses={**get_verify_enterprise_permissions_responses()},
     )
     async def update_enterprise(
-            enterprise_id: int,
-            item: EnterpriseUpdateResponse,
-            user: models.User = Depends(CurrentUser())
+        enterprise_id: int,
+        item: EnterpriseUpdateResponse,
+        user: models.User = Depends(CurrentUser()),
     ):
         enterprise = await models.Enterprise.objects.get_or_none(id=enterprise_id)
         if not enterprise:
-            raise HTTPException(status_code=404, detail=f"Invoice {enterprise_id} not found")
+            raise HTTPException(
+                status_code=404, detail=f"Invoice {enterprise_id} not found"
+            )
 
         permissions = await verify_enterprise_permissions(
             user,
             enterprise_id,
             required_permissions=[
                 models.UserEnterpriseRoles.admin,
-            ]
+            ],
         )
         if permissions is True:
             update_data = item.dict(exclude_unset=True)
-            enterprise.update(**update_data)
+            await enterprise.update(**update_data)
             enterprise_output = EnterpriseResponse(
                 enterprise_id=enterprise.id,
                 name=enterprise.name,
@@ -140,13 +137,14 @@ def get_enterprise_router():
         responses={**get_verify_enterprise_permissions_responses()},
     )
     async def delete_enterprise(
-            enterprise_id: int,
-            user: models.User = Depends(CurrentUser())
+        enterprise_id: int, user: models.User = Depends(CurrentUser())
     ):
 
         enterprise = await models.Enterprise.objects.get_or_none(id=enterprise_id)
         if not enterprise:
-            raise HTTPException(status_code=404, detail=f"Enterprise {enterprise_id} not found")
+            raise HTTPException(
+                status_code=404, detail=f"Enterprise {enterprise_id} not found"
+            )
 
         permissions = await verify_enterprise_permissions(
             user,
@@ -156,8 +154,7 @@ def get_enterprise_router():
             ],
         )
         if permissions is True:
-            enterprise.delete()
-            return JSONResponse({'message': f"Deleted enterprise {enterprise_id}"})
-
+            await enterprise.delete()
+            return JSONResponse({"message": f"Deleted enterprise {enterprise_id}"})
 
     return enterprise_router
