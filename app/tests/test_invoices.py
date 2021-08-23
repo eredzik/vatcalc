@@ -156,7 +156,7 @@ def test_delete_invoice(client: TestClient):
     r_vat_rate = create_vat_rate(client, r_enterprise)
     r_invoice = create_invoice_vatrate(client, r_enterprise, r_trading_partner, r_vat_rate)
     r_invoice_delete = client.delete(
-        f"/invoice/{r_enterprise.json()['id']}/{r_invoice.json()['id']}",
+        f"/invoice/{r_invoice.json()['id']}",
         cookies=client.cookies.get_dict())
     assert r_invoice_delete.status_code == HTTP_200_OK
 
@@ -168,7 +168,7 @@ def test_update_invoice(client: TestClient):
     r_vat_rate = create_vat_rate(client, r_enterprise)
     r_invoice = create_invoice_vatrate(client, r_enterprise, r_trading_partner, r_vat_rate)
     r_update = client.patch(
-        f"/invoice/{r_enterprise.json()['id']}/{r_invoice.json()['id']}",
+        f"/invoice/{r_invoice.json()['id']}",
         cookies=client.cookies.get_dict(),
         json={"invoice_date": "2137-06-29"})
     assert r_update.status_code == HTTP_200_OK

@@ -195,46 +195,48 @@ async def get_invoices(
         return permissions
 
 @invoice_router.delete(
-    "/invoice/{enterprise_id}/{invoice_id}",
+    "/invoice/{invoice_id}",
     status_code=200,
     responses={**get_verify_enterprise_permissions_responses()},
 )
 async def delete_invoice(
-    enterprise_id: int,
     invoice_id: int,
     user: models.User = Depends(CurrentUser())
 ):
+    invoice = await models.Invoice.objects.get_or_none(id=invoice_id)
+    if not invoice:
+        raise HTTPException(status_code=404, detail=f"Invoice {invoice_id} not found")
+
     permissions = await verify_enterprise_permissions(
         user,
-        enterprise_id,
+        enterprise=invoice.enterprise_id,
         required_permissions=[
             models.UserEnterpriseRoles.editor,
             models.UserEnterpriseRoles.admin,
         ],
     )
     if permissions is True:
-        invoice = await models.Invoice.objects.get_or_none(id=invoice_id)
-        if not invoice:
-            raise HTTPException(status_code=404, detail=f"Invoice {invoice_id} not found")
         invoice.delete()
-
         return JSONResponse({'message': f"Deleted invoice {invoice_id}"})
 
 @invoice_router.patch(
-    "/invoice/{enterprise_id}/{invoice_id}",
+    "/invoice/{invoice_id}",
     status_code=200,
     response_model=InvoiceUpdateResponse,
     responses={**get_verify_enterprise_permissions_responses()}
 )
 async def update_invoice(
-    enterprise_id: int,
     invoice_id: int,
     item: InvoiceUpdateResponse,
     user: models.User = Depends(CurrentUser())
 ):
+    invoice = await models.Invoice.objects.get_or_none(id=invoice_id)
+    if not invoice:
+        raise HTTPException(status_code=404, detail=f"Invoice {invoice_id} not found")
+
     permissions = await verify_enterprise_permissions(
         user,
-        enterprise_id,
+        enterprise=invoice.enterprise_id,
         required_permissions=[
             models.UserEnterpriseRoles.editor,
             models.UserEnterpriseRoles.admin,
@@ -242,7 +244,6 @@ async def update_invoice(
     )
     if permissions is True:
         update_data = item.dict(exclude_unset=True)
-        invoice = await models.Invoice.objects.get_or_none(id=invoice_id)
         invoice.update(**update_data)
         invoice_output = InvoiceResponse(
             id=invoice.id,
