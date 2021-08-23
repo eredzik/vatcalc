@@ -30,6 +30,9 @@ beforeProtectedInit shared request =
                         Route.Invoices ->
                             ElmSpa.RedirectTo Route.Enterprises
 
+                        Route.Invoices__Add ->
+                            ElmSpa.RedirectTo Route.Enterprises
+
                         Route.Login ->
                             ElmSpa.RedirectTo Route.Home_
 

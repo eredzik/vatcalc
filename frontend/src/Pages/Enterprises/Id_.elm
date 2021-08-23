@@ -201,7 +201,7 @@ viewTabs : List (TabData Msg) -> Tab -> Html Msg
 viewTabs tabs activeTab =
     div []
         [ div [ Attr.class "tab-container" ]
-            [ div []
+            [ div [ Attr.class "tab-header-container" ]
                 (List.map
                     (\t ->
                         button
@@ -213,7 +213,7 @@ viewTabs tabs activeTab =
                             ]
                             [ text t.tabname ]
                     )
-                    tabs
+                    (List.reverse tabs)
                 )
             , div
                 [ Attr.class "tab-content-container" ]
