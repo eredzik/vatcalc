@@ -10,9 +10,6 @@ from starlette.status import HTTP_201_CREATED, HTTP_409_CONFLICT
 from .. import models, validators
 from .auth import CurrentUser, current_user_responses
 
-# class CurrentUserEnterpriseRoles():
-#     def __init__(roles : List[ models.UserEnterpriseRoles], request: Request):
-
 
 def get_enterprise_router():
     enterprise_router = APIRouter(tags=["Enterprise"])

@@ -44,7 +44,6 @@ nav {
 .page {
     margin: 1em;
 
-    button,
     a.button {
         display: inline-block;
         padding: 0.3em 1.2em;
@@ -146,5 +145,25 @@ nav {
     .error {
         color: red;
         font-weight: bold;
+    }
+}
+.elm-datepicker--picker-header {
+    display: flex;
+    justify-items: center;
+}
+.elm-datepicker--prev {
+    @extend %fa-icon;
+    @extend .fas;
+
+    &:before {
+        content: fa-content($fa-var-angle-double-left);
+    }
+}
+.elm-datepicker--next {
+    @extend %fa-icon;
+    @extend .fas;
+
+    &:before {
+        content: fa-content($fa-var-angle-double-right);
     }
 }

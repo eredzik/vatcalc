@@ -46,15 +46,7 @@ module.exports = {
         },
         {
             test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-            use: [
-                {
-                    loader: 'file-loader',
-                    options: {
-                        name: '[name].[ext]',
-                        outputPath: 'fonts/'
-                    }
-                }
-            ]
+            type: 'asset/resource'
         }
         ]
     },
@@ -68,6 +60,9 @@ module.exports = {
         })
     ]
     ,
+    output: {
+        publicPath: "/"
+    },
     devServer: {
         proxy: {
             '/api': {
@@ -76,12 +71,6 @@ module.exports = {
             },
         },
         static: path.join(__dirname, "src"),
-        historyApiFallback: {
-            rewrites: [
-                { from: /\.*.bundle.js/, to: '/main.bundle.js' },
-                { from: /./, to: '/' },
-
-            ],
-        },
+        historyApiFallback: true
     },
 };

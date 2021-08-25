@@ -1,13 +1,12 @@
 from datetime import datetime, timedelta
 
 import jwt
-from fastapi import APIRouter, Cookie, Form, Request, Response
+from fastapi import APIRouter, Request, Response
 from fastapi.exceptions import HTTPException
 from pydantic import EmailStr
 from pydantic.main import BaseModel
 from starlette.responses import JSONResponse
 from starlette.status import (
-    HTTP_200_OK,
     HTTP_201_CREATED,
     HTTP_204_NO_CONTENT,
     HTTP_401_UNAUTHORIZED,
