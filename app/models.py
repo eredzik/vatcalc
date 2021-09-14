@@ -67,7 +67,7 @@ class InvoicePosition(ormar.Model):
     vat_rate_id = ormar.ForeignKey(VatRate)
     num_items = ormar.Float()
     price_net = ormar.Float()
-    invoice_id = ormar.ForeignKey(Invoice)
+    invoice_id = ormar.ForeignKey(Invoice, ondelete="CASCADE")
 
 
 class User(ormar.Model):
