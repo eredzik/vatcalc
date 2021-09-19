@@ -16,22 +16,22 @@ from ..core.config import settings
 regonapi_router = APIRouter(tags=["REGON API"])
 
 class RegonApiResponse(BaseModel):
-    Regon: validators.RegonNumber
-    Nip: validators.NipNumber
-    StatusNip: Optional[str]
-    Nazwa: str
-    Wojewodztwo: str
-    Powiat: str
-    Gmina: str
-    Miejscowosc: str
-    KodPocztowy: str
-    Ulica: str
-    NrNieruchomosci: str
-    NrLokalu: Optional[str]
-    Typ: str
-    SilosID: str
-    DataZakonczeniaDzialalnosci: str
-    MiejscowoscPoczty: str
+    regon: validators.RegonNumber
+    nip: validators.NipNumber
+    nip_status: Optional[str]
+    company_name: str
+    voivodeship: str
+    powiat: str
+    gmina: str
+    city: str
+    postal_code: str
+    street: str
+    house_no: str
+    suite_no: Optional[str]
+    type: str
+    silos_id: str
+    shutdown_date: str
+    post_office_town: str
 
 @regonapi_router.get(
     "/regon_api/regon_number/{regon_number}",

@@ -28,6 +28,9 @@ class REGONAPI:
         return sid # 3. Obtain access token
 
     def request(self, sid, params):
+        keys = ["regon", "nip", "nip_status", "company_name", "voivodeship", "powiat", "gmina", "city",
+                "postal_code", "street", "house_no", "suite_no", "type", "silos_id", "shutdown_date",
+                "post_office_town"]
         with self.client.settings(extra_http_headers={"sid": sid}):
             # 4. Token must be passed as a HTTP header. "HTTP" is an important word here, as SOAP has a damn hell of different headers.
             response = self.client.service.DaneSzukajPodmioty(pParametryWyszukiwania=params)
@@ -39,5 +42,5 @@ class REGONAPI:
                     # 5. Response is an XML-ish string which, however, turned out to be problematic to deal with using
                     # BeautifulSoup or other XML parsers. Applied good ol' string slicing for extracting values,
                     # but this approach might be worth rethinking.
-            json = {self.fields[i]: self.values[i] for i in range(len(self.fields))}
+            json = {keys[i]: self.values[i] for i in range(len(keys))}
             return json
