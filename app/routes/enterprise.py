@@ -1,7 +1,7 @@
-from typing import List, Type
+from typing import List, Optional, Type
 
 from app.routes.utils import Message
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, validator
 from pydantic.errors import PydanticValueError
 from starlette.responses import JSONResponse
@@ -9,10 +9,11 @@ from starlette.status import HTTP_201_CREATED, HTTP_409_CONFLICT
 
 from .. import models, validators
 from .auth import CurrentUser, current_user_responses
-
-# class CurrentUserEnterpriseRoles():
-#     def __init__(roles : List[ models.UserEnterpriseRoles], request: Request):
-
+from .utils import (
+    Message,
+    get_verify_enterprise_permissions_responses,
+    verify_enterprise_permissions,
+)
 
 def get_enterprise_router():
     enterprise_router = APIRouter(tags=["Enterprise"])
@@ -23,6 +24,22 @@ def get_enterprise_router():
         role: models.UserEnterpriseRoles
         nip_number: validators.NipNumber
         address: str
+
+    class EnterpriseCreateInput(BaseModel):
+        nip_number: validators.NipNumber
+        name: str
+        address: str
+
+    class EnterpriseCreateResponse(BaseModel):
+        id: int
+        nip_number: validators.NipNumber
+        name: str
+        address: str
+
+    class EnterpriseUpdateResponse(BaseModel):
+        name: Optional[str]
+        address: Optional[str]
+        nip_number: Optional[validators.NipNumber]
 
     @enterprise_router.get(
         "/enterprise",
@@ -50,18 +67,6 @@ def get_enterprise_router():
 
         return enterprises_formatted
 
-    class EnterpriseCreateInput(BaseModel):
-        nip_number: validators.NipNumber
-        name: str
-        address: str
-
-    class EnterpriseCreateResponse(BaseModel):
-
-        id: int
-        nip_number: validators.NipNumber
-        name: str
-        address: str
-
     @enterprise_router.post(
         "/enterprise",
         response_model=EnterpriseCreateResponse,
@@ -88,5 +93,68 @@ def get_enterprise_router():
                 Message(detail="Enterprise exists").json(),
                 status_code=HTTP_409_CONFLICT,
             )
+
+    @enterprise_router.patch(
+        "/enterprise/{enterprise_id}",
+        status_code=200,
+        response_model=EnterpriseUpdateResponse,
+        responses={**get_verify_enterprise_permissions_responses()},
+    )
+    async def update_enterprise(
+        enterprise_id: int,
+        item: EnterpriseUpdateResponse,
+        user: models.User = Depends(CurrentUser()),
+    ):
+        enterprise = await models.Enterprise.objects.get_or_none(id=enterprise_id)
+        if not enterprise:
+            raise HTTPException(
+                status_code=404, detail=f"Invoice {enterprise_id} not found"
+            )
+
+        permissions = await verify_enterprise_permissions(
+            user,
+            enterprise_id,
+            required_permissions=[
+                models.UserEnterpriseRoles.admin,
+            ],
+        )
+        if permissions is True:
+            update_data = item.dict(exclude_unset=True)
+            await enterprise.update(**update_data)
+            enterprise_output = EnterpriseResponse(
+                enterprise_id=enterprise.id,
+                name=enterprise.name,
+                role="ADMIN",
+                nip_number=enterprise.nip_number,
+                address=enterprise.address,
+            )
+            return enterprise_output
+        return permissions
+
+    @enterprise_router.delete(
+        "/enterprise/{enterprise_id}",
+        status_code=200,
+        responses={**get_verify_enterprise_permissions_responses()},
+    )
+    async def delete_enterprise(
+        enterprise_id: int, user: models.User = Depends(CurrentUser())
+    ):
+
+        enterprise = await models.Enterprise.objects.get_or_none(id=enterprise_id)
+        if not enterprise:
+            raise HTTPException(
+                status_code=404, detail=f"Enterprise {enterprise_id} not found"
+            )
+
+        permissions = await verify_enterprise_permissions(
+            user,
+            enterprise_id,
+            required_permissions=[
+                models.UserEnterpriseRoles.admin,
+            ],
+        )
+        if permissions is True:
+            await enterprise.delete()
+            return JSONResponse({"message": f"Deleted enterprise {enterprise_id}"})
 
     return enterprise_router

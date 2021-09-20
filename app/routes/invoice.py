@@ -141,14 +141,61 @@ async def add_invoice(
     else:
         return permissions
 
-
 @invoice_router.get(
     "/invoice",
+    response_model=InvoiceResponse,
+    status_code=200,
+    responses={**get_verify_enterprise_permissions_responses()}
+)
+async def get_invoice(
+    enterprise_id: int,
+    invoice_id: int,
+    user: models.User = Depends(CurrentUser()),
+):
+    permissions = await verify_enterprise_permissions(
+        user,
+        enterprise_id,
+        required_permissions=[
+            models.UserEnterpriseRoles.viewer,
+            models.UserEnterpriseRoles.editor,
+            models.UserEnterpriseRoles.admin,
+        ],
+    )
+    if permissions is True:
+        invoice = await models.Invoice.objects.get_or_none(id=invoice_id)
+        if not invoice:
+            raise HTTPException(status_code=404, detail=f"Invoice {invoice_id} not found")
+
+        invoice_output = InvoiceResponse(
+                id=invoice.id,
+                enterprise_id=invoice.enterprise_id.id,
+                trading_partner_id=invoice.trading_partner_id.id,
+                invoice_type=invoice.invoice_type,
+                invoice_date=invoice.invoice_date,
+                invoice_business_id=invoice.invoice_business_id,
+                invoicepositions=[
+                    InvoicePositionResponse(
+                        id=pos.id,
+                        name=pos.name,
+                        num_items=pos.num_items,
+                        price_net=pos.price_net,
+                        vat_rate_id=pos.vat_rate_id.id,
+                    )
+                    for pos in invoice.invoicepositions
+                ],
+            )
+
+        return invoice_output
+    return permissions
+
+
+@invoice_router.get(
+    "/invoice_list",
     response_model=List[InvoiceResponse],
     status_code=200,
     responses={**get_verify_enterprise_permissions_responses()},
 )
-async def get_invoices(
+async def get_invoice_list(
     page: int,
     enterprise_id: int,
     user: models.User = Depends(CurrentUser()),
@@ -195,7 +242,7 @@ async def get_invoices(
         return permissions
 
 @invoice_router.delete(
-    "/invoice/{invoice_id}",
+    "/invoice",
     status_code=200,
     responses={**get_verify_enterprise_permissions_responses()},
 )
@@ -216,7 +263,7 @@ async def delete_invoice(
         ],
     )
     if permissions is True:
-        invoice.delete()
+        await invoice.delete()
         return JSONResponse({'message': f"Deleted invoice {invoice_id}"})
 
 @invoice_router.patch(
@@ -244,7 +291,7 @@ async def update_invoice(
     )
     if permissions is True:
         update_data = item.dict(exclude_unset=True)
-        invoice.update(**update_data)
+        await invoice.update(**update_data)
         invoice_output = InvoiceResponse(
             id=invoice.id,
             enterprise_id=invoice.enterprise_id.id,
