@@ -75,7 +75,7 @@ class User(ormar.Model):
         tablename = "user"
 
     id = ormar.Integer(primary_key=True)
-    username = ormar.String(index=True, nullable=False, max_length=255)
+    username = ormar.String(index=True, nullable=False, max_length=255, unique=True)
     email = ormar.String(index=True, unique=True, nullable=False, max_length=255)
     hashed_password = ormar.String(nullable=False, max_length=255)
     fav_enterprise_id = ormar.ForeignKey(Enterprise)
@@ -93,6 +93,7 @@ class UserEnterpriseRoles(str, Enum):
     viewer = "VIEWER"
     editor = "EDITOR"
     admin = "ADMIN"
+
 
 class UserEnterprise(ormar.Model):
     class Meta(BaseMeta):
