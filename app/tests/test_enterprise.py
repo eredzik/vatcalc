@@ -53,3 +53,31 @@ def test_enterprise_get_for_user(client: TestClient):
             "address": "address1",
         }
     ]
+
+
+def test_update_enterprise(client: TestClient):
+    user_header = get_random_logged_user(client)
+    r_enterprise = create_enterprise(client)
+    r_update = client.patch(
+        f"/enterprise/{r_enterprise.json()['id']}",
+        cookies=client.cookies.get_dict(),
+        json={"name": "Zdzichtex sp. z o.o."},
+    )
+    assert r_update.status_code == HTTP_200_OK
+    r_enterprise_get = client.get(
+        "/enterprise?page=1", cookies=client.cookies.get_dict()
+    )
+    assert r_enterprise_get.json()[0]['name'] == "Zdzichtex sp. z o.o."
+
+
+def test_delete_enterprise(client: TestClient):
+    user_header = get_random_logged_user(client)
+    r_enterprise = create_enterprise(client)
+    r_enterprise_delete = client.delete(
+        f"/enterprise/{r_enterprise.json()['id']}", cookies=client.cookies.get_dict()
+    )
+    assert r_enterprise_delete.status_code == HTTP_200_OK
+    r_enterprise_get = client.get(
+        "/enterprise?page=1", cookies=client.cookies.get_dict()
+    )
+    assert len(r_enterprise_get.json()) == 0
