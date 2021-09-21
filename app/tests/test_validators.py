@@ -18,7 +18,7 @@ def test_nip_validation():
     with pytest.raises(ValueError):
         TestModel(nip="1234567890")
 
-def test_regon_validation():
+def test_regon9_validation():
     # Valid case 9-digit
     class TestModel(BaseModel):
         regon: RegonNumber
@@ -31,7 +31,9 @@ def test_regon_validation():
         # Good length but not valid
     with pytest.raises(ValueError):
         TestModel(regon="123456789")
-    # Valid case 14-digit
+
+def test_regon14_validation():
+    # Valid case 14 digits
     class TestModel(BaseModel):
         regon: RegonNumber
 

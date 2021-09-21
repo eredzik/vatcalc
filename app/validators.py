@@ -29,13 +29,12 @@ class NipNumber(str):
 
 class RegonNumber(str):
     @classmethod
-    def __get_validators(cls):
+    def __get_validators__(cls):
         yield cls.validate
 
     @classmethod
     def validate(cls, regon: str) -> str:
-        if len(regon) != 9 or len(regon) != 14:
-            raise ValueError("REGON must have exactly 10 characters.")
+
 
         if len(regon) == 9:
             weights = [8, 9, 2, 3, 4, 5, 6, 7]
@@ -54,4 +53,6 @@ class RegonNumber(str):
             if checksum_calculated != int(regon[13]):
                 raise ValueError("REGON failed checksum validation")
             return cls(regon)
+        else:
+            raise ValueError(f"REGON must have exactly 9 or 14 characters (got {len(regon)}).")
 
