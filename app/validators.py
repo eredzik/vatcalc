@@ -54,5 +54,5 @@ class RegonNumber(str):
                 raise ValueError("REGON failed checksum validation")
             return cls(regon)
         else:
-            raise ValueError(f"REGON must have exactly 9 or 14 characters (got {len(regon)}).")
+            raise ValueError(f"REGON must have exactly 9 or 14 characters.")
 
