@@ -69,3 +69,19 @@ def test_create_multiple_vat_rates(client: TestClient):
     )
     assert r_get.status_code == HTTP_200_OK
     assert len(r_get.json()) == 2
+
+def test_delete_vatrate(client: TestClient):
+    user_header = get_random_logged_user(client)
+    r_enterprise = create_enterprise(client)
+    r_vatrate = create_vat_rate(client, r_enterprise)
+    r_vatrate_delete = client.delete(
+        "/vatrate",
+        params={"vatrate_id": r_vatrate.json()["id"]},
+        cookies=client.cookies.get_dict())
+    assert r_vatrate_delete.status_code == HTTP_200_OK
+    r_vatrate_get = client.get(
+        "/vatrate",
+        params={"page": 1, "enterprise_id": r_enterprise.json()["id"]},
+        cookies=client.cookies.get_dict()
+    )
+    assert len(r_vatrate_get.json()) == 0
