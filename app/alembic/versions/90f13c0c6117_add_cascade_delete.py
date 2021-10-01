@@ -1,9 +1,7 @@
 """Add cascade delete
-
 Revision ID: 90f13c0c6117
 Revises: ca884ba4aac5
 Create Date: 2021-08-23 15:36:56.122778
-
 """
 from alembic import op
 import sqlalchemy as sa
