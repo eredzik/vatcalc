@@ -107,3 +107,28 @@ async def get_vat_rates(
         return response
     else:
         return permissions
+
+@vatrate_router.delete(
+    "/vatrate",
+    status_code=200,
+    responses={**get_verify_enterprise_permissions_responses()}
+)
+async def delete_vatrate(
+    vatrate_id: int,
+    user: models.User = Depends(CurrentUser())
+):
+    vatrate = await models.VatRate.objects.get_or_none(id=vatrate_id)
+    if not vatrate:
+        raise HTTPException(status_code=404, detail=f"Vat rate {vatrate_id} not found")
+
+    permissions = await verify_enterprise_permissions(
+        user,
+        enterprise=vatrate.enterprise_id,
+        required_permissions=[
+            models.UserEnterpriseRoles.editor,
+            models.UserEnterpriseRoles.admin,
+        ],
+    )
+    if permissions is True:
+        await vatrate.delete()
+        return JSONResponse({'message': f"Deleted vatrate {vatrate_id}"})

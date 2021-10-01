@@ -29,6 +29,8 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_SERVER=db
       - JWT_SECRET=somesecret
+      - SOAP_ENDPOINT=${SOAP_ENDPOINT}
+      - SOAP_KEY=${SOAP_KEY}
   frontend:
     build:
       context: frontend/
