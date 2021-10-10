@@ -10,7 +10,6 @@ ENV WAIT_VERSION 2.7.2
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait /wait
 RUN chmod +x /wait
 COPY "package.json" "package.json"
-COPY "package-lock.json" "package-lock.json"
+RUN yarn install
 COPY . .
-RUN npm install
-CMD ["./generate_api.sh"]
+CMD ["sh", "./scripts/start_docker.sh"]

@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
+from typing import List
 
 import jwt
-from fastapi import APIRouter, Request, Response
+from fastapi import APIRouter, Depends, Request, Response
 from fastapi.exceptions import HTTPException
 from pydantic import EmailStr
 from pydantic.main import BaseModel
@@ -10,8 +11,10 @@ from starlette.status import (
     HTTP_201_CREATED,
     HTTP_204_NO_CONTENT,
     HTTP_401_UNAUTHORIZED,
+    HTTP_409_CONFLICT,
 )
 
+from .. import models
 from ..core.config import settings
 from ..models import User
 from .utils import Message
@@ -84,6 +87,11 @@ def get_auth_router():
         "/register", response_model=RegisterResponse, status_code=HTTP_201_CREATED
     )
     async def register_user(input_data: RegisterInput):
+        if await User.objects.get_or_none(
+            username=input_data.username, email=input_data.email
+        ):
+            raise HTTPException(HTTP_409_CONFLICT, "User exists")
+
         new_user = await User(
             username=input_data.username,
             hashed_password=pwd_context.hash(input_data.password),
@@ -136,3 +144,29 @@ class CurrentUser:
             return user_in_db
         else:
             raise CookieUnauthorizedError
+
+
+class PermissionsCheck:
+    def __init__(self, required_permissions: List[models.UserEnterpriseRoles]):
+        self.required_permissions = required_permissions
+
+    async def __call__(self, enterprise_id: int, user: User = Depends(CurrentUser())):
+        permissions = await models.UserEnterprise.objects.get_or_none(
+            user_id=user.id, enterprise_id=enterprise_id
+        )
+        if permissions is None:
+            raise HTTPException(
+                status_code=HTTP_401_UNAUTHORIZED,
+                detail="Unauthorized",
+            )
+        elif permissions.role not in (r.value for r in self.required_permissions):
+            raise HTTPException(
+                status_code=HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+            )
+        else:
+            return permissions
+
+def get_permissions_checks_model():
+    return {
+        HTTP_401_UNAUTHORIZED: {"model": Message},
+    }

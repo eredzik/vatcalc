@@ -1,5 +1,5 @@
 import {
-  Button,
+  // Button,
   CircularProgress,
   Container,
   FormControl,
@@ -9,15 +9,16 @@ import {
   MobileStepper,
   Select,
   TextField,
-  Typography,
+  Typography
 } from "@material-ui/core";
-import * as yup from 'yup';
+import { useFormik } from "formik";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Redirect } from "react-router-dom";
-import { apiConfig } from "../../api";
-import { EnterpriseApi } from "../../generated";
+import { Button } from "semantic-ui-react";
+import * as yup from 'yup';
+// import { ButtonWithLoading } from "../../components/LoadingButton";
+import { useEnterpriseMutation } from "../../hooks/enterpriseApi";
 import { nipNumberYup } from "../../utils/nipValidation";
-import { useFormik } from "formik";
 
 const steps = [
   'Dodaj swoją jednoosobową działalność gospodarczą',
@@ -106,10 +107,10 @@ function Page0({ sendNipNumber, nextPageHandler }: Page0Props) {
         <Grid item justify="center">
           <Button
             type="button"
-            variant="contained"
-            color="primary"
+            primary
             disabled={Boolean(formik.errors.nipNumber)}
             onClick={() => {
+              formik.handleSubmit()
               setIsLoading(true);
               sendNipNumber(formik.values.nipNumber);
               nextPageHandler();
@@ -121,8 +122,7 @@ function Page0({ sendNipNumber, nextPageHandler }: Page0Props) {
         <Grid item justify="center">
           <Button
             type="button"
-            variant="contained"
-            color="secondary"
+            primary
             onClick={nextPageHandler}>
             Wpisz ręcznie
           </Button>
@@ -136,7 +136,7 @@ interface Page1Props {
 
 }
 function Page1({ inputNipNumber, prevPageHandler }: Page1Props) {
-
+  const enterpriseAdd = useEnterpriseMutation()
   const formik = useFormik({
     initialValues: {
       nipNumber: inputNipNumber,
@@ -158,27 +158,15 @@ function Page1({ inputNipNumber, prevPageHandler }: Page1Props) {
         val => { console.log(val); return val ? true : false })
     }),
     onSubmit: (values) => {
-      setIsLoading(true);
-      new EnterpriseApi(apiConfig)
-        .createEnterpriseEnterprisePost(
-          {
-            address: values.address,
-            name: values.name,
-            nip_number: values.nipNumber
-          })
-        .then(
-          r => {
-            setIsLoading(false);
-            const pathToRedirect = "/enterprise/" + r.data.id.toString()
-            setredirectPath(<Redirect to={pathToRedirect} />)
-          })
-
+      enterpriseAdd.mutate({
+        address: formik.values.address,
+        name: formik.values.name,
+        nip_number: formik.values.nipNumber,
+      })
     },
     validateOnMount: true
   });
-  const [isLoading, setIsLoading] = useState(false)
-  const [redirectPath, setredirectPath] = useState<JSX.Element | null>(null)
-  // console.log(formik.isValid)
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <Grid container alignItems="center" direction="column" spacing={1}>
@@ -249,24 +237,22 @@ function Page1({ inputNipNumber, prevPageHandler }: Page1Props) {
         <Grid item>
           <Button
             type="submit"
-            variant="contained"
-            color="primary"
-            disabled={(!formik.isValid)}
-          >
-            {isLoading ? "Dodaj" : null}
+
+            primary
+            isLoading={enterpriseAdd.isLoading}
+            disabled={(!formik.isValid)}>
+            Dodaj
           </Button>
         </Grid>
         <Grid item>
           <Button
-            type="button"
-            variant="contained"
-            color="secondary"
-            onClick={prevPageHandler}>
+            onClick={prevPageHandler}
+            primary>
             Wstecz
           </Button>
         </Grid>
 
-        {redirectPath ? redirectPath : <></>}
+        {enterpriseAdd.isSuccess ? <Redirect to="/" /> : <></>}
       </Grid >
     </form>
   )

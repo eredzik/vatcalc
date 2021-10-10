@@ -18,8 +18,7 @@ pyjwt = "*"
 bcrypt = "*"
 zeep = "*"
 importlib-resources = "*"
-pydantic = {extras = [ "email",]}
-databases = {extras = [ "postgresql",]}
+xmltodict = "*"
 
 [dev-packages]
 pytest = "*"
@@ -34,3 +33,9 @@ httpx = "*"
 
 [requires]
 python_version = "3.8"
+
+[packages.pydantic]
+extras = [ "email",]
+
+[packages.databases]
+extras = [ "postgresql",]

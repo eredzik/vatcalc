@@ -142,6 +142,31 @@ export interface EnterpriseResponse {
 /**
  * 
  * @export
+ * @interface EnterpriseUpdateResponse
+ */
+export interface EnterpriseUpdateResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof EnterpriseUpdateResponse
+     */
+    name?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof EnterpriseUpdateResponse
+     */
+    address?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof EnterpriseUpdateResponse
+     */
+    nip_number?: string;
+}
+/**
+ * 
+ * @export
  * @interface FavEnterpriseResponse
  */
 export interface FavEnterpriseResponse {
@@ -207,6 +232,67 @@ export interface InvoiceInput {
      * @memberof InvoiceInput
      */
     invoicepositions: Array<InvoicePositionInput>;
+}
+/**
+ * 
+ * @export
+ * @interface InvoiceListResponse
+ */
+export interface InvoiceListResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof InvoiceListResponse
+     */
+    id: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof InvoiceListResponse
+     */
+    enterprise_id: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof InvoiceListResponse
+     */
+    trading_partner_id: number;
+    /**
+     * 
+     * @type {InvoiceType}
+     * @memberof InvoiceListResponse
+     */
+    invoice_type: InvoiceType;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceListResponse
+     */
+    invoice_date: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceListResponse
+     */
+    invoice_business_id: string;
+    /**
+     * 
+     * @type {Array<InvoicePositionResponse>}
+     * @memberof InvoiceListResponse
+     */
+    invoicepositions: Array<InvoicePositionResponse>;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceListResponse
+     */
+    trading_partner_name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceListResponse
+     */
+    trading_partner_nip: string;
 }
 /**
  * 
@@ -339,6 +425,49 @@ export enum InvoiceType {
 /**
  * 
  * @export
+ * @interface InvoiceUpdateResponse
+ */
+export interface InvoiceUpdateResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof InvoiceUpdateResponse
+     */
+    enterprise_id?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof InvoiceUpdateResponse
+     */
+    trading_partner_id?: number;
+    /**
+     * 
+     * @type {InvoiceType}
+     * @memberof InvoiceUpdateResponse
+     */
+    invoice_type?: InvoiceType;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceUpdateResponse
+     */
+    invoice_date?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceUpdateResponse
+     */
+    invoice_business_id?: string;
+    /**
+     * 
+     * @type {Array<InvoicePositionInput>}
+     * @memberof InvoiceUpdateResponse
+     */
+    invoicepositions?: Array<InvoicePositionInput>;
+}
+/**
+ * 
+ * @export
  * @interface LoginInput
  */
 export interface LoginInput {
@@ -405,6 +534,140 @@ export interface RegisterResponse {
      * @memberof RegisterResponse
      */
     email: string;
+}
+/**
+ * 
+ * @export
+ * @interface RegonApiNotFoundFailure
+ */
+export interface RegonApiNotFoundFailure {
+    /**
+     * 
+     * @type {string}
+     * @memberof RegonApiNotFoundFailure
+     */
+    error_code: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegonApiNotFoundFailure
+     */
+    error_message_pl: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegonApiNotFoundFailure
+     */
+    error_message_en: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegonApiNotFoundFailure
+     */
+    nip_number: string;
+}
+/**
+ * 
+ * @export
+ * @interface RegonApiSuccess
+ */
+export interface RegonApiSuccess {
+    /**
+     * 
+     * @type {string}
+     * @memberof RegonApiSuccess
+     */
+    regon?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegonApiSuccess
+     */
+    nip: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegonApiSuccess
+     */
+    nip_status?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegonApiSuccess
+     */
+    company_name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegonApiSuccess
+     */
+    voivodeship: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegonApiSuccess
+     */
+    powiat: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegonApiSuccess
+     */
+    gmina: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegonApiSuccess
+     */
+    city: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegonApiSuccess
+     */
+    postal_code: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegonApiSuccess
+     */
+    street: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegonApiSuccess
+     */
+    house_no: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegonApiSuccess
+     */
+    suite_no?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegonApiSuccess
+     */
+    type: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegonApiSuccess
+     */
+    silos_id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegonApiSuccess
+     */
+    shutdown_date?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegonApiSuccess
+     */
+    post_office_town: string;
 }
 /**
  * 
@@ -617,17 +880,17 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
             localVarRequestOptions.data = serializeDataIfNeeded(loginInput, localVarRequestOptions, configuration)
 
             return {
@@ -650,15 +913,15 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -683,17 +946,17 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
             localVarRequestOptions.data = serializeDataIfNeeded(registerInput, localVarRequestOptions, configuration)
 
             return {
@@ -708,7 +971,7 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
  * AuthenticationApi - functional programming interface
  * @export
  */
-export const AuthenticationApiFp = function(configuration?: Configuration) {
+export const AuthenticationApiFp = function (configuration?: Configuration) {
     const localVarAxiosParamCreator = AuthenticationApiAxiosParamCreator(configuration)
     return {
         /**
@@ -853,18 +1116,52 @@ export const EnterpriseApiAxiosParamCreator = function (configuration?: Configur
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
             localVarRequestOptions.data = serializeDataIfNeeded(enterpriseCreateInput, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Delete Enterprise
+         * @param {number} enterpriseId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteEnterpriseEnterpriseEnterpriseIdDelete: async (enterpriseId: number, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'enterpriseId' is not null or undefined
+            assertParamExists('deleteEnterpriseEnterpriseEnterpriseIdDelete', 'enterpriseId', enterpriseId)
+            const localVarPath = `/enterprise/{enterprise_id}`
+                .replace(`{${"enterprise_id"}}`, encodeURIComponent(String(enterpriseId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -889,7 +1186,7 @@ export const EnterpriseApiAxiosParamCreator = function (configuration?: Configur
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -898,10 +1195,50 @@ export const EnterpriseApiAxiosParamCreator = function (configuration?: Configur
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Update Enterprise
+         * @param {number} enterpriseId 
+         * @param {EnterpriseUpdateResponse} enterpriseUpdateResponse 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateEnterpriseEnterpriseEnterpriseIdPatch: async (enterpriseId: number, enterpriseUpdateResponse: EnterpriseUpdateResponse, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'enterpriseId' is not null or undefined
+            assertParamExists('updateEnterpriseEnterpriseEnterpriseIdPatch', 'enterpriseId', enterpriseId)
+            // verify required parameter 'enterpriseUpdateResponse' is not null or undefined
+            assertParamExists('updateEnterpriseEnterpriseEnterpriseIdPatch', 'enterpriseUpdateResponse', enterpriseUpdateResponse)
+            const localVarPath = `/enterprise/{enterprise_id}`
+                .replace(`{${"enterprise_id"}}`, encodeURIComponent(String(enterpriseId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.data = serializeDataIfNeeded(enterpriseUpdateResponse, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -915,7 +1252,7 @@ export const EnterpriseApiAxiosParamCreator = function (configuration?: Configur
  * EnterpriseApi - functional programming interface
  * @export
  */
-export const EnterpriseApiFp = function(configuration?: Configuration) {
+export const EnterpriseApiFp = function (configuration?: Configuration) {
     const localVarAxiosParamCreator = EnterpriseApiAxiosParamCreator(configuration)
     return {
         /**
@@ -931,6 +1268,17 @@ export const EnterpriseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Delete Enterprise
+         * @param {number} enterpriseId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteEnterpriseEnterpriseEnterpriseIdDelete(enterpriseId: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteEnterpriseEnterpriseEnterpriseIdDelete(enterpriseId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Get User Enterprises
          * @param {number} page 
          * @param {*} [options] Override http request option.
@@ -938,6 +1286,18 @@ export const EnterpriseApiFp = function(configuration?: Configuration) {
          */
         async getUserEnterprisesEnterpriseGet(page: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<EnterpriseResponse>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getUserEnterprisesEnterpriseGet(page, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Update Enterprise
+         * @param {number} enterpriseId 
+         * @param {EnterpriseUpdateResponse} enterpriseUpdateResponse 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateEnterpriseEnterpriseEnterpriseIdPatch(enterpriseId: number, enterpriseUpdateResponse: EnterpriseUpdateResponse, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EnterpriseUpdateResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateEnterpriseEnterpriseEnterpriseIdPatch(enterpriseId, enterpriseUpdateResponse, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -962,6 +1322,16 @@ export const EnterpriseApiFactory = function (configuration?: Configuration, bas
         },
         /**
          * 
+         * @summary Delete Enterprise
+         * @param {number} enterpriseId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteEnterpriseEnterpriseEnterpriseIdDelete(enterpriseId: number, options?: any): AxiosPromise<any> {
+            return localVarFp.deleteEnterpriseEnterpriseEnterpriseIdDelete(enterpriseId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Get User Enterprises
          * @param {number} page 
          * @param {*} [options] Override http request option.
@@ -969,6 +1339,17 @@ export const EnterpriseApiFactory = function (configuration?: Configuration, bas
          */
         getUserEnterprisesEnterpriseGet(page: number, options?: any): AxiosPromise<Array<EnterpriseResponse>> {
             return localVarFp.getUserEnterprisesEnterpriseGet(page, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Update Enterprise
+         * @param {number} enterpriseId 
+         * @param {EnterpriseUpdateResponse} enterpriseUpdateResponse 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateEnterpriseEnterpriseEnterpriseIdPatch(enterpriseId: number, enterpriseUpdateResponse: EnterpriseUpdateResponse, options?: any): AxiosPromise<EnterpriseUpdateResponse> {
+            return localVarFp.updateEnterpriseEnterpriseEnterpriseIdPatch(enterpriseId, enterpriseUpdateResponse, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -994,6 +1375,18 @@ export class EnterpriseApi extends BaseAPI {
 
     /**
      * 
+     * @summary Delete Enterprise
+     * @param {number} enterpriseId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof EnterpriseApi
+     */
+    public deleteEnterpriseEnterpriseEnterpriseIdDelete(enterpriseId: number, options?: any) {
+        return EnterpriseApiFp(this.configuration).deleteEnterpriseEnterpriseEnterpriseIdDelete(enterpriseId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Get User Enterprises
      * @param {number} page 
      * @param {*} [options] Override http request option.
@@ -1002,6 +1395,19 @@ export class EnterpriseApi extends BaseAPI {
      */
     public getUserEnterprisesEnterpriseGet(page: number, options?: any) {
         return EnterpriseApiFp(this.configuration).getUserEnterprisesEnterpriseGet(page, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update Enterprise
+     * @param {number} enterpriseId 
+     * @param {EnterpriseUpdateResponse} enterpriseUpdateResponse 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof EnterpriseApi
+     */
+    public updateEnterpriseEnterpriseEnterpriseIdPatch(enterpriseId: number, enterpriseUpdateResponse: EnterpriseUpdateResponse, options?: any) {
+        return EnterpriseApiFp(this.configuration).updateEnterpriseEnterpriseEnterpriseIdPatch(enterpriseId, enterpriseUpdateResponse, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -1030,17 +1436,17 @@ export const InvoiceApiAxiosParamCreator = function (configuration?: Configurati
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
             localVarRequestOptions.data = serializeDataIfNeeded(invoiceInput, localVarRequestOptions, configuration)
 
             return {
@@ -1050,17 +1456,14 @@ export const InvoiceApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary Get Invoices
-         * @param {number} page 
-         * @param {number} enterpriseId 
+         * @summary Delete Invoice
+         * @param {number} invoiceId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInvoicesInvoiceGet: async (page: number, enterpriseId: number, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'page' is not null or undefined
-            assertParamExists('getInvoicesInvoiceGet', 'page', page)
-            // verify required parameter 'enterpriseId' is not null or undefined
-            assertParamExists('getInvoicesInvoiceGet', 'enterpriseId', enterpriseId)
+        deleteInvoiceInvoiceDelete: async (invoiceId: number, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'invoiceId' is not null or undefined
+            assertParamExists('deleteInvoiceInvoiceDelete', 'invoiceId', invoiceId)
             const localVarPath = `/invoice`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1069,7 +1472,91 @@ export const InvoiceApiAxiosParamCreator = function (configuration?: Configurati
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (invoiceId !== undefined) {
+                localVarQueryParameter['invoice_id'] = invoiceId;
+            }
+
+
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get Invoice
+         * @param {number} enterpriseId 
+         * @param {number} invoiceId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getInvoiceInvoiceGet: async (enterpriseId: number, invoiceId: number, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'enterpriseId' is not null or undefined
+            assertParamExists('getInvoiceInvoiceGet', 'enterpriseId', enterpriseId)
+            // verify required parameter 'invoiceId' is not null or undefined
+            assertParamExists('getInvoiceInvoiceGet', 'invoiceId', invoiceId)
+            const localVarPath = `/invoice`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (enterpriseId !== undefined) {
+                localVarQueryParameter['enterprise_id'] = enterpriseId;
+            }
+
+            if (invoiceId !== undefined) {
+                localVarQueryParameter['invoice_id'] = invoiceId;
+            }
+
+
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get Invoice List
+         * @param {number} page 
+         * @param {number} enterpriseId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getInvoiceListInvoiceListGet: async (page: number, enterpriseId: number, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'page' is not null or undefined
+            assertParamExists('getInvoiceListInvoiceListGet', 'page', page)
+            // verify required parameter 'enterpriseId' is not null or undefined
+            assertParamExists('getInvoiceListInvoiceListGet', 'enterpriseId', enterpriseId)
+            const localVarPath = `/invoice_list`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1082,10 +1569,50 @@ export const InvoiceApiAxiosParamCreator = function (configuration?: Configurati
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Update Invoice
+         * @param {number} invoiceId 
+         * @param {InvoiceUpdateResponse} invoiceUpdateResponse 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateInvoiceInvoiceInvoiceIdPatch: async (invoiceId: number, invoiceUpdateResponse: InvoiceUpdateResponse, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'invoiceId' is not null or undefined
+            assertParamExists('updateInvoiceInvoiceInvoiceIdPatch', 'invoiceId', invoiceId)
+            // verify required parameter 'invoiceUpdateResponse' is not null or undefined
+            assertParamExists('updateInvoiceInvoiceInvoiceIdPatch', 'invoiceUpdateResponse', invoiceUpdateResponse)
+            const localVarPath = `/invoice/{invoice_id}`
+                .replace(`{${"invoice_id"}}`, encodeURIComponent(String(invoiceId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.data = serializeDataIfNeeded(invoiceUpdateResponse, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1099,7 +1626,7 @@ export const InvoiceApiAxiosParamCreator = function (configuration?: Configurati
  * InvoiceApi - functional programming interface
  * @export
  */
-export const InvoiceApiFp = function(configuration?: Configuration) {
+export const InvoiceApiFp = function (configuration?: Configuration) {
     const localVarAxiosParamCreator = InvoiceApiAxiosParamCreator(configuration)
     return {
         /**
@@ -1115,14 +1642,49 @@ export const InvoiceApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Get Invoices
+         * @summary Delete Invoice
+         * @param {number} invoiceId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteInvoiceInvoiceDelete(invoiceId: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteInvoiceInvoiceDelete(invoiceId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get Invoice
+         * @param {number} enterpriseId 
+         * @param {number} invoiceId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getInvoiceInvoiceGet(enterpriseId: number, invoiceId: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getInvoiceInvoiceGet(enterpriseId, invoiceId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get Invoice List
          * @param {number} page 
          * @param {number} enterpriseId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getInvoicesInvoiceGet(page: number, enterpriseId: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<InvoiceResponse>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getInvoicesInvoiceGet(page, enterpriseId, options);
+        async getInvoiceListInvoiceListGet(page: number, enterpriseId: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<InvoiceListResponse>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getInvoiceListInvoiceListGet(page, enterpriseId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Update Invoice
+         * @param {number} invoiceId 
+         * @param {InvoiceUpdateResponse} invoiceUpdateResponse 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateInvoiceInvoiceInvoiceIdPatch(invoiceId: number, invoiceUpdateResponse: InvoiceUpdateResponse, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceUpdateResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateInvoiceInvoiceInvoiceIdPatch(invoiceId, invoiceUpdateResponse, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -1147,14 +1709,46 @@ export const InvoiceApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary Get Invoices
+         * @summary Delete Invoice
+         * @param {number} invoiceId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteInvoiceInvoiceDelete(invoiceId: number, options?: any): AxiosPromise<any> {
+            return localVarFp.deleteInvoiceInvoiceDelete(invoiceId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get Invoice
+         * @param {number} enterpriseId 
+         * @param {number} invoiceId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getInvoiceInvoiceGet(enterpriseId: number, invoiceId: number, options?: any): AxiosPromise<InvoiceResponse> {
+            return localVarFp.getInvoiceInvoiceGet(enterpriseId, invoiceId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get Invoice List
          * @param {number} page 
          * @param {number} enterpriseId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInvoicesInvoiceGet(page: number, enterpriseId: number, options?: any): AxiosPromise<Array<InvoiceResponse>> {
-            return localVarFp.getInvoicesInvoiceGet(page, enterpriseId, options).then((request) => request(axios, basePath));
+        getInvoiceListInvoiceListGet(page: number, enterpriseId: number, options?: any): AxiosPromise<Array<InvoiceListResponse>> {
+            return localVarFp.getInvoiceListInvoiceListGet(page, enterpriseId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Update Invoice
+         * @param {number} invoiceId 
+         * @param {InvoiceUpdateResponse} invoiceUpdateResponse 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateInvoiceInvoiceInvoiceIdPatch(invoiceId: number, invoiceUpdateResponse: InvoiceUpdateResponse, options?: any): AxiosPromise<InvoiceUpdateResponse> {
+            return localVarFp.updateInvoiceInvoiceInvoiceIdPatch(invoiceId, invoiceUpdateResponse, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1180,15 +1774,225 @@ export class InvoiceApi extends BaseAPI {
 
     /**
      * 
-     * @summary Get Invoices
+     * @summary Delete Invoice
+     * @param {number} invoiceId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof InvoiceApi
+     */
+    public deleteInvoiceInvoiceDelete(invoiceId: number, options?: any) {
+        return InvoiceApiFp(this.configuration).deleteInvoiceInvoiceDelete(invoiceId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get Invoice
+     * @param {number} enterpriseId 
+     * @param {number} invoiceId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof InvoiceApi
+     */
+    public getInvoiceInvoiceGet(enterpriseId: number, invoiceId: number, options?: any) {
+        return InvoiceApiFp(this.configuration).getInvoiceInvoiceGet(enterpriseId, invoiceId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get Invoice List
      * @param {number} page 
      * @param {number} enterpriseId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof InvoiceApi
      */
-    public getInvoicesInvoiceGet(page: number, enterpriseId: number, options?: any) {
-        return InvoiceApiFp(this.configuration).getInvoicesInvoiceGet(page, enterpriseId, options).then((request) => request(this.axios, this.basePath));
+    public getInvoiceListInvoiceListGet(page: number, enterpriseId: number, options?: any) {
+        return InvoiceApiFp(this.configuration).getInvoiceListInvoiceListGet(page, enterpriseId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update Invoice
+     * @param {number} invoiceId 
+     * @param {InvoiceUpdateResponse} invoiceUpdateResponse 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof InvoiceApi
+     */
+    public updateInvoiceInvoiceInvoiceIdPatch(invoiceId: number, invoiceUpdateResponse: InvoiceUpdateResponse, options?: any) {
+        return InvoiceApiFp(this.configuration).updateInvoiceInvoiceInvoiceIdPatch(invoiceId, invoiceUpdateResponse, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * REGONAPIApi - axios parameter creator
+ * @export
+ */
+export const REGONAPIApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Get Info By Nip
+         * @param {string} nipNumber 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getInfoByNipRegonApiNipNumberNipNumberGet: async (nipNumber: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'nipNumber' is not null or undefined
+            assertParamExists('getInfoByNipRegonApiNipNumberNipNumberGet', 'nipNumber', nipNumber)
+            const localVarPath = `/regon_api/nip_number/{nip_number}`
+                .replace(`{${"nip_number"}}`, encodeURIComponent(String(nipNumber)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get Info By Regon
+         * @param {string} regonNumber 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getInfoByRegonRegonApiRegonNumberRegonNumberGet: async (regonNumber: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'regonNumber' is not null or undefined
+            assertParamExists('getInfoByRegonRegonApiRegonNumberRegonNumberGet', 'regonNumber', regonNumber)
+            const localVarPath = `/regon_api/regon_number/{regon_number}`
+                .replace(`{${"regon_number"}}`, encodeURIComponent(String(regonNumber)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * REGONAPIApi - functional programming interface
+ * @export
+ */
+export const REGONAPIApiFp = function (configuration?: Configuration) {
+    const localVarAxiosParamCreator = REGONAPIApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Get Info By Nip
+         * @param {string} nipNumber 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getInfoByNipRegonApiNipNumberNipNumberGet(nipNumber: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RegonApiSuccess | RegonApiNotFoundFailure>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getInfoByNipRegonApiNipNumberNipNumberGet(nipNumber, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get Info By Regon
+         * @param {string} regonNumber 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getInfoByRegonRegonApiRegonNumberRegonNumberGet(regonNumber: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RegonApiSuccess | RegonApiNotFoundFailure>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getInfoByRegonRegonApiRegonNumberRegonNumberGet(regonNumber, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * REGONAPIApi - factory interface
+ * @export
+ */
+export const REGONAPIApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = REGONAPIApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Get Info By Nip
+         * @param {string} nipNumber 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getInfoByNipRegonApiNipNumberNipNumberGet(nipNumber: string, options?: any): AxiosPromise<RegonApiSuccess | RegonApiNotFoundFailure> {
+            return localVarFp.getInfoByNipRegonApiNipNumberNipNumberGet(nipNumber, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get Info By Regon
+         * @param {string} regonNumber 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getInfoByRegonRegonApiRegonNumberRegonNumberGet(regonNumber: string, options?: any): AxiosPromise<RegonApiSuccess | RegonApiNotFoundFailure> {
+            return localVarFp.getInfoByRegonRegonApiRegonNumberRegonNumberGet(regonNumber, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * REGONAPIApi - object-oriented interface
+ * @export
+ * @class REGONAPIApi
+ * @extends {BaseAPI}
+ */
+export class REGONAPIApi extends BaseAPI {
+    /**
+     * 
+     * @summary Get Info By Nip
+     * @param {string} nipNumber 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof REGONAPIApi
+     */
+    public getInfoByNipRegonApiNipNumberNipNumberGet(nipNumber: string, options?: any) {
+        return REGONAPIApiFp(this.configuration).getInfoByNipRegonApiNipNumberNipNumberGet(nipNumber, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get Info By Regon
+     * @param {string} regonNumber 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof REGONAPIApi
+     */
+    public getInfoByRegonRegonApiRegonNumberRegonNumberGet(regonNumber: string, options?: any) {
+        return REGONAPIApiFp(this.configuration).getInfoByRegonRegonApiRegonNumberRegonNumberGet(regonNumber, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -1217,17 +2021,17 @@ export const TradingPartnerApiAxiosParamCreator = function (configuration?: Conf
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
             localVarRequestOptions.data = serializeDataIfNeeded(tradingPartnerInput, localVarRequestOptions, configuration)
 
             return {
@@ -1256,7 +2060,7 @@ export const TradingPartnerApiAxiosParamCreator = function (configuration?: Conf
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1269,10 +2073,10 @@ export const TradingPartnerApiAxiosParamCreator = function (configuration?: Conf
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1286,7 +2090,7 @@ export const TradingPartnerApiAxiosParamCreator = function (configuration?: Conf
  * TradingPartnerApi - functional programming interface
  * @export
  */
-export const TradingPartnerApiFp = function(configuration?: Configuration) {
+export const TradingPartnerApiFp = function (configuration?: Configuration) {
     const localVarAxiosParamCreator = TradingPartnerApiAxiosParamCreator(configuration)
     return {
         /**
@@ -1401,15 +2205,15 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1431,15 +2235,15 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1464,7 +2268,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1473,10 +2277,10 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1490,7 +2294,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
  * UserApi - functional programming interface
  * @export
  */
-export const UserApiFp = function(configuration?: Configuration) {
+export const UserApiFp = function (configuration?: Configuration) {
     const localVarAxiosParamCreator = UserApiAxiosParamCreator(configuration)
     return {
         /**
@@ -1632,18 +2436,55 @@ export const VatRateApiAxiosParamCreator = function (configuration?: Configurati
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
             localVarRequestOptions.data = serializeDataIfNeeded(vatrateInput, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Delete Vatrate
+         * @param {number} vatrateId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteVatrateVatrateDelete: async (vatrateId: number, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'vatrateId' is not null or undefined
+            assertParamExists('deleteVatrateVatrateDelete', 'vatrateId', vatrateId)
+            const localVarPath = `/vatrate`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (vatrateId !== undefined) {
+                localVarQueryParameter['vatrate_id'] = vatrateId;
+            }
+
+
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1671,7 +2512,7 @@ export const VatRateApiAxiosParamCreator = function (configuration?: Configurati
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1684,10 +2525,10 @@ export const VatRateApiAxiosParamCreator = function (configuration?: Configurati
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1701,7 +2542,7 @@ export const VatRateApiAxiosParamCreator = function (configuration?: Configurati
  * VatRateApi - functional programming interface
  * @export
  */
-export const VatRateApiFp = function(configuration?: Configuration) {
+export const VatRateApiFp = function (configuration?: Configuration) {
     const localVarAxiosParamCreator = VatRateApiAxiosParamCreator(configuration)
     return {
         /**
@@ -1713,6 +2554,17 @@ export const VatRateApiFp = function(configuration?: Configuration) {
          */
         async addVatrateVatratePost(vatrateInput: VatrateInput, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<VatRateResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.addVatrateVatratePost(vatrateInput, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Delete Vatrate
+         * @param {number} vatrateId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteVatrateVatrateDelete(vatrateId: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteVatrateVatrateDelete(vatrateId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1749,6 +2601,16 @@ export const VatRateApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary Delete Vatrate
+         * @param {number} vatrateId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteVatrateVatrateDelete(vatrateId: number, options?: any): AxiosPromise<any> {
+            return localVarFp.deleteVatrateVatrateDelete(vatrateId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Get Vat Rates
          * @param {number} page 
          * @param {number} enterpriseId 
@@ -1778,6 +2640,18 @@ export class VatRateApi extends BaseAPI {
      */
     public addVatrateVatratePost(vatrateInput: VatrateInput, options?: any) {
         return VatRateApiFp(this.configuration).addVatrateVatratePost(vatrateInput, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Delete Vatrate
+     * @param {number} vatrateId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof VatRateApi
+     */
+    public deleteVatrateVatrateDelete(vatrateId: number, options?: any) {
+        return VatRateApiFp(this.configuration).deleteVatrateVatrateDelete(vatrateId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

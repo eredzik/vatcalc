@@ -1,19 +1,22 @@
+import { CircularProgress } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-// import { useAppSelector } from "../redux/selectors";
-import { AuthenticationApi } from "../generated";
-import { apiConfig } from "../api";
-
+import CssBaseline from "@material-ui/core/CssBaseline";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Grid from "@material-ui/core/Grid";
+import Link from "@material-ui/core/Link";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { Alert } from "@material-ui/lab";
+import { AxiosError } from "axios";
+import { useFormik } from "formik";
+import { Redirect } from "react-router";
+import * as yup from "yup";
+import { useRegisterUser, useUser } from "../hooks/userApi";
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -35,9 +38,37 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUp() {
+  const user = useUser();
+  const registerUser = useRegisterUser();
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+      email: ""
+    },
+    validationSchema: yup.object({
+
+    }),
+    onSubmit: (values) => {
+      registerUser.mutate(values);
+    },
+    validateOnMount: true
+  });
+  function getErrorMessage(error: AxiosError) {
+    console.log(error.response)
+    if (!error.response) {
+      return "Błąd komunikacji z serwerem."
+    } else if (error.response.status === 422) {
+      return "Login już używany"
+    } else if (error.response.status === 409) {
+      return "Login lub email są już używane."
+    } else {
+      return "Nieznany błąd"
+    }
+  }
+
   const classes = useStyles();
-  // const user = useAppSelector(state=> state.user.user)
-  console.log("REGISTER")
+  console.log(registerUser)
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -50,27 +81,17 @@ export default function SignUp() {
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="Imię"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 required
                 fullWidth
-                id="lastName"
-                label="Nazwisko"
-                name="lastName"
-                autoComplete="lname"
+                id="username"
+                label="Nazwa użytkownika"
+                name="username"
+                autoComplete="username"
+                value={formik.values.username}
+                onChange={formik.handleChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -82,6 +103,8 @@ export default function SignUp() {
                 label="Adres Email"
                 name="email"
                 autoComplete="email"
+                value={formik.values.email}
+                onChange={formik.handleChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -94,6 +117,9 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+
+                value={formik.values.password}
+                onChange={formik.handleChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -103,15 +129,19 @@ export default function SignUp() {
               />
             </Grid>
           </Grid>
+          {registerUser.isError && (
+            < Alert severity="error">{getErrorMessage((registerUser.error as AxiosError))}</Alert>
+          )}
           <Button
             type="button"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={clickedSignUpButton}
+            onClick={e => formik.handleSubmit()}
           >
-            Zarejestruj
+            {(!registerUser.isLoading) && "Zarejestruj się"}
+            {registerUser.isLoading && <CircularProgress color="secondary" size={24} />}
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
@@ -121,14 +151,9 @@ export default function SignUp() {
             </Grid>
           </Grid>
         </form>
+        {registerUser.isSuccess && <Redirect to="/" />}
+        {user.isSuccess && <Redirect to="/" />}
       </div>
-    </Container>
+    </Container >
   );
-}
-async function clickedSignUpButton() {
-  await new AuthenticationApi(apiConfig).registerUserRegisterPost({
-    email: "a@b.c",
-    password: "d",
-    username: "d",
-  });
 }

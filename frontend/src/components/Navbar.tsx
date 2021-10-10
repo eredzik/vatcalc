@@ -1,144 +1,127 @@
-import {
-  AppBar,
-  Button,
-  IconButton,
-  Menu,
-  MenuItem,
-  Toolbar,
-  Link,
-  Select,
-} from "@material-ui/core";
-import React from "react";
-import MenuIcon from "@material-ui/icons/Menu";
-import { Link as RouterLink, Redirect } from "react-router-dom";
-import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../redux/selectors";
-import { apiConfig } from "../api";
-import { AuthenticationApi } from "../generated";
-import { updateUser } from "../redux/userSlice";
-import { Skeleton } from "@material-ui/lab";
-
-
+import { Button, Menu, MenuItem, Position } from "@blueprintjs/core";
+import { Popover2 } from "@blueprintjs/popover2";
+import { ItemRenderer, Select } from "@blueprintjs/select";
+import { Link } from "@material-ui/core";
+import React, { useCallback, useState } from "react";
+import { Link as RouterLink, useHistory } from "react-router-dom";
+import { EnterpriseResponse } from "../generated-api";
+import { useEnterprisesList } from "../hooks/enterpriseApi";
+import { useLogoutUser, useUser, useUserMutationFavEnterprise } from "../hooks/userApi";
 export const Navbar: React.FC<{}> = () => {
-
   return (
-    <AppBar position="static">
-      <Toolbar color="red">
-        <Link
-          variant="h4"
-          color="textPrimary"
-          component={RouterLink}
-          to="/"
-          style={{
-            textDecoration: "none",
-            fontWeight: "bold",
-            flexGrow: 1,
-          }}
-        >
-          VatCalc
-        </Link>
-        <RightButton />
-      </Toolbar>
-    </AppBar>
+    <div style={{
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      padding: "1rem 1rem 1rem 1rem",
+      backgroundColor: "#6EA4BF"
+
+    }}>
+      <Link
+        variant="h4"
+        color="textPrimary"
+        component={RouterLink}
+        to="/"
+        style={{
+          textDecoration: "none",
+          fontWeight: "bold"
+        }}
+      >
+        VatCalc
+      </Link>
+      <RightButton />
+    </div >
   );
 };
 
 
 function SelectEnterprise(): JSX.Element {
-  const user = useAppSelector((state) => state.user);
-  const enterprises = useAppSelector((state) => state.enterprise.enterprises)
-  const [redirect, setRedirect] = useState<JSX.Element | undefined>();
-
-  const selectedEnterpriseId = user.user?.fav_enterprise_id || "";
-  const AddEnterpriseItem = () => <MenuItem
-    value={""}
-    key={""}
-    onClick={(e) => {
-      setRedirect(<Redirect to="/enterprises/add" />);
-    }}
-  >
-    Dodaj firmę
-  </MenuItem>
-  console.log(enterprises)
-  const select_items = (
-    enterprises.length
-      ? (enterprises.map((item) =>
-        < MenuItem
+  const user = useUser();
+  const updateFavEnterprise = useUserMutationFavEnterprise();
+  const EnterpriseSelect = Select.ofType<EnterpriseResponse>();
+  const enterprisesList = useEnterprisesList(1);
+  const selectedEnterpriseLabel =
+    enterprisesList.data?.data
+      .filter(
+        (v) => v.enterprise_id === user.data?.data.fav_enterprise_id)[0]?.name ||
+    "Wybierz firmę";
+  const renderItem: ItemRenderer<EnterpriseResponse> =
+    (item, { handleClick, modifiers, query }) => {
+      if (!modifiers.matchesPredicate) {
+        return null;
+      }
+      const text = `${item.nip_number}. ${item.name}`;
+      return (
+        <MenuItem
+          active={modifiers.active}
+          disabled={modifiers.disabled}
+          label={item.address}
           key={item.enterprise_id}
-          value={item.enterprise_id}
-        >
-          {item.name}</MenuItem>
-      )) : null
-  )
+          onClick={handleClick}
+          text={text}
+        />
+      );
+    };
+  const handleItemSelect = useCallback((enterprise_selected: EnterpriseResponse) => {
+    updateFavEnterprise.mutate(enterprise_selected.enterprise_id)
+  }, [])
   return (
-    <Select style={{ marginRight: 2 }} value={selectedEnterpriseId}
-    // onChange={(e) => new UserApi(apiConfig)
-    //   .updateEnterpriseUserMePreferredEnterprisePatch(e.target.value as number)
-    //   .then(dispatch())
-    //   }
+    <EnterpriseSelect
+      filterable={false}
+      items={enterprisesList.data?.data || []}
+      itemRenderer={renderItem}
+      onItemSelect={handleItemSelect}
     >
-      {select_items}
-      < AddEnterpriseItem />
-      {redirect}
-    </Select >
+      <Button text={selectedEnterpriseLabel} rightIcon="caret-down" />
+
+    </EnterpriseSelect >
   );
 }
 
 function RightButton() {
-  const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
-  const isMenuOpen = Boolean(anchorEl);
-  const user = useAppSelector((state) => state.user.user);
-  const dispatch = useAppDispatch()
-  function logOutAction() {
-    setAnchorEl(null);
-    new AuthenticationApi(apiConfig)
-      .logoutLogoutPost()
-      .then(() => dispatch(updateUser(null)))
-      .catch((e) => console.log(e));
-  }
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      open={isMenuOpen}
-      keepMounted
-      onClose={() => setAnchorEl(null)}
-    >
-      <MenuItem component={RouterLink} to="/profile">
-        Moje konto
-      </MenuItem>
-      <MenuItem component={RouterLink} to="/" onClick={logOutAction}>
-        Wyloguj
-      </MenuItem>
+  const history = useHistory();
+  const user = useUser();
+  const logOutAction = useLogoutUser();
+  const renderMenuItems = (
+    <Menu>
+      <MenuItem text="Moje firmy" onClick={() => history.push("/enterprise/add")} />
+      <MenuItem text="Faktury" onClick={() => history.push("/invoice")} />
+      <MenuItem text="Kontrahenci" onClick={() => history.push("/trading_partner")} />
+      <MenuItem text="Ustawienia konta" />
+      <MenuItem text="Wyloguj" onClick={() => logOutAction.mutate()} />
     </Menu>
   );
+  const RenderMenuButton = () => (
+    <div style={{
+      marginLeft: "0.5rem"
+    }}>
+      <Popover2
+        modifiers={{ arrow: { enabled: false } }} content={renderMenuItems}
+        autoFocus={false}
+        position={Position.BOTTOM_LEFT} >
+        <Button icon="menu" ></Button>
+      </Popover2 >
+    </div>
+  );
   const authorizedRightButton = (
-    <div>
+    <div style={{ display: "flex", justifyContent: 'space-between' }}>
       <SelectEnterprise />
-      <IconButton
-        style={{ marginRight: 2 }}
-        onClick={(event) => {
-          setAnchorEl(event.currentTarget);
-        }}
-      >
-        <MenuIcon />
-      </IconButton>
-      {renderMenu}
+      <RenderMenuButton />
     </div>
   );
 
   const unauthorizedRightButton = (
     <Button
-      style={{ marginRight: 2 }}
-      variant="contained"
-      color="secondary"
-      component={RouterLink}
-      to="/login"
+      color="primary"
+      onClick={() => history.push('/login')}
     >
       Zaloguj się
     </Button>
   );
-  const RightButton = user
-    ? authorizedRightButton
-    : unauthorizedRightButton;
+  const RightButton =
+    user.isSuccess
+      ? authorizedRightButton
+      :
+      unauthorizedRightButton;
   return RightButton;
 }
