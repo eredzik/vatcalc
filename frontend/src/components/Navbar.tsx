@@ -2,7 +2,7 @@ import { Button, Menu, MenuItem, Position } from "@blueprintjs/core";
 import { Popover2 } from "@blueprintjs/popover2";
 import { ItemRenderer, Select } from "@blueprintjs/select";
 import { Link } from "@material-ui/core";
-import React, { useCallback } from "react";
+import React from "react";
 import { Link as RouterLink, useHistory } from "react-router-dom";
 import { EnterpriseResponse } from "../generated-api";
 import { useEnterprisesList } from "../hooks/enterpriseApi";
