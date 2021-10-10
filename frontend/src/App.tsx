@@ -21,7 +21,7 @@ export const App: React.FC<{
     () => {
       queryClient.invalidateQueries('user');
     },
-    []);
+    [queryClient]);
 
   const user = useUser();
   return (

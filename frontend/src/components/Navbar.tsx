@@ -2,7 +2,7 @@ import { Button, Menu, MenuItem, Position } from "@blueprintjs/core";
 import { Popover2 } from "@blueprintjs/popover2";
 import { ItemRenderer, Select } from "@blueprintjs/select";
 import { Link } from "@material-ui/core";
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { Link as RouterLink, useHistory } from "react-router-dom";
 import { EnterpriseResponse } from "../generated-api";
 import { useEnterprisesList } from "../hooks/enterpriseApi";
@@ -62,15 +62,14 @@ function SelectEnterprise(): JSX.Element {
         />
       );
     };
-  const handleItemSelect = useCallback((enterprise_selected: EnterpriseResponse) => {
-    updateFavEnterprise.mutate(enterprise_selected.enterprise_id)
-  }, [])
+
   return (
     <EnterpriseSelect
       filterable={false}
       items={enterprisesList.data?.data || []}
       itemRenderer={renderItem}
-      onItemSelect={handleItemSelect}
+      onItemSelect={(enterprise_selected) =>
+        (updateFavEnterprise.mutate(enterprise_selected.enterprise_id))}
     >
       <Button text={selectedEnterpriseLabel} rightIcon="caret-down" />
 
