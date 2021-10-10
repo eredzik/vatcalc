@@ -25,7 +25,7 @@ const steps = [
   'Uzupełnij brakujące dane',
   "Wybierz aktualną formę opodatkowania",
   "ktos"]
-export default function EnterprisesAdd() {
+export default function EnterpriseAdd() {
   const [nipNumber, setNipNumber] = useState<string>("");
   const [activeStep, setActiveStep] = useState(0);
   const nextPageHandler = () => setActiveStep(activeStep + 1);

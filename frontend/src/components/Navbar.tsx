@@ -83,7 +83,7 @@ function RightButton() {
   const logOutAction = useLogoutUser();
   const renderMenuItems = (
     <Menu>
-      <MenuItem text="Moje firmy" onClick={() => history.push("/enterprise/add")} />
+      <MenuItem text="Moje firmy" onClick={() => history.push("/enterprise")} />
       <MenuItem text="Faktury" onClick={() => history.push("/invoice")} />
       <MenuItem text="Kontrahenci" onClick={() => history.push("/trading_partner")} />
       <MenuItem text="Ustawienia konta" />

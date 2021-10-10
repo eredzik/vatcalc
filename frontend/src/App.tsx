@@ -5,7 +5,9 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
 import { useUser } from "./hooks/userApi";
 import Dashboard from "./routes/Dashboard";
-import EnterprisesAdd from "./routes/Enterprises/Add";
+import EnterpriseAdd from "./routes/Enterprises/Add";
+import EnterpriseEdit from "./routes/Enterprises/Edit";
+import EnterpriseList from "./routes/Enterprises/List";
 import Home from "./routes/Home";
 import { InvoiceAdd } from "./routes/Invoices/Add";
 import { InvoicesList } from "./routes/Invoices/List";
@@ -35,7 +37,9 @@ export const App: React.FC<{
         <Route component={SignIn} exact path="/login" />
         <Route component={SignUp} exact path="/register" />
         <Route component={Dashboard} exact path="/dashboard" />
-        <Route component={EnterprisesAdd} exact path="/enterprise/add" />
+        <Route component={EnterpriseList} exact path="/enterprise" />
+        <Route component={EnterpriseEdit} exact path="/enterprise/:enterprise_id" />
+        <Route component={EnterpriseAdd} exact path="/enterprise/add" />
         <Route component={TradingPartnersList} exact path="/trading_partner" />
         <Route component={AddTradingPartner} exact path="/trading_partner/add" />
         <Route component={InvoiceAdd} exact path="/invoice/add" />
