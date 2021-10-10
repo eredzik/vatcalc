@@ -19,7 +19,7 @@
 # inherit these settings.
 [context.deploy-preview]
   base = "frontend"
-  publish = "dist"
+  publish = "build"
 
 
 # A redirect rule with many of the supported properties
