@@ -12,7 +12,7 @@ export default function SimpleTable<D extends object = {}>
                     {react_table.headerGroups.map(
                         header_group => header_group.headers.map(
                             column =>
-                                <Table.HeaderCell>
+                                <Table.HeaderCell key={column.getHeaderProps().key}>
                                     {column.render("Header")}
                                 </Table.HeaderCell>))}
                 </Table.Row>
@@ -20,14 +20,15 @@ export default function SimpleTable<D extends object = {}>
             <Table.Body>
                 {react_table.rows.map(row => {
                     react_table.prepareRow(row);
-                    return <Table.Row>
-                        {row.cells.map(
-                            cell =>
-                                <Table.Cell>
-                                    {cell.render("Cell")}
-                                </Table.Cell>
-                        )}
-                    </Table.Row>
+                    return (
+                        <Table.Row key={row.getRowProps().key}>
+                            {row.cells.map(
+                                cell =>
+                                    <Table.Cell key={cell.getCellProps().key}>
+                                        {cell.render("Cell")}
+                                    </Table.Cell>
+                            )}
+                        </Table.Row>)
                 })}
             </Table.Body>
         </Table>)

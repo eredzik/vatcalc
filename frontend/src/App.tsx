@@ -8,6 +8,7 @@ import Dashboard from "./routes/Dashboard";
 import EnterpriseAdd from "./routes/Enterprises/Add";
 import EnterpriseEdit from "./routes/Enterprises/Edit";
 import EnterpriseList from "./routes/Enterprises/List";
+import { VatrateAdd } from "./routes/Enterprises/Vatrate/Add";
 import Home from "./routes/Home";
 import { InvoiceAdd } from "./routes/Invoices/Add";
 import { InvoicesList } from "./routes/Invoices/List";
@@ -40,6 +41,7 @@ export const App: React.FC<{
         <Route component={EnterpriseList} exact path="/enterprise" />
         <Route component={EnterpriseEdit} exact path="/enterprise/:enterprise_id" />
         <Route component={EnterpriseAdd} exact path="/enterprise/add" />
+        <Route component={VatrateAdd} exact path="/enterprise/:enterprise_id/vatrate/add" />
         <Route component={TradingPartnersList} exact path="/trading_partner" />
         <Route component={AddTradingPartner} exact path="/trading_partner/add" />
         <Route component={InvoiceAdd} exact path="/invoice/add" />
