@@ -15,6 +15,7 @@ from .utils import (
     verify_enterprise_permissions,
 )
 
+
 def get_enterprise_router():
     enterprise_router = APIRouter(tags=["Enterprise"])
 
@@ -87,7 +88,32 @@ def get_enterprise_router():
                 enterprise_id=new_enterprise.id,
                 role=models.UserEnterpriseRoles.admin.value,
             ).save()
+            # Adding standard vatrates
+            for vatrate in [
+                models.VatRate(
+                    vat_rate=0.23,
+                    comment="Standardowa stawka VAT 23%",
+                    enterprise_id=new_enterprise.id,
+                ),
+                models.VatRate(
+                    vat_rate=0.08,
+                    comment="Standardowa stawka VAT 8%",
+                    enterprise_id=new_enterprise.id,
+                ),
+                models.VatRate(
+                    vat_rate=0.05,
+                    comment="Standardowa stawka VAT 5%",
+                    enterprise_id=new_enterprise.id,
+                ),
+                models.VatRate(
+                    vat_rate=0.0,
+                    comment="Standardowa stawka VAT 0%",
+                    enterprise_id=new_enterprise.id,
+                ),
+            ]:
+                await vatrate.save()
             return new_enterprise.dict()
+
         else:
             return JSONResponse(
                 Message(detail="Enterprise exists").json(),

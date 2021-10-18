@@ -39,8 +39,8 @@ export const App: React.FC<{
         <Route component={SignUp} exact path="/register" />
         <Route component={Dashboard} exact path="/dashboard" />
         <Route component={EnterpriseList} exact path="/enterprise" />
-        <Route component={EnterpriseEdit} exact path="/enterprise/:enterprise_id" />
         <Route component={EnterpriseAdd} exact path="/enterprise/add" />
+        <Route component={EnterpriseEdit} exact path="/enterprise/:enterprise_id" />
         <Route component={VatrateAdd} exact path="/enterprise/:enterprise_id/vatrate/add" />
         <Route component={TradingPartnersList} exact path="/trading_partner" />
         <Route component={AddTradingPartner} exact path="/trading_partner/add" />

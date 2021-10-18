@@ -4,7 +4,7 @@ import { Table } from 'semantic-ui-react';
 import { Layout } from '../../components/Layout';
 import { InvoiceListResponse } from '../../generated-api';
 import { useInvoiceList } from '../../hooks/invoicesApi';
-export const InvoicesList: React.FC<{}> = () => {
+export function InvoicesList() {
     const columns = React.useMemo(
         () => [
             { Header: "NIP kontrahenta", accessor: (r: InvoiceListResponse) => r.trading_partner_nip },

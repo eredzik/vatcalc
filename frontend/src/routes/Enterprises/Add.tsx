@@ -1,5 +1,4 @@
 import {
-  // Button,
   CircularProgress,
   Container,
   FormControl,
@@ -14,8 +13,9 @@ import {
 import { useFormik } from "formik";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Redirect } from "react-router-dom";
-import { Button } from "semantic-ui-react";
+import { Button, Form, Header } from "semantic-ui-react";
 import * as yup from 'yup';
+import { Layout } from "../../components/Layout";
 // import { ButtonWithLoading } from "../../components/LoadingButton";
 import { useEnterpriseMutation } from "../../hooks/enterpriseApi";
 import { nipNumberYup } from "../../utils/nipValidation";
@@ -31,7 +31,7 @@ export default function EnterpriseAdd() {
   const nextPageHandler = () => setActiveStep(activeStep + 1);
   const prevPageHandler = () => setActiveStep(activeStep - 1);
   return (
-    <Container>
+    <Layout>
       <MobileStepper
         variant="dots"
         steps={steps.length}
@@ -53,7 +53,7 @@ export default function EnterpriseAdd() {
 
 
 
-    </Container >
+    </Layout >
   );
 }
 
@@ -77,58 +77,53 @@ function Page0({ sendNipNumber, nextPageHandler }: Page0Props) {
   });
   const [isLoading, setIsLoading] = useState(false);
   return (
-    <Grid container
-      alignItems="center"
-      justifyContent='center'
-      direction="column"
-      spacing={1} >
-      <form onSubmit={formik.handleSubmit}>
-        <Grid item xs={12}>
-          <Typography variant="h4" >{steps[0]}</Typography>
-        </Grid>
-        <Grid item >
-          <Typography variant="subtitle2">
-            Najpierw wpisz numer nip swojej firmy -
-            pobierzemy wszystkie możliwe informacje z bazy REGON.
-            Możesz też wpisać dane ręcznie.</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <TextField label="Numer NIP" required fullWidth variant="outlined"
-            type="text"
-            margin="normal"
-            id='nipNumber'
-            error={formik.touched.nipNumber && Boolean(formik.errors.nipNumber)}
-            onChange={e => { console.log(formik.touched.nipNumber); formik.handleChange(e) }}
-            value={formik.values.nipNumber}
-            helperText={formik.touched.nipNumber && formik.errors.nipNumber}
-            onBlur={formik.handleBlur}
-          />
-        </Grid>
-        <Grid item justify="center">
-          <Button
-            type="button"
-            primary
-            disabled={Boolean(formik.errors.nipNumber)}
-            onClick={() => {
-              formik.handleSubmit()
-              setIsLoading(true);
-              sendNipNumber(formik.values.nipNumber);
-              nextPageHandler();
-            }}>
-            {isLoading ? <CircularProgress color="secondary" size={24} /> : "Pobierz dane"}
-          </Button>
-        </Grid>
-        lub
-        <Grid item justify="center">
-          <Button
-            type="button"
-            primary
-            onClick={nextPageHandler}>
-            Wpisz ręcznie
-          </Button>
-        </Grid>
-      </form>
-    </Grid >)
+
+    <Form onSubmit={formik.handleSubmit}>
+
+      <Header variant="h4" >{steps[0]}</Header>
+
+
+
+      Najpierw wpisz numer nip swojej firmy -
+      pobierzemy wszystkie możliwe informacje z bazy REGON.
+      Możesz też wpisać dane ręcznie.
+
+      <Form.Input label="Numer NIP" required fullWidth variant="outlined"
+        type="text"
+        margin="normal"
+        id='nipNumber'
+        error={formik.touched.nipNumber && Boolean(formik.errors.nipNumber)}
+        onChange={e => { console.log(formik.touched.nipNumber); formik.handleChange(e) }}
+        value={formik.values.nipNumber}
+        helperText={formik.touched.nipNumber && formik.errors.nipNumber}
+        onBlur={formik.handleBlur}
+      />
+      <Form.Button
+        type="button"
+        primary
+        disabled={Boolean(formik.errors.nipNumber)}
+        onClick={() => {
+          formik.handleSubmit()
+          setIsLoading(true);
+          sendNipNumber(formik.values.nipNumber);
+          nextPageHandler();
+        }}
+        loading={isLoading}
+        content="Pobierz dane" />
+      {/* {isLoading ? <CircularProgress color="secondary" size={24} /> : "Pobierz dane"} */}
+
+      lub
+      <Grid item justify="center">
+        <Button
+          type="button"
+          primary
+          onClick={nextPageHandler}>
+          Wpisz ręcznie
+        </Button>
+      </Grid>
+    </Form>
+
+  )
 }
 interface Page1Props {
   inputNipNumber: string

@@ -8,10 +8,7 @@ import { useTradingPartnersAdd } from "../../hooks/partnersApi";
 import { useUser } from "../../hooks/userApi";
 import { nipNumberYup } from "../../utils/nipValidation";
 
-interface AddTradingPartnerProps {
-}
-
-const AddTradingPartner: FunctionComponent<AddTradingPartnerProps> = () => {
+export default function AddTradingPartner() {
     const add_partner = useTradingPartnersAdd()
     const user = useUser()
     const formik = useFormik({
@@ -181,4 +178,3 @@ const AddTradingPartner: FunctionComponent<AddTradingPartnerProps> = () => {
         </Layout>);
 }
 
-export default AddTradingPartner;
