@@ -3,6 +3,7 @@ from starlette.status import (
     HTTP_201_CREATED,
     HTTP_401_UNAUTHORIZED,
     HTTP_409_CONFLICT,
+    HTTP_204_NO_CONTENT
 )
 from starlette.testclient import TestClient
 
@@ -81,3 +82,13 @@ def test_delete_enterprise(client: TestClient):
         "/enterprise?page=1", cookies=client.cookies.get_dict()
     )
     assert len(r_enterprise_get.json()) == 0
+
+def test_grant_permissions(client: TestClient):
+    user_header = get_random_logged_user(client)
+    r_enterprise = create_enterprise(client)
+    r_enterprise_grant_access = client.post(
+        f"/enterprise/{r_enterprise.json()['id']}/access",
+        json={"user_id": 1, "role_to_grant": "VIEWER"},
+        cookies=client.cookies.get_dict()
+    )
+    assert r_enterprise_grant_access.status_code == HTTP_204_NO_CONTENT
