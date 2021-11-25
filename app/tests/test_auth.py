@@ -92,6 +92,3 @@ def test_login_user_not_existing(client: TestClient):
     password = "corrrectlongpassword"
     r = login_sample_user(client, email, password)
     assert r.status_code == HTTP_401_UNAUTHORIZED
-
-
-

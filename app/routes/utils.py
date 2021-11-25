@@ -2,7 +2,12 @@ from typing import List
 
 from fastapi.responses import JSONResponse
 from pydantic.main import BaseModel
-from starlette.status import HTTP_401_UNAUTHORIZED, HTTP_409_CONFLICT, HTTP_204_NO_CONTENT, HTTP_403_FORBIDDEN
+from starlette.status import (
+    HTTP_401_UNAUTHORIZED,
+    HTTP_409_CONFLICT,
+    HTTP_204_NO_CONTENT,
+    HTTP_403_FORBIDDEN,
+)
 
 from .. import models
 
@@ -25,6 +30,7 @@ async def verify_enterprise_permissions(
     else:
         return True
 
+
 async def verify_granting_permissions(
     user, enterprise, role, required_permissions: List[models.UserEnterpriseRoles]
 ):
@@ -41,12 +47,13 @@ async def verify_granting_permissions(
             status_code=HTTP_401_UNAUTHORIZED, content={"message": "Unauthorized"}
         )
     elif permissions.role == "EDITOR" and role == "VIEWER":
-        return JSONResponse(status_code=HTTP_403_FORBIDDEN, content={"message": "Forbidden"})
+        return JSONResponse(
+            status_code=HTTP_403_FORBIDDEN, content={"message": "Forbidden"}
+        )
     elif permissions.role == "ADMIN" and role == "VIEWER":
         return True
     elif permissions.role == "ADMIN" and role == "ADMIN":
         return True
-
 
 
 def get_verify_enterprise_permissions_responses():
