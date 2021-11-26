@@ -42,17 +42,10 @@ async def verify_granting_permissions(
             status_code=HTTP_401_UNAUTHORIZED,
             content={"message": "Unauthorized"},
         )
-    elif permissions.role not in (r.value for r in required_permissions):
+    elif permissions.role != "ADMIN":
         return JSONResponse(
-            status_code=HTTP_401_UNAUTHORIZED, content={"message": "Unauthorized"}
-        )
-    elif permissions.role == "EDITOR" and role == "VIEWER":
-        return JSONResponse(
-            status_code=HTTP_403_FORBIDDEN, content={"message": "Forbidden"}
-        )
-    elif permissions.role == "ADMIN" and role == "VIEWER":
-        return True
-    elif permissions.role == "ADMIN" and role == "ADMIN":
+            status_code=HTTP_403_FORBIDDEN, content={"message": "Forbidden"})
+    else:
         return True
 
 

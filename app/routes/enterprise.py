@@ -50,7 +50,7 @@ def get_enterprise_router():
 
     class UserEnterpriseGrantAccess(BaseModel):
         user_id: int
-        role_to_grant: str
+        role_to_grant: models.UserEnterpriseRoles
 
     @enterprise_router.get(
         "/enterprise",
