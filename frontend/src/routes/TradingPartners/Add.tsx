@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { FunctionComponent, useEffect } from "react";
+import { useEffect } from "react";
 import { Button, Divider, Form, Message } from "semantic-ui-react";
 import * as yup from 'yup';
 import { Layout } from "../../components/Layout";
