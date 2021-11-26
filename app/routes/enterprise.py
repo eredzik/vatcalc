@@ -1,9 +1,7 @@
-from typing import List, Optional, Type
+from typing import List, Optional
 
-from app.routes.utils import Message
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel, validator
-from pydantic.errors import PydanticValueError
+from pydantic import BaseModel
 from starlette.responses import JSONResponse
 from starlette.status import HTTP_201_CREATED, HTTP_409_CONFLICT
 
@@ -72,46 +70,56 @@ def get_enterprise_router():
         "/enterprise",
         response_model=EnterpriseCreateResponse,
         status_code=HTTP_201_CREATED,
-        responses={**current_user_responses(), HTTP_409_CONFLICT: {"model": Message}},
+        responses={
+            **current_user_responses(),
+            HTTP_409_CONFLICT: {"model": Message},
+        },
     )
     async def create_enterprise(
         enterprise: EnterpriseCreateInput,
         user: models.User = Depends(CurrentUser()),
     ):
-        existing_enterprise = await models.UserEnterprise.objects.select_related(
-            [models.UserEnterprise.enterprise_id]
-        ).all(user_id=user.id, enterprise_id__nip_number=enterprise.nip_number)
+        existing_enterprise = await (
+            models.UserEnterprise.objects.select_related(
+                [models.UserEnterprise.enterprise_id]
+            ).all(
+                user_id=user.id,
+                enterprise_id__nip_number=enterprise.nip_number,
+            )
+        )
         if existing_enterprise == []:
-            new_enterprise = await models.Enterprise(**enterprise.dict()).save()
-            user_enterprise_connection = await models.UserEnterprise(
+            new_enterprise = await models.Enterprise(
+                **enterprise.dict(),
+            ).save()
+            _ = await models.UserEnterprise(
                 user_id=user.id,
                 enterprise_id=new_enterprise.id,
                 role=models.UserEnterpriseRoles.admin.value,
             ).save()
             # Adding standard vatrates
-            for vatrate in [
-                models.VatRate(
-                    vat_rate=0.23,
-                    comment="Standardowa stawka VAT 23%",
-                    enterprise_id=new_enterprise.id,
-                ),
-                models.VatRate(
-                    vat_rate=0.08,
-                    comment="Standardowa stawka VAT 8%",
-                    enterprise_id=new_enterprise.id,
-                ),
-                models.VatRate(
-                    vat_rate=0.05,
-                    comment="Standardowa stawka VAT 5%",
-                    enterprise_id=new_enterprise.id,
-                ),
-                models.VatRate(
-                    vat_rate=0.0,
-                    comment="Standardowa stawka VAT 0%",
-                    enterprise_id=new_enterprise.id,
-                ),
-            ]:
-                await vatrate.save()
+            # for vatrate in [
+            #     models.VatRate(
+            #         vat_rate=0.23,
+            #         comment="Standardowa stawka VAT 23%",
+            #         enterprise_id=new_enterprise.id,
+            #     ),
+            #     models.VatRate(
+            #         vat_rate=0.08,
+            #         comment="Standardowa stawka VAT 8%",
+            #         enterprise_id=new_enterprise.id,
+            #     ),
+            #     models.VatRate(
+            #         vat_rate=0.05,
+            #         comment="Standardowa stawka VAT 5%",
+            #         enterprise_id=new_enterprise.id,
+            #     ),
+            #     models.VatRate(
+            #         vat_rate=0.0,
+            #         comment="Standardowa stawka VAT 0%",
+            #         enterprise_id=new_enterprise.id,
+            #     ),
+            # ]:
+            #     await vatrate.save()
             return new_enterprise.dict()
 
         else:
@@ -131,7 +139,9 @@ def get_enterprise_router():
         item: EnterpriseUpdateResponse,
         user: models.User = Depends(CurrentUser()),
     ):
-        enterprise = await models.Enterprise.objects.get_or_none(id=enterprise_id)
+        enterprise = await (
+            models.Enterprise.objects.get_or_none(id=enterprise_id)
+        )
         if not enterprise:
             raise HTTPException(
                 status_code=404, detail=f"Invoice {enterprise_id} not found"
@@ -166,7 +176,9 @@ def get_enterprise_router():
         enterprise_id: int, user: models.User = Depends(CurrentUser())
     ):
 
-        enterprise = await models.Enterprise.objects.get_or_none(id=enterprise_id)
+        enterprise = await models.Enterprise.objects.get_or_none(
+            id=enterprise_id
+        )
         if not enterprise:
             raise HTTPException(
                 status_code=404, detail=f"Enterprise {enterprise_id} not found"
@@ -181,6 +193,8 @@ def get_enterprise_router():
         )
         if permissions is True:
             await enterprise.delete()
-            return JSONResponse({"message": f"Deleted enterprise {enterprise_id}"})
+            return JSONResponse(
+                {"message": f"Deleted enterprise {enterprise_id}"}
+            )
 
     return enterprise_router

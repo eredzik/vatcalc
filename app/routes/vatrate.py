@@ -1,13 +1,15 @@
-import dataclasses
 from typing import List
 
 from app.routes.auth import CurrentUser
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, validator
-from starlette.status import HTTP_201_CREATED, HTTP_401_UNAUTHORIZED, HTTP_409_CONFLICT
+from pydantic import BaseModel
+from starlette.status import (
+    HTTP_201_CREATED,
+    HTTP_409_CONFLICT,
+)
 
-from .. import models, validators
+from .. import models
 from .utils import (
     Message,
     get_verify_enterprise_permissions_responses,
@@ -50,7 +52,7 @@ async def add_vatrate(
     )
     if validated_or_error is True:
         existing_vatrate = await models.VatRate.objects.get_or_none(
-            vat_rate=vatrate.vat_rate
+            vat_rate=vatrate.vat_rate, enterprise_id=vatrate.enterprise_id
         )
         if existing_vatrate is None:
             created_vatrate = await models.VatRate(**vatrate.dict()).save()
@@ -64,7 +66,8 @@ async def add_vatrate(
             return response
         else:
             return JSONResponse(
-                status_code=HTTP_409_CONFLICT, content={"message": "Entity exists"}
+                status_code=HTTP_409_CONFLICT,
+                content={"message": "Entity exists"},
             )
 
     else:
@@ -108,18 +111,20 @@ async def get_vat_rates(
     else:
         return permissions
 
+
 @vatrate_router.delete(
     "/vatrate",
     status_code=200,
-    responses={**get_verify_enterprise_permissions_responses()}
+    responses={**get_verify_enterprise_permissions_responses()},
 )
 async def delete_vatrate(
-    vatrate_id: int,
-    user: models.User = Depends(CurrentUser())
+    vatrate_id: int, user: models.User = Depends(CurrentUser())
 ):
     vatrate = await models.VatRate.objects.get_or_none(id=vatrate_id)
     if not vatrate:
-        raise HTTPException(status_code=404, detail=f"Vat rate {vatrate_id} not found")
+        raise HTTPException(
+            status_code=404, detail=f"Vat rate {vatrate_id} not found"
+        )
 
     permissions = await verify_enterprise_permissions(
         user,
@@ -131,4 +136,4 @@ async def delete_vatrate(
     )
     if permissions is True:
         await vatrate.delete()
-        return JSONResponse({'message': f"Deleted vatrate {vatrate_id}"})
+        return JSONResponse({"message": f"Deleted vatrate {vatrate_id}"})
