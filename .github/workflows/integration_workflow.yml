@@ -28,6 +28,9 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage.xml
           flags: pytest
+      - uses: jpetrucciani/mypy-check@master
+        with:
+          path: "app"
   test_frontend:
     runs-on: ubuntu-latest
     steps:

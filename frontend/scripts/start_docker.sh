@@ -1,3 +1,3 @@
 /wait
-scripts/build.sh
-npm run server
+./scripts/generate_api.sh
+yarn start

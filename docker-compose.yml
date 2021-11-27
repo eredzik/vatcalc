@@ -36,9 +36,9 @@ services:
       context: frontend/
       dockerfile:  "Dockerfile"
     ports:
-      - 1234:1234
+      - 3000:3000
     volumes:
-      - ./frontend/:/usr/src/frontend
+      - ./frontend:/app
     environment:
       - API_URL=http://backend:5000
       - WAIT_HOSTS=backend:5000

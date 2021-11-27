@@ -4,7 +4,7 @@ from logging.config import fileConfig
 
 from sqlalchemy import create_engine, engine_from_config, pool
 
-import alembic
+import alembic  # type: ignore
 
 # add app folder to system path (alternative is running it from parent folder with python -m ...)
 myPath = os.path.dirname(os.path.abspath(__file__))

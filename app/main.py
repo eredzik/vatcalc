@@ -7,7 +7,7 @@ from . import models, router
 def get_app() -> FastAPI:
     app = FastAPI(
         title="API",
-        root_path="/api",
+        # root_path="/api",
     )
     app.add_middleware(GZipMiddleware, minimum_size=1000)
 

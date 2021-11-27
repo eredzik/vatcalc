@@ -18,6 +18,7 @@ pyjwt = "*"
 bcrypt = "*"
 zeep = "*"
 importlib-resources = "*"
+xmltodict = "*"
 pydantic = {extras = [ "email",]}
 databases = {extras = [ "postgresql",]}
 
@@ -31,6 +32,8 @@ pytest-cov = "*"
 requests = "*"
 sqlalchemy2-stubs = "==0.0.1a4"
 httpx = "*"
+pre-commit = "*"
 
 [requires]
 python_version = "3.8"
+

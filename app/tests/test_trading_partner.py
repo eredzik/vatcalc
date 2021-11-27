@@ -2,6 +2,7 @@ from starlette.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
     HTTP_401_UNAUTHORIZED,
+    HTTP_403_FORBIDDEN,
     HTTP_409_CONFLICT,
     HTTP_422_UNPROCESSABLE_ENTITY,
 )
@@ -37,7 +38,7 @@ def test_add_trading_partner_failing_unauthorized(client: TestClient):
 
 
 def test_add_trading_partner_failing_wrong_payload(client: TestClient):
-    header = get_random_logged_user(client)
+    _ = get_random_logged_user(client)
     enterprise = create_enterprise(client)
     response = create_trading_partner(
         client, enterprise=enterprise, nip_number="notnumber"
@@ -46,7 +47,7 @@ def test_add_trading_partner_failing_wrong_payload(client: TestClient):
 
 
 def test_add_trading_partner_ok(client: TestClient):
-    header = get_random_logged_user(client)
+    _ = get_random_logged_user(client)
     enterprise = create_enterprise(client)
     trading_partner = create_trading_partner(
         client, enterprise, "0623601757", "somename", "someadress"
@@ -55,7 +56,7 @@ def test_add_trading_partner_ok(client: TestClient):
 
 
 def test_add_trading_partner_duplicate(client: TestClient):
-    user = get_random_logged_user(client)
+    _ = get_random_logged_user(client)
     enterprise = create_enterprise(client)
     trading_partner = create_trading_partner(client, enterprise)
     assert trading_partner.status_code == HTTP_201_CREATED
@@ -64,15 +65,15 @@ def test_add_trading_partner_duplicate(client: TestClient):
 
 
 def test_add_trading_partner_unauthenticated(client: TestClient):
-    user1 = get_random_logged_user(client)
+    _ = get_random_logged_user(client)
     enterprise1 = create_enterprise(client)
-    user = get_random_logged_user(client)
+    _ = get_random_logged_user(client)
     trading_partner = create_trading_partner(client, enterprise1)
-    assert trading_partner.status_code == HTTP_401_UNAUTHORIZED
+    assert trading_partner.status_code == HTTP_403_FORBIDDEN
 
 
 def test_add_trading_partner_multiple(client: TestClient):
-    user1 = get_random_logged_user(client)
+    _ = get_random_logged_user(client)
     enterprise1 = create_enterprise(client)
     trading_partner = create_trading_partner(
         client, enterprise1, nip_number="0000000000"
