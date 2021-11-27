@@ -20,6 +20,7 @@ zeep = "*"
 importlib-resources = "*"
 pydantic = {extras = [ "email",]}
 databases = {extras = [ "postgresql",]}
+boto3 = "*"
 
 [dev-packages]
 pytest = "*"

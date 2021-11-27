@@ -34,6 +34,7 @@ class InvoiceInput(BaseModel):
     invoice_date: date
     invoice_business_id: str
     invoicepositions: List[InvoicePositionInput]
+    invoice_original_document: Optional[str]
 
 class InvoiceUpdateResponse(BaseModel):
     enterprise_id: Optional[int] = None
@@ -42,6 +43,7 @@ class InvoiceUpdateResponse(BaseModel):
     invoice_date: Optional[date] = None
     invoice_business_id: Optional[str] = None
     invoicepositions: Optional[List[InvoicePositionInput]] = None
+    invoice_original_document: Optional[str]
 
 
 class InvoicePositionResponse(BaseModel):
