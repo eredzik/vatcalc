@@ -5,7 +5,6 @@ from pydantic.main import BaseModel
 from starlette.status import (
     HTTP_401_UNAUTHORIZED,
     HTTP_409_CONFLICT,
-    HTTP_204_NO_CONTENT,
     HTTP_403_FORBIDDEN,
 )
 
@@ -32,7 +31,7 @@ async def verify_enterprise_permissions(
 
 
 async def verify_granting_permissions(
-    user, enterprise, role, required_permissions: List[models.UserEnterpriseRoles]
+    user, enterprise
 ):
     permissions = await models.UserEnterprise.objects.get_or_none(
         user_id=user.id, enterprise_id=enterprise
