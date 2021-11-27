@@ -1,21 +1,19 @@
-import enum
-import os
-from typing import Optional, OrderedDict, TypeVar, Union
+import logging
+from typing import Optional, OrderedDict, Union
 
 import xmltodict
 from app.routes.utils import Message
 from fastapi import APIRouter, Depends
 from fastapi.exceptions import HTTPException
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel
 from starlette import status
 from zeep.client import Client
 
 from .. import models, validators
 from ..core.config import settings
-from .auth import CurrentUser, current_user_responses
+from .auth import CurrentUser
 
 regonapi_router = APIRouter(tags=["REGON API"])
-import logging
 
 gunicorn_logger = logging.getLogger("gunicorn.error")
 
@@ -49,7 +47,7 @@ class RegonApiNotFoundFailure(BaseModel):
 @regonapi_router.get(
     "/regon_api/regon_number/{regon_number}",
     status_code=200,
-    response_model=Union[RegonApiSuccess, RegonApiNotFoundFailure],  # type: ignore
+    response_model=Union[RegonApiSuccess, RegonApiNotFoundFailure],
     responses={
         status.HTTP_401_UNAUTHORIZED: {"model": Message},
         status.HTTP_404_NOT_FOUND: {"model": Message},
@@ -68,7 +66,10 @@ async def get_info_by_regon(
 @regonapi_router.get(
     "/regon_api/nip_number/{nip_number}",
     status_code=200,
-    response_model=Union[RegonApiSuccess, RegonApiNotFoundFailure],  # type: ignore
+    response_model=Union[
+        RegonApiSuccess,
+        RegonApiNotFoundFailure,
+    ],
     responses={status.HTTP_401_UNAUTHORIZED: {"model": Message}},
 )
 async def get_info_by_nip(
@@ -111,16 +112,22 @@ def query_REGON_api(
     wsdl_path, key, query_params
 ) -> Union[RegonApiSuccess, RegonApiNotFoundFailure]:
     client = Client(wsdl_path)  # 1. Create zeep client with wsdl url
-    sid = client.service.Zaloguj(key)  # 2. Pass the access key to login endpoint
+    sid = client.service.Zaloguj(
+        key
+    )  # 2. Pass the access key to login endpoint
     with client.settings(extra_http_headers={"sid": sid}):
-        # 4. Token must be passed as a HTTP header. "HTTP" is an important word here, as SOAP has a damn hell of different headers.
+        # 4. Token must be passed as a HTTP header.
+        # "HTTP" is an important word here, as SOAP
+        # has a damn hell of different headers.
         response: str = client.service.DaneSzukajPodmioty(
             pParametryWyszukiwania=query_params
         )
 
         parsed_response: Union[OrderedDict, None] = xmltodict.parse(response)
         if parsed_response is None:
-            raise HTTPException(400, f"Response is malformed. RESPONSE = '{response}'")
+            raise HTTPException(
+                400, f"Response is malformed. RESPONSE = '{response}'"
+            )
         elif response_body := parsed_response.get("root", {}).get("dane", {}):
 
             if isinstance(response_body, list):
@@ -135,8 +142,11 @@ def query_REGON_api(
                 return RegonApiNotFoundFailure(**error_response_reformatted)
 
             response_reformatted = {
-                key: to_parse.get(value, None) for key, value in parsing_dict.items()
+                key: to_parse.get(value, None)
+                for key, value in parsing_dict.items()
             }
             return RegonApiSuccess(**response_reformatted)
         else:
-            raise HTTPException(400, f"Response is malformed. RESPONSE = '{response}'")
+            raise HTTPException(
+                400, f"Response is malformed. RESPONSE = '{response}'"
+            )

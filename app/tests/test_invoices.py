@@ -2,6 +2,7 @@ from starlette.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
     HTTP_401_UNAUTHORIZED,
+    HTTP_403_FORBIDDEN,
     HTTP_409_CONFLICT,
 )
 from starlette.testclient import TestClient
@@ -34,7 +35,9 @@ def create_invoice_no_vatrate(client: TestClient, enterprise, trading_partner):
     )
 
 
-def create_invoice_vatrate(client: TestClient, enterprise, trading_partner, vat_rate):
+def create_invoice_vatrate(
+    client: TestClient, enterprise, trading_partner, vat_rate
+):
     return client.post(
         "/invoice",
         cookies=client.cookies.get_dict(),
@@ -68,52 +71,60 @@ def test_add_invoice_failing_unauthorized(client: TestClient):
 
 
 def test_nonexistant_vat_rate(client: TestClient):
-    user_header = get_random_logged_user(client)
+    _ = get_random_logged_user(client)
     enterprise = create_enterprise(client)
     r_trading_partner = create_trading_partner(client, enterprise)
     assert r_trading_partner.status_code == HTTP_201_CREATED
-    r_invoice = create_invoice_no_vatrate(client, enterprise, r_trading_partner)
+    r_invoice = create_invoice_no_vatrate(
+        client, enterprise, r_trading_partner
+    )
     assert r_invoice.status_code == HTTP_409_CONFLICT
 
 
 def test_nonexistant_partner(client: TestClient):
-    user_header = get_random_logged_user(client)
+    _ = get_random_logged_user(client)
     enterprise = create_enterprise(client)
     r_trading_partner = create_trading_partner(client, enterprise)
-    user_header1 = get_random_logged_user(client)
+    _ = get_random_logged_user(client)
     enterprise1 = create_enterprise(client)
     vat_rate1 = create_vat_rate(client, enterprise1)
 
     assert r_trading_partner.status_code == HTTP_201_CREATED
-    r_invoice = create_invoice_vatrate(client, enterprise, r_trading_partner, vat_rate1)
-    assert r_invoice.status_code == HTTP_401_UNAUTHORIZED
+    r_invoice = create_invoice_vatrate(
+        client, enterprise, r_trading_partner, vat_rate1
+    )
+    assert r_invoice.status_code == HTTP_403_FORBIDDEN
 
 
 def test_nonexistant_vatrate(client: TestClient):
-    user1 = get_random_logged_user(client)
+    _ = get_random_logged_user(client)
     enterprise1 = create_enterprise(client)
     vat_rate1 = create_vat_rate(client, enterprise1)
 
-    user = get_random_logged_user(client)
+    _ = get_random_logged_user(client)
     enterprise = create_enterprise(client)
     r_trading_partner = create_trading_partner(client, enterprise)
 
     assert r_trading_partner.status_code == HTTP_201_CREATED
-    r_invoice = create_invoice_vatrate(client, enterprise, r_trading_partner, vat_rate1)
+    r_invoice = create_invoice_vatrate(
+        client, enterprise, r_trading_partner, vat_rate1
+    )
     assert r_invoice.status_code == HTTP_409_CONFLICT
 
 
 def test_not_enough_permissions(client: TestClient):
-    user_header = get_random_logged_user(client)
+    _ = get_random_logged_user(client)
     enterprise = create_enterprise(client)
     r_trading_partner = create_trading_partner(client, enterprise)
-    user_header1 = get_random_logged_user(client)
+    _ = get_random_logged_user(client)
     enterprise1 = create_enterprise(client)
     vat_rate1 = create_vat_rate(client, enterprise1)
 
     assert r_trading_partner.status_code == HTTP_201_CREATED
-    r_invoice = create_invoice_vatrate(client, enterprise, r_trading_partner, vat_rate1)
-    assert r_invoice.status_code == HTTP_401_UNAUTHORIZED
+    r_invoice = create_invoice_vatrate(
+        client, enterprise, r_trading_partner, vat_rate1
+    )
+    assert r_invoice.status_code == HTTP_403_FORBIDDEN
 
 
 def test_bad_invoice_type(client: TestClient):
@@ -126,7 +137,9 @@ def test_add_invoice_vatrate_success(client: TestClient):
     r_trading_partner = create_trading_partner(client, enterprise)
     assert r_trading_partner.status_code == HTTP_201_CREATED
     vat_rate = create_vat_rate(client, enterprise)
-    r_invoice = create_invoice_vatrate(client, enterprise, r_trading_partner, vat_rate)
+    r_invoice = create_invoice_vatrate(
+        client, enterprise, r_trading_partner, vat_rate
+    )
     assert r_invoice.status_code == HTTP_201_CREATED
     r_invoice_get = client.get(
         "/invoice_list",
@@ -139,7 +152,7 @@ def test_add_invoice_vatrate_success(client: TestClient):
 
 
 def test_get_invoice_no_permissions(client: TestClient):
-    user_header = get_random_logged_user(client)
+    _ = get_random_logged_user(client)
     enterprise = create_enterprise(client)
     user_header1 = get_random_logged_user(client)
     r_invoice_get = client.get(
@@ -147,11 +160,11 @@ def test_get_invoice_no_permissions(client: TestClient):
         cookies=user_header1.cookies.get_dict(),
         params={"page": 1, "enterprise_id": enterprise.json()["id"]},
     )
-    assert r_invoice_get.status_code == HTTP_401_UNAUTHORIZED
+    assert r_invoice_get.status_code == HTTP_403_FORBIDDEN
 
 
 def test_delete_invoice(client: TestClient):
-    user_header = get_random_logged_user(client)
+    _ = get_random_logged_user(client)
     r_enterprise = create_enterprise(client)
     r_trading_partner = create_trading_partner(client, r_enterprise)
     assert r_trading_partner.status_code == HTTP_201_CREATED
@@ -161,7 +174,10 @@ def test_delete_invoice(client: TestClient):
     )
     r_invoice_delete = client.delete(
         "/invoice",
-        params={"invoice_id": r_invoice.json()["id"]},
+        params={
+            "invoice_id": r_invoice.json()["id"],
+            "enterprise_id": r_enterprise.json()["id"],
+        },
         cookies=client.cookies.get_dict(),
     )
     assert r_invoice_delete.status_code == HTTP_200_OK
@@ -174,7 +190,7 @@ def test_delete_invoice(client: TestClient):
 
 
 def test_update_invoice(client: TestClient):
-    user_header = get_random_logged_user(client)
+    _ = get_random_logged_user(client)
     r_enterprise = create_enterprise(client)
     r_trading_partner = create_trading_partner(client, r_enterprise)
     assert r_trading_partner.status_code == HTTP_201_CREATED
@@ -185,7 +201,10 @@ def test_update_invoice(client: TestClient):
     r_update = client.patch(
         f"/invoice/{r_invoice.json()['id']}",
         cookies=client.cookies.get_dict(),
-        json={"invoice_date": "2137-06-29"},
+        json={
+            "invoice_date": "2137-06-29",
+            "enterprise_id": r_enterprise.json()["id"],
+        },
     )
     assert r_update.status_code == HTTP_200_OK
     r_invoice_get = client.get(
@@ -197,7 +216,7 @@ def test_update_invoice(client: TestClient):
 
 
 def test_get_invoice(client: TestClient):
-    user_header = get_random_logged_user(client)
+    _ = get_random_logged_user(client)
     r_enterprise = create_enterprise(client)
     r_trading_partner = create_trading_partner(client, r_enterprise)
     assert r_trading_partner.status_code == HTTP_201_CREATED
