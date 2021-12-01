@@ -738,6 +738,25 @@ export interface TradingPartnerResponse {
     enterprise_id: number;
 }
 /**
+ * 
+ * @export
+ * @interface UserEnterpriseGrantAccess
+ */
+export interface UserEnterpriseGrantAccess {
+    /**
+     * 
+     * @type {number}
+     * @memberof UserEnterpriseGrantAccess
+     */
+    user_id: number;
+    /**
+     * 
+     * @type {UserEnterpriseRoles}
+     * @memberof UserEnterpriseGrantAccess
+     */
+    role_to_grant: UserEnterpriseRoles;
+}
+/**
  * An enumeration.
  * @export
  * @enum {string}
@@ -1207,6 +1226,46 @@ export const EnterpriseApiAxiosParamCreator = function (configuration?: Configur
         },
         /**
          * 
+         * @summary Grant Permissions
+         * @param {number} enterpriseId 
+         * @param {UserEnterpriseGrantAccess} userEnterpriseGrantAccess 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        grantPermissionsEnterpriseEnterpriseIdAccessPost: async (enterpriseId: number, userEnterpriseGrantAccess: UserEnterpriseGrantAccess, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'enterpriseId' is not null or undefined
+            assertParamExists('grantPermissionsEnterpriseEnterpriseIdAccessPost', 'enterpriseId', enterpriseId)
+            // verify required parameter 'userEnterpriseGrantAccess' is not null or undefined
+            assertParamExists('grantPermissionsEnterpriseEnterpriseIdAccessPost', 'userEnterpriseGrantAccess', userEnterpriseGrantAccess)
+            const localVarPath = `/enterprise/{enterprise_id}/access`
+                .replace(`{${"enterprise_id"}}`, encodeURIComponent(String(enterpriseId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(userEnterpriseGrantAccess, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Update Enterprise
          * @param {number} enterpriseId 
          * @param {EnterpriseUpdateResponse} enterpriseUpdateResponse 
@@ -1290,6 +1349,18 @@ export const EnterpriseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Grant Permissions
+         * @param {number} enterpriseId 
+         * @param {UserEnterpriseGrantAccess} userEnterpriseGrantAccess 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async grantPermissionsEnterpriseEnterpriseIdAccessPost(enterpriseId: number, userEnterpriseGrantAccess: UserEnterpriseGrantAccess, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserEnterpriseGrantAccess>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.grantPermissionsEnterpriseEnterpriseIdAccessPost(enterpriseId, userEnterpriseGrantAccess, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Update Enterprise
          * @param {number} enterpriseId 
          * @param {EnterpriseUpdateResponse} enterpriseUpdateResponse 
@@ -1339,6 +1410,17 @@ export const EnterpriseApiFactory = function (configuration?: Configuration, bas
          */
         getUserEnterprisesEnterpriseGet(page: number, options?: any): AxiosPromise<Array<EnterpriseResponse>> {
             return localVarFp.getUserEnterprisesEnterpriseGet(page, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Grant Permissions
+         * @param {number} enterpriseId 
+         * @param {UserEnterpriseGrantAccess} userEnterpriseGrantAccess 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        grantPermissionsEnterpriseEnterpriseIdAccessPost(enterpriseId: number, userEnterpriseGrantAccess: UserEnterpriseGrantAccess, options?: any): AxiosPromise<UserEnterpriseGrantAccess> {
+            return localVarFp.grantPermissionsEnterpriseEnterpriseIdAccessPost(enterpriseId, userEnterpriseGrantAccess, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1395,6 +1477,19 @@ export class EnterpriseApi extends BaseAPI {
      */
     public getUserEnterprisesEnterpriseGet(page: number, options?: any) {
         return EnterpriseApiFp(this.configuration).getUserEnterprisesEnterpriseGet(page, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Grant Permissions
+     * @param {number} enterpriseId 
+     * @param {UserEnterpriseGrantAccess} userEnterpriseGrantAccess 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof EnterpriseApi
+     */
+    public grantPermissionsEnterpriseEnterpriseIdAccessPost(enterpriseId: number, userEnterpriseGrantAccess: UserEnterpriseGrantAccess, options?: any) {
+        return EnterpriseApiFp(this.configuration).grantPermissionsEnterpriseEnterpriseIdAccessPost(enterpriseId, userEnterpriseGrantAccess, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1458,12 +1553,15 @@ export const InvoiceApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary Delete Invoice
          * @param {number} invoiceId 
+         * @param {number} enterpriseId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteInvoiceInvoiceDelete: async (invoiceId: number, options: any = {}): Promise<RequestArgs> => {
+        deleteInvoiceInvoiceDelete: async (invoiceId: number, enterpriseId: number, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'invoiceId' is not null or undefined
             assertParamExists('deleteInvoiceInvoiceDelete', 'invoiceId', invoiceId)
+            // verify required parameter 'enterpriseId' is not null or undefined
+            assertParamExists('deleteInvoiceInvoiceDelete', 'enterpriseId', enterpriseId)
             const localVarPath = `/invoice`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1478,6 +1576,10 @@ export const InvoiceApiAxiosParamCreator = function (configuration?: Configurati
 
             if (invoiceId !== undefined) {
                 localVarQueryParameter['invoice_id'] = invoiceId;
+            }
+
+            if (enterpriseId !== undefined) {
+                localVarQueryParameter['enterprise_id'] = enterpriseId;
             }
 
 
@@ -1644,11 +1746,12 @@ export const InvoiceApiFp = function(configuration?: Configuration) {
          * 
          * @summary Delete Invoice
          * @param {number} invoiceId 
+         * @param {number} enterpriseId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteInvoiceInvoiceDelete(invoiceId: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteInvoiceInvoiceDelete(invoiceId, options);
+        async deleteInvoiceInvoiceDelete(invoiceId: number, enterpriseId: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteInvoiceInvoiceDelete(invoiceId, enterpriseId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1711,11 +1814,12 @@ export const InvoiceApiFactory = function (configuration?: Configuration, basePa
          * 
          * @summary Delete Invoice
          * @param {number} invoiceId 
+         * @param {number} enterpriseId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteInvoiceInvoiceDelete(invoiceId: number, options?: any): AxiosPromise<any> {
-            return localVarFp.deleteInvoiceInvoiceDelete(invoiceId, options).then((request) => request(axios, basePath));
+        deleteInvoiceInvoiceDelete(invoiceId: number, enterpriseId: number, options?: any): AxiosPromise<any> {
+            return localVarFp.deleteInvoiceInvoiceDelete(invoiceId, enterpriseId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1776,12 +1880,13 @@ export class InvoiceApi extends BaseAPI {
      * 
      * @summary Delete Invoice
      * @param {number} invoiceId 
+     * @param {number} enterpriseId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof InvoiceApi
      */
-    public deleteInvoiceInvoiceDelete(invoiceId: number, options?: any) {
-        return InvoiceApiFp(this.configuration).deleteInvoiceInvoiceDelete(invoiceId, options).then((request) => request(this.axios, this.basePath));
+    public deleteInvoiceInvoiceDelete(invoiceId: number, enterpriseId: number, options?: any) {
+        return InvoiceApiFp(this.configuration).deleteInvoiceInvoiceDelete(invoiceId, enterpriseId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2253,13 +2358,13 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * 
          * @summary Update Enterprise
-         * @param {number} favEnterprise 
+         * @param {number} enterpriseId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateEnterpriseUserMePreferredEnterprisePatch: async (favEnterprise: number, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'favEnterprise' is not null or undefined
-            assertParamExists('updateEnterpriseUserMePreferredEnterprisePatch', 'favEnterprise', favEnterprise)
+        updateEnterpriseUserMePreferredEnterprisePatch: async (enterpriseId: number, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'enterpriseId' is not null or undefined
+            assertParamExists('updateEnterpriseUserMePreferredEnterprisePatch', 'enterpriseId', enterpriseId)
             const localVarPath = `/user/me/preferred_enterprise`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2272,8 +2377,8 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (favEnterprise !== undefined) {
-                localVarQueryParameter['fav_enterprise'] = favEnterprise;
+            if (enterpriseId !== undefined) {
+                localVarQueryParameter['enterprise_id'] = enterpriseId;
             }
 
 
@@ -2320,12 +2425,12 @@ export const UserApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update Enterprise
-         * @param {number} favEnterprise 
+         * @param {number} enterpriseId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateEnterpriseUserMePreferredEnterprisePatch(favEnterprise: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserUpdateEnterpriseResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateEnterpriseUserMePreferredEnterprisePatch(favEnterprise, options);
+        async updateEnterpriseUserMePreferredEnterprisePatch(enterpriseId: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserUpdateEnterpriseResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateEnterpriseUserMePreferredEnterprisePatch(enterpriseId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -2359,12 +2464,12 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         /**
          * 
          * @summary Update Enterprise
-         * @param {number} favEnterprise 
+         * @param {number} enterpriseId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateEnterpriseUserMePreferredEnterprisePatch(favEnterprise: number, options?: any): AxiosPromise<UserUpdateEnterpriseResponse> {
-            return localVarFp.updateEnterpriseUserMePreferredEnterprisePatch(favEnterprise, options).then((request) => request(axios, basePath));
+        updateEnterpriseUserMePreferredEnterprisePatch(enterpriseId: number, options?: any): AxiosPromise<UserUpdateEnterpriseResponse> {
+            return localVarFp.updateEnterpriseUserMePreferredEnterprisePatch(enterpriseId, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -2401,13 +2506,13 @@ export class UserApi extends BaseAPI {
     /**
      * 
      * @summary Update Enterprise
-     * @param {number} favEnterprise 
+     * @param {number} enterpriseId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public updateEnterpriseUserMePreferredEnterprisePatch(favEnterprise: number, options?: any) {
-        return UserApiFp(this.configuration).updateEnterpriseUserMePreferredEnterprisePatch(favEnterprise, options).then((request) => request(this.axios, this.basePath));
+    public updateEnterpriseUserMePreferredEnterprisePatch(enterpriseId: number, options?: any) {
+        return UserApiFp(this.configuration).updateEnterpriseUserMePreferredEnterprisePatch(enterpriseId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -2458,12 +2563,15 @@ export const VatRateApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary Delete Vatrate
          * @param {number} vatrateId 
+         * @param {number} enterpriseId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteVatrateVatrateDelete: async (vatrateId: number, options: any = {}): Promise<RequestArgs> => {
+        deleteVatrateVatrateDelete: async (vatrateId: number, enterpriseId: number, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'vatrateId' is not null or undefined
             assertParamExists('deleteVatrateVatrateDelete', 'vatrateId', vatrateId)
+            // verify required parameter 'enterpriseId' is not null or undefined
+            assertParamExists('deleteVatrateVatrateDelete', 'enterpriseId', enterpriseId)
             const localVarPath = `/vatrate`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2478,6 +2586,10 @@ export const VatRateApiAxiosParamCreator = function (configuration?: Configurati
 
             if (vatrateId !== undefined) {
                 localVarQueryParameter['vatrate_id'] = vatrateId;
+            }
+
+            if (enterpriseId !== undefined) {
+                localVarQueryParameter['enterprise_id'] = enterpriseId;
             }
 
 
@@ -2560,11 +2672,12 @@ export const VatRateApiFp = function(configuration?: Configuration) {
          * 
          * @summary Delete Vatrate
          * @param {number} vatrateId 
+         * @param {number} enterpriseId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteVatrateVatrateDelete(vatrateId: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteVatrateVatrateDelete(vatrateId, options);
+        async deleteVatrateVatrateDelete(vatrateId: number, enterpriseId: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteVatrateVatrateDelete(vatrateId, enterpriseId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2603,11 +2716,12 @@ export const VatRateApiFactory = function (configuration?: Configuration, basePa
          * 
          * @summary Delete Vatrate
          * @param {number} vatrateId 
+         * @param {number} enterpriseId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteVatrateVatrateDelete(vatrateId: number, options?: any): AxiosPromise<any> {
-            return localVarFp.deleteVatrateVatrateDelete(vatrateId, options).then((request) => request(axios, basePath));
+        deleteVatrateVatrateDelete(vatrateId: number, enterpriseId: number, options?: any): AxiosPromise<any> {
+            return localVarFp.deleteVatrateVatrateDelete(vatrateId, enterpriseId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2646,12 +2760,13 @@ export class VatRateApi extends BaseAPI {
      * 
      * @summary Delete Vatrate
      * @param {number} vatrateId 
+     * @param {number} enterpriseId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof VatRateApi
      */
-    public deleteVatrateVatrateDelete(vatrateId: number, options?: any) {
-        return VatRateApiFp(this.configuration).deleteVatrateVatrateDelete(vatrateId, options).then((request) => request(this.axios, this.basePath));
+    public deleteVatrateVatrateDelete(vatrateId: number, enterpriseId: number, options?: any) {
+        return VatRateApiFp(this.configuration).deleteVatrateVatrateDelete(vatrateId, enterpriseId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

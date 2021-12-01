@@ -197,40 +197,38 @@ def get_enterprise_router():
     @enterprise_router.post(
         "/enterprise/{enterprise_id}/access",
         response_model=UserEnterpriseGrantAccess,
-        responses={**get_verify_enterprise_permissions_responses()},
     )
     async def grant_permissions(
         enterprise_id: int,
         item: UserEnterpriseGrantAccess,
-        user: models.User = Depends(CurrentUser()),
+        user: models.User = Depends(
+            CurrentUser(
+                required_permissions=[
+                    models.UserEnterpriseRoles.admin,
+                ],
+            )
+        ),
     ):
 
-        permissions = await verify_granting_permissions(
-            user,
-            enterprise_id,
+        existing_role = await models.UserEnterprise.objects.get_or_none(
+            user_id=item.user_id,
+            enterprise_id=enterprise_id,
+            role=item.role_to_grant,
         )
-        if permissions is True:
-            existing_role = await models.UserEnterprise.objects.get_or_none(
-                user_id=item.user_id,
-                enterprise_id=enterprise_id,
-                role=item.role_to_grant,
+        if existing_role is not None:
+            return HTTPException(
+                status_code=HTTP_409_CONFLICT,
+                detail=(
+                    "This user is already assigned to enterprise "
+                    f"{enterprise_id} as {item.role_to_grant}."
+                ),
             )
-            if existing_role is not None:
-                return HTTPException(
-                    status_code=HTTP_409_CONFLICT,
-                    detail=f"This user is already assigned to enterprise {enterprise_id} as {item.role_to_grant}.",
-                )
-            else:
-                new_role = await models.UserEnterprise(
-                    enterprise_id=enterprise_id,
-                    user_id=item.user_id,
-                    role=item.role_to_grant,
-                ).save()
-                return JSONResponse(status_code=HTTP_204_NO_CONTENT)
         else:
-            return JSONResponse(
-                status_code=HTTP_403_FORBIDDEN,
-                content={"message": "Forbidden"},
-            )
+            await models.UserEnterprise(
+                enterprise_id=enterprise_id,
+                user_id=item.user_id,
+                role=item.role_to_grant,
+            ).save()
+            return JSONResponse(status_code=HTTP_204_NO_CONTENT)
 
     return enterprise_router
