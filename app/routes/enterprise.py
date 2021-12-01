@@ -3,7 +3,11 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from starlette.responses import JSONResponse
-from starlette.status import HTTP_201_CREATED, HTTP_409_CONFLICT
+from starlette.status import (
+    HTTP_201_CREATED,
+    HTTP_409_CONFLICT,
+    HTTP_204_NO_CONTENT,
+)
 
 from .. import models, validators
 from .auth import CurrentUser, current_user_responses
@@ -37,6 +41,15 @@ def get_enterprise_router():
         name: Optional[str]
         address: Optional[str]
         nip_number: Optional[validators.NipNumber]
+
+    class UserEnterpriseResponse(BaseModel):
+        enterprise_id: int
+        user_id: int
+        role: models.UserEnterpriseRoles
+
+    class UserEnterpriseGrantAccess(BaseModel):
+        user_id: int
+        role_to_grant: str
 
     @enterprise_router.get(
         "/enterprise",
@@ -185,5 +198,43 @@ def get_enterprise_router():
             )
         await enterprise.delete()
         return JSONResponse({"message": f"Deleted enterprise {enterprise_id}"})
+
+    @enterprise_router.post(
+        "/enterprise/{enterprise_id}/access",
+        response_model=UserEnterpriseGrantAccess,
+        responses={**get_verify_enterprise_permissions_responses()},
+    )
+    async def grant_permissions(
+        enterprise_id: int,
+        item: UserEnterpriseGrantAccess,
+        user: models.User = Depends(CurrentUser()),
+    ):
+
+        permissions = await verify_granting_permissions(
+            user,
+            enterprise_id,
+            item.role_to_grant,
+            required_permissions=[
+                models.UserEnterpriseRoles.admin,
+            ],
+        )
+        if permissions is True:
+            existing_role = await models.UserEnterprise.objects.get_or_none(
+                user_id=item.user_id,
+                enterprise_id=enterprise_id,
+                role=item.role_to_grant,
+            )
+            if existing_role is not None:
+                return HTTPException(
+                    status_code=HTTP_409_CONFLICT,
+                    detail=f"This user is already assigned to enterprise {enterprise_id} as {item.role_to_grant}.",
+                )
+            else:
+                new_role = await models.UserEnterprise(
+                    enterprise_id=enterprise_id,
+                    user_id=item.user_id,
+                    role=item.role_to_grant,
+                ).save()
+                return JSONResponse(status_code=HTTP_204_NO_CONTENT)
 
     return enterprise_router
