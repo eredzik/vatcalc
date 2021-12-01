@@ -42,11 +42,6 @@ def get_enterprise_router():
         address: Optional[str]
         nip_number: Optional[validators.NipNumber]
 
-    class UserEnterpriseResponse(BaseModel):
-        enterprise_id: int
-        user_id: int
-        role: models.UserEnterpriseRoles
-
     class UserEnterpriseGrantAccess(BaseModel):
         user_id: int
         role_to_grant: models.UserEnterpriseRoles
@@ -213,10 +208,6 @@ def get_enterprise_router():
         permissions = await verify_granting_permissions(
             user,
             enterprise_id,
-            item.role_to_grant,
-            required_permissions=[
-                models.UserEnterpriseRoles.admin,
-            ],
         )
         if permissions is True:
             existing_role = await models.UserEnterprise.objects.get_or_none(
@@ -236,5 +227,10 @@ def get_enterprise_router():
                     role=item.role_to_grant,
                 ).save()
                 return JSONResponse(status_code=HTTP_204_NO_CONTENT)
+        else:
+            return JSONResponse(
+                status_code=HTTP_403_FORBIDDEN,
+                content={"message": "Forbidden"},
+            )
 
     return enterprise_router
