@@ -21,6 +21,8 @@ jobs:
         run:   pipenv run  pytest --cache-clear --cov=app --cov-report xml
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+          SOAP_ENDPOINT: test_val
+          SOAP_KEY: test_val
       - uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
