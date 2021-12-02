@@ -10,16 +10,16 @@
   # the build. This is relative to the base directory if one has been set, or the
   # root directory if a base has not been set. This sample publishes the
   # directory located at the absolute path "root/project/build-output"
-  publish = "dist"
+  publish = "build"
   ignore = "/bin/false"
   # Default build command.
-  command = "sed -i \"s|API_PATH_PLACEHOLDER|${API_URL}|g\" ../netlify.toml && sh ./scripts/build.sh"
+  command = "sed -i \"s|API_PATH_PLACEHOLDER|${API_URL}|g\" ../netlify.toml && yarn build "
 
 # Deploy Preview context: all deploys generated from a pull/merge request will
 # inherit these settings.
 [context.deploy-preview]
   base = "frontend"
-  publish = "dist"
+  publish = "build"
 
 
 # A redirect rule with many of the supported properties

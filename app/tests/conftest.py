@@ -1,6 +1,7 @@
 import os
 import secrets
 import warnings
+from typing import Generator
 
 import alembic
 import pytest
@@ -28,9 +29,9 @@ def apply_migrations():
 @pytest.fixture
 def app(apply_migrations: None) -> FastAPI:
 
-    from ..main import app
+    from ..main import get_app
 
-    return app
+    return get_app()
 
 
 # Grab a reference to our database when needed
@@ -41,6 +42,6 @@ def db(app: FastAPI) -> Database:
 
 # Make requests in our tests
 @pytest.fixture
-def client(app: FastAPI) -> TestClient:
+def client(app: FastAPI) -> Generator[TestClient, None, None]:
     with (TestClient(app)) as client:
         yield client

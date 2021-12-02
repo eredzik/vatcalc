@@ -18,12 +18,19 @@ jobs:
           pip3 install pipenv
           pipenv install --dev
       - name: Build coverage file
-        run: DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres pipenv run  pytest --cache-clear --cov=app --cov-report xml
+        run:   pipenv run  pytest --cache-clear --cov=app --cov-report xml
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+          SOAP_ENDPOINT: test_val
+          SOAP_KEY: test_val
       - uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage.xml
           flags: pytest
+      - uses: jpetrucciani/mypy-check@master
+        with:
+          path: "app"
   test_frontend:
     runs-on: ubuntu-latest
     steps:

@@ -9,7 +9,6 @@ from starlette import status
 from starlette.status import HTTP_404_NOT_FOUND
 
 from .. import models
-from .utils import verify_enterprise_permissions
 
 
 def get_user_router():
@@ -47,19 +46,18 @@ def get_user_router():
         responses={status.HTTP_401_UNAUTHORIZED: {"model": Message}},
     )
     async def update_enterprise(
-        fav_enterprise: int, user: models.User = Depends(CurrentUser())
+        enterprise_id: int,
+        user: models.User = Depends(
+            CurrentUser(
+                required_permissions=[
+                    models.UserEnterpriseRoles.editor,
+                    models.UserEnterpriseRoles.admin,
+                    models.UserEnterpriseRoles.viewer,
+                ],
+            )
+        ),
     ):
-        permissions = await verify_enterprise_permissions(
-            user,
-            fav_enterprise,
-            required_permissions=[
-                models.UserEnterpriseRoles.editor,
-                models.UserEnterpriseRoles.admin,
-                models.UserEnterpriseRoles.viewer,
-            ],
-        )
-        if permissions is True:
-            await user.update(fav_enterprise_id=fav_enterprise)
+        await user.update(fav_enterprise_id=enterprise_id)
         return UserUpdateEnterpriseResponse(
             email=user.email,
             username=user.username,
@@ -84,6 +82,8 @@ def get_user_router():
             )
             return fav_enterprise
         else:
-            raise HTTPException(HTTP_404_NOT_FOUND, "Not found favorite enterprise.")
+            raise HTTPException(
+                HTTP_404_NOT_FOUND, "Not found favorite enterprise."
+            )
 
     return user_router

@@ -1,9 +1,7 @@
 """Add cascade delete
-
 Revision ID: 90f13c0c6117
 Revises: ca884ba4aac5
 Create Date: 2021-08-23 15:36:56.122778
-
 """
 from alembic import op
 import sqlalchemy as sa
@@ -26,8 +24,6 @@ def upgrade():
     op.create_foreign_key('fk_userenterprise_enterprise_id_enterprise_id', 'userenterprise', 'enterprise', ['enterprise_id'], ['id'], ondelete='CASCADE')
     op.drop_constraint('fk_vatrate_enterprise_id_enterprise_id', 'vatrate', type_='foreignkey')
     op.create_foreign_key('fk_vatrate_enterprise_id_enterprise_id', 'vatrate', 'enterprise', ['enterprise_id'], ['id'], ondelete='CASCADE')
-    op.drop_constraint('fk_invoiceposition_invoice_id_invoice_id', 'invoiceposition', type_='foreignkey')
-    op.create_foreign_key('fk_invoiceposition_invoice_id_invoice_id', 'invoiceposition', 'invoice', ['invoice_id'], ['id'], ondelete='CASCADE')
     # ### end Alembic commands ###
 
 
@@ -41,6 +37,4 @@ def downgrade():
     op.create_foreign_key('fk_tradingpartner_enterprise_id_enterprise_id', 'tradingpartner', 'enterprise', ['enterprise_id'], ['id'])
     op.drop_constraint('fk_invoice_enterprise_id_enterprise_id', 'invoice', type_='foreignkey')
     op.create_foreign_key('fk_invoice_enterprise_id_enterprise_id', 'invoice', 'enterprise', ['enterprise_id'], ['id'])
-    op.drop_constraint('fk_invoiceposition_invoice_id_invoice_id', 'invoiceposition', type_='foreignkey')
-    op.create_foreign_key('fk_invoiceposition_invoice_id_invoice_id', 'invoiceposition', 'invoice', ['invoice_id'], ['id'])
-     # ### end Alembic commands ###
+    # ### end Alembic commands ###
