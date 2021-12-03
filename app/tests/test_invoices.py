@@ -169,9 +169,7 @@ def test_delete_invoice(client: TestClient):
     r_trading_partner = create_trading_partner(client, r_enterprise)
     assert r_trading_partner.status_code == HTTP_201_CREATED
     r_vat_rate = create_vat_rate(client, r_enterprise)
-    r_invoice = create_invoice_vatrate(
-        client, r_enterprise, r_trading_partner, r_vat_rate
-    )
+    r_invoice = create_invoice_vatrate(client, r_enterprise, r_trading_partner, r_vat_rate)
     r_invoice_delete = client.delete(
         "/invoice",
         params={
@@ -184,10 +182,9 @@ def test_delete_invoice(client: TestClient):
     r_invoice_get = client.get(
         "/invoice_list",
         params={"page": 1, "enterprise_id": r_enterprise.json()["id"]},
-        cookies=client.cookies.get_dict(),
+        cookies=client.cookies.get_dict()
     )
     assert len(r_invoice_get.json()) == 0
-
 
 def test_update_invoice(client: TestClient):
     _ = get_random_logged_user(client)
@@ -195,9 +192,7 @@ def test_update_invoice(client: TestClient):
     r_trading_partner = create_trading_partner(client, r_enterprise)
     assert r_trading_partner.status_code == HTTP_201_CREATED
     r_vat_rate = create_vat_rate(client, r_enterprise)
-    r_invoice = create_invoice_vatrate(
-        client, r_enterprise, r_trading_partner, r_vat_rate
-    )
+    r_invoice = create_invoice_vatrate(client, r_enterprise, r_trading_partner, r_vat_rate)
     r_update = client.patch(
         f"/invoice/{r_invoice.json()['id']}",
         cookies=client.cookies.get_dict(),
@@ -209,11 +204,9 @@ def test_update_invoice(client: TestClient):
     assert r_update.status_code == HTTP_200_OK
     r_invoice_get = client.get(
         "/invoice_list",
-        params={"page": 1, "enterprise_id": r_enterprise.json()["id"]},
-        cookies=client.cookies.get_dict(),
-    )
-    assert r_invoice_get.json()[0]["invoice_date"] == "2137-06-29"
-
+        params={"page": 1, "enterprise_id": r_enterprise.json()['id']},
+        cookies=client.cookies.get_dict())
+    assert r_invoice_get.json()[0]['invoice_date'] == "2137-06-29"
 
 def test_get_invoice(client: TestClient):
     _ = get_random_logged_user(client)
@@ -221,15 +214,10 @@ def test_get_invoice(client: TestClient):
     r_trading_partner = create_trading_partner(client, r_enterprise)
     assert r_trading_partner.status_code == HTTP_201_CREATED
     r_vat_rate = create_vat_rate(client, r_enterprise)
-    r_invoice = create_invoice_vatrate(
-        client, r_enterprise, r_trading_partner, r_vat_rate
-    )
+    r_invoice = create_invoice_vatrate(client, r_enterprise, r_trading_partner, r_vat_rate)
     r_invoice_get = client.get(
         "/invoice",
-        params={
-            "enterprise_id": r_enterprise.json()["id"],
-            "invoice_id": r_invoice.json()["id"],
-        },
-        cookies=client.cookies.get_dict(),
+        params={"enterprise_id": r_enterprise.json()["id"], "invoice_id": r_invoice.json()["id"]},
+        cookies=client.cookies.get_dict()
     )
     assert r_invoice_get.status_code == HTTP_200_OK

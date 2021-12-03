@@ -3,10 +3,12 @@ from starlette.status import (
     HTTP_201_CREATED,
     HTTP_401_UNAUTHORIZED,
     HTTP_409_CONFLICT,
+    HTTP_204_NO_CONTENT,
+    HTTP_403_FORBIDDEN
 )
 from starlette.testclient import TestClient
 
-from .test_auth import get_random_logged_user
+from .test_auth import get_random_logged_user, register_sample_user, login_sample_user
 
 
 def create_enterprise(
@@ -67,7 +69,7 @@ def test_update_enterprise(client: TestClient):
     r_enterprise_get = client.get(
         "/enterprise?page=1", cookies=client.cookies.get_dict()
     )
-    assert r_enterprise_get.json()[0]['name'] == "Zdzichtex sp. z o.o."
+    assert r_enterprise_get.json()[0]["name"] == "Zdzichtex sp. z o.o."
 
 
 def test_delete_enterprise(client: TestClient):
@@ -81,3 +83,40 @@ def test_delete_enterprise(client: TestClient):
         "/enterprise?page=1", cookies=client.cookies.get_dict()
     )
     assert len(r_enterprise_get.json()) == 0
+
+
+def test_grant_permissions(client: TestClient):
+    user_header = get_random_logged_user(client)
+    r_enterprise = create_enterprise(client)
+    r_enterprise_grant_access = client.post(
+        f"/enterprise/{r_enterprise.json()['id']}/access",
+        json={"user_id": 1, "role_to_grant": "VIEWER"},
+        cookies=client.cookies.get_dict(),
+    )
+    assert r_enterprise_grant_access.status_code == HTTP_204_NO_CONTENT
+
+def test_grant_permissions_unauthorised(client: TestClient):
+    user_header = get_random_logged_user(client)
+    r_enterprise = create_enterprise(client)
+    r_enterprise_grant_access = client.post(
+        f"/enterprise/{r_enterprise.json()['id']}/access",
+        json={"user_id": 1, "role_to_grant": "VIEWER"},
+    )
+    assert r_enterprise_grant_access.status_code == HTTP_401_UNAUTHORIZED
+
+def test_grant_permissions_forbidden(client: TestClient):
+    user_header = get_random_logged_user(client)
+    r_enterprise = create_enterprise(client)
+    user2_register = register_sample_user(client, email="sample@email.com", password="somepass")
+    r1 = client.post(
+        f"/enterprise/{r_enterprise.json()['id']}/access",
+        json={"user_id": 2, "role_to_grant": "EDITOR"},
+        cookies=client.cookies.get_dict(),
+    )
+    user2_login = login_sample_user(client, "sample@email.com", "somepass")
+    r2 = client.post(
+        f"/enterprise/{r_enterprise.json()['id']}/access",
+        json={"user_id": 1, "role_to_grant": "VIEWER"},
+        cookies=client.cookies.get_dict(),
+    )
+    assert r2.status_code == HTTP_403_FORBIDDEN

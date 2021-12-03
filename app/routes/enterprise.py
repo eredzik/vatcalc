@@ -3,7 +3,11 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from starlette.responses import JSONResponse
-from starlette.status import HTTP_201_CREATED, HTTP_409_CONFLICT
+from starlette.status import (
+    HTTP_201_CREATED,
+    HTTP_409_CONFLICT,
+    HTTP_204_NO_CONTENT,
+)
 
 from .. import models, validators
 from .auth import CurrentUser, current_user_responses
@@ -37,6 +41,10 @@ def get_enterprise_router():
         name: Optional[str]
         address: Optional[str]
         nip_number: Optional[validators.NipNumber]
+
+    class UserEnterpriseGrantAccess(BaseModel):
+        user_id: int
+        role_to_grant: models.UserEnterpriseRoles
 
     @enterprise_router.get(
         "/enterprise",
@@ -185,5 +193,42 @@ def get_enterprise_router():
             )
         await enterprise.delete()
         return JSONResponse({"message": f"Deleted enterprise {enterprise_id}"})
+
+    @enterprise_router.post(
+        "/enterprise/{enterprise_id}/access",
+        response_model=UserEnterpriseGrantAccess,
+    )
+    async def grant_permissions(
+        enterprise_id: int,
+        item: UserEnterpriseGrantAccess,
+        user: models.User = Depends(
+            CurrentUser(
+                required_permissions=[
+                    models.UserEnterpriseRoles.admin,
+                ],
+            )
+        ),
+    ):
+
+        existing_role = await models.UserEnterprise.objects.get_or_none(
+            user_id=item.user_id,
+            enterprise_id=enterprise_id,
+            role=item.role_to_grant,
+        )
+        if existing_role is not None:
+            return HTTPException(
+                status_code=HTTP_409_CONFLICT,
+                detail=(
+                    "This user is already assigned to enterprise "
+                    f"{enterprise_id} as {item.role_to_grant}."
+                ),
+            )
+        else:
+            await models.UserEnterprise(
+                enterprise_id=enterprise_id,
+                user_id=item.user_id,
+                role=item.role_to_grant,
+            ).save()
+            return JSONResponse(status_code=HTTP_204_NO_CONTENT)
 
     return enterprise_router
