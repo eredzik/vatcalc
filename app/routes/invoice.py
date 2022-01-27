@@ -16,6 +16,8 @@ from .utils import (
     get_verify_enterprise_permissions_responses,
     verify_enterprise_permissions,
 )
+from ..core.aws import S3Events
+from ..core.config import settings
 
 invoice_router = APIRouter(tags=["Invoice"])
 
@@ -34,7 +36,7 @@ class InvoiceInput(BaseModel):
     invoice_date: date
     invoice_business_id: str
     invoicepositions: List[InvoicePositionInput]
-    invoice_original_document: Optional[str]
+    original_document: Optional[str]
 
 class InvoiceUpdateResponse(BaseModel):
     enterprise_id: Optional[int] = None
@@ -43,7 +45,7 @@ class InvoiceUpdateResponse(BaseModel):
     invoice_date: Optional[date] = None
     invoice_business_id: Optional[str] = None
     invoicepositions: Optional[List[InvoicePositionInput]] = None
-    invoice_original_document: Optional[str]
+    original_document: Optional[str]
 
 
 class InvoicePositionResponse(BaseModel):
@@ -61,6 +63,7 @@ class InvoiceResponse(BaseModel):
     invoice_type: models.InvoiceType
     invoice_date: date
     invoice_business_id: str
+    original_document: Optional[str]
     invoicepositions: List[InvoicePositionResponse]
 
 
@@ -97,6 +100,12 @@ async def add_invoice(
                 ]
             )
             if vatrate_exists:
+                if invoice.original_document:
+                    s3 = S3Events(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+                    invoice_url = await s3.upload(invoice.original_document)
+                    invoice.original_document = invoice_url
+                else:
+                    invoice.original_document = None
                 async with models.database.transaction() as transaction:
 
                     created = await models.Invoice(
@@ -105,6 +114,7 @@ async def add_invoice(
                         invoice_type=invoice.invoice_type,
                         trading_partner_id=invoice.trading_partner_id,
                         enterprise_id=invoice.enterprise_id,
+                        original_document=invoice.original_document
                     ).save()
                     positions = [
                         await models.InvoicePosition(
@@ -124,6 +134,7 @@ async def add_invoice(
                     invoice_type=created.invoice_type,
                     invoice_date=created.invoice_date,
                     invoice_business_id=created.invoice_business_id,
+                    original_document=created.original_document,
                     invoicepositions=[
                         InvoicePositionResponse(
                             id=pos.id,
@@ -293,6 +304,11 @@ async def update_invoice(
     )
     if permissions is True:
         update_data = item.dict(exclude_unset=True)
+
+        if update_data['original_document']:
+            s3 = S3Events(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+            invoice_url = await s3.upload(invoice.original_document)
+            update_data['original_document'] = invoice_url
         await invoice.update(**update_data)
         invoice_output = InvoiceResponse(
             id=invoice.id,
@@ -301,6 +317,7 @@ async def update_invoice(
             invoice_type=invoice.invoice_type,
             invoice_date=invoice.invoice_date,
             invoice_business_id=invoice.invoice_business_id,
+            original_document=invoice.original_document,
             invoicepositions=[
                 InvoicePositionResponse(
                     id=pos.id,

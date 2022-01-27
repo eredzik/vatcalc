@@ -46,7 +46,7 @@ class Invoice(ormar.Model):
     invoice_type = ormar.String(max_length=8, choices=[])
     trading_partner_id = ormar.ForeignKey(TradingPartner)
     enterprise_id = ormar.ForeignKey(Enterprise, ondelete="CASCADE")
-    original_document = ormar.String(max_length=100)
+    original_document = ormar.String(max_length=300, allow_blank=True, nullable=True)
 
 
 class VatRate(ormar.Model):

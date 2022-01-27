@@ -16,6 +16,8 @@ class Settings(BaseSettings):
     DATABASE_URL: Optional[PostgresDsn] = None
     SOAP_ENDPOINT: str
     SOAP_KEY: str
+    AWS_ACCESS_KEY_ID: str
+    AWS_SECRET_ACCESS_KEY: str
 
     @validator("DATABASE_URL", pre=True)
     def assemble_db_connection(cls, v: Optional[str], values: Dict[str, Any]) -> Any:

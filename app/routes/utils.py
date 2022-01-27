@@ -35,3 +35,4 @@ def get_verify_enterprise_permissions_responses():
 
 class Message(BaseModel):
     detail: str
+
