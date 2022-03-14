@@ -66,7 +66,6 @@ async def add_trading_partner(
     else:
         raise HTTPException(HTTP_409_CONFLICT, "Entity exists")
 
-
 @tradingpartner_router.get(
     "/trading_partner",
     response_model=List[TradingPartnerResponse],

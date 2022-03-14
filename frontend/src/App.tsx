@@ -1,6 +1,6 @@
 import { Backdrop, CircularProgress } from "@material-ui/core";
 import { useEffect } from "react";
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from "react-query";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
 import { useUser } from "./hooks/userApi";
@@ -15,16 +15,14 @@ import { InvoicesList } from "./routes/Invoices/List";
 import SignIn from "./routes/SignIn";
 import SignUp from "./routes/SignUp";
 import AddTradingPartner from "./routes/TradingPartners/Add";
+import { Edit as TradePartnerEdit } from "./routes/TradingPartners/Edit";
 import TradingPartnersList from "./routes/TradingPartners/List";
 
-export const App: React.FC<{
-}> = () => {
-  const queryClient = useQueryClient()
-  useEffect(
-    () => {
-      queryClient.invalidateQueries('user');
-    },
-    [queryClient]);
+export const App: React.FC<{}> = () => {
+  const queryClient = useQueryClient();
+  useEffect(() => {
+    queryClient.invalidateQueries("user");
+  }, [queryClient]);
 
   const user = useUser();
   return (
@@ -40,13 +38,25 @@ export const App: React.FC<{
         <Route component={Dashboard} exact path="/dashboard" />
         <Route component={EnterpriseList} exact path="/enterprise" />
         <Route component={EnterpriseAdd} exact path="/enterprise/add" />
-        <Route component={EnterpriseEdit} exact path="/enterprise/:enterprise_id" />
-        <Route component={VatrateAdd} exact path="/enterprise/:enterprise_id/vatrate/add" />
+        <Route
+          component={EnterpriseEdit}
+          exact
+          path="/enterprise/:enterprise_id"
+        />
+        <Route
+          component={VatrateAdd}
+          exact
+          path="/enterprise/:enterprise_id/vatrate/add"
+        />
         <Route component={TradingPartnersList} exact path="/trading_partner" />
-        <Route component={AddTradingPartner} exact path="/trading_partner/add" />
+        <Route
+          component={AddTradingPartner}
+          exact
+          path="/trading_partner/add"
+        />
         <Route component={InvoiceAdd} exact path="/invoice/add" />
         <Route component={InvoicesList} exact path="/invoice" />
-
+        <Route component={TradePartnerEdit} exact path="/trading_partner/:id" />
         <Route component={Home} />
       </Switch>
     </Router>
