@@ -60,7 +60,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "update_db:dev": "npx dotenv -e .env.local  -- npx prisma db push"
   },
   "eslintConfig": {
     "extends": [

@@ -11,14 +11,16 @@ import {
   Typography,
 } from "@material-ui/core";
 import { useFormik } from "formik";
+import { useRouter } from "next/router";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { Button, Form, Header } from "semantic-ui-react";
 import * as yup from "yup";
-import { Layout } from "../../../components/Layout";
+import { Layout } from "../../components/Layout";
+import { trpc } from "../../utils/trpc";
 // import { ButtonWithLoading } from "../../components/LoadingButton";
-import { useEnterpriseMutation } from "../../hooks/enterpriseApi";
-import { nipNumberYup } from "../../utils/nipValidation";
+// import { useEnterpriseMutation } from "../../hooks/enterpriseApi";
+// import { nipNumberYup } from "../../utils/nipValidation";
 
 const steps = [
   "Dodaj swoją jednoosobową działalność gospodarczą",
@@ -49,6 +51,7 @@ export default function EnterpriseAdd() {
     </Layout>
   );
 }
+EnterpriseAdd.auth = true;
 
 interface Page0Props {
   sendNipNumber: Dispatch<SetStateAction<string>>;
@@ -59,9 +62,9 @@ function Page0({ sendNipNumber, nextPageHandler }: Page0Props) {
     initialValues: {
       nipNumber: "",
     },
-    validationSchema: yup.object({
-      nipNumber: nipNumberYup,
-    }),
+    // validationSchema: yup.object({
+    //   nipNumber: nipNumberYup,
+    // }),
     onSubmit: (values) => {
       sendNipNumber(values.nipNumber);
       nextPageHandler();
@@ -119,7 +122,9 @@ interface Page1Props {
   prevPageHandler: () => void;
 }
 function Page1({ inputNipNumber, prevPageHandler }: Page1Props) {
-  const enterpriseAdd = useEnterpriseMutation();
+  //   const enterpriseAdd = useEnterpriseMutation();
+  const enterpriseAdd = trpc.useMutation("enterprises.addEnterprise");
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       nipNumber: inputNipNumber,
@@ -128,7 +133,7 @@ function Page1({ inputNipNumber, prevPageHandler }: Page1Props) {
       taxSchema: "",
     },
     validationSchema: yup.object({
-      nipNumber: nipNumberYup,
+      //   nipNumber: nipNumberYup,
       address: yup
         .string()
         .test("nonempty", "Adres nie może być pusty", (val) =>
@@ -146,12 +151,15 @@ function Page1({ inputNipNumber, prevPageHandler }: Page1Props) {
           return val ? true : false;
         }),
     }),
-    onSubmit: (values) => {
-      enterpriseAdd.mutate({
-        address: formik.values.address,
-        name: formik.values.name,
-        nip_number: formik.values.nipNumber,
+    onSubmit: async (values) => {
+      const res = await enterpriseAdd.mutateAsync({
+        address: values.address,
+        name: values.name,
+        nip_number: values.nipNumber,
       });
+      if (res) {
+        router.push("/enterprises");
+      }
     },
     validateOnMount: true,
   });
@@ -255,8 +263,6 @@ function Page1({ inputNipNumber, prevPageHandler }: Page1Props) {
             Wstecz
           </Button>
         </Grid>
-
-        {enterpriseAdd.isSuccess ? <Redirect to="/" /> : <></>}
       </Grid>
     </form>
   );

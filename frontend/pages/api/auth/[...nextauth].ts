@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { Session, User } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import { PrismaClient } from "@prisma/client";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
@@ -14,4 +14,14 @@ export default NextAuth({
     }),
     // ...add more providers here
   ],
+  callbacks: {
+    session: async ({ session, user }: { session: Session; user: User }) => {
+      session.user.id = user.id;
+      session.user.fav_enterprise_id = user.fav_enterprise_id as number;
+      return session;
+    }, // session({ session: Session, user }) {
+    //     session.id = user.id
+    //     return session
+    // }
+  },
 });

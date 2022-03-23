@@ -8,6 +8,7 @@ import { EnterpriseResponse } from "../src/generated-api";
 // import { useEnterprisesList } from "../src/hooks/enterpriseApi";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { Dropdown, Button } from "semantic-ui-react";
+import { trpc } from "../utils/trpc";
 
 // import {
 //   useLogoutUser,
@@ -41,17 +42,22 @@ export const Navbar: React.FC<{}> = () => {
     </div>
   );
 };
-
+const reloadSession = () => {
+  const event = new Event("visibilitychange");
+  document.dispatchEvent(event);
+};
 function SelectEnterprise(): JSX.Element {
-  // const user = useUser();
-  // const updateFavEnterprise = useUserMutationFavEnterprise();
-
-  // const enterprisesList = useEnterprisesList(1);
-  // const selectedEnterpriseLabel =
-  //   enterprisesList.data?.data.filter(
-  //     (v) => v.enterprise_id === user.data?.data.fav_enterprise_id
-  //   )[0]?.name || "Wybierz firmę";
-  const selectedEnterpriseLabel = "Wybierz firmę";
+  const session = useSession();
+  const trpcContext = trpc.useContext();
+  const updateFavEnterprise = trpc.useMutation("enterprises.setFavEnterprise");
+  const allUserEnterprises = trpc.useQuery([
+    "enterprises.availableEnterprises",
+  ]).data;
+  const userEnterprises =
+    allUserEnterprises?.map((e) => ({
+      text: e.enterprise.name,
+      value: e.enterprise.id,
+    })) || [];
   const renderItem: ItemRenderer<EnterpriseResponse> = (
     item,
     { handleClick, modifiers, query }
@@ -71,24 +77,38 @@ function SelectEnterprise(): JSX.Element {
       />
     );
   };
-
+  console.log(
+    allUserEnterprises?.filter(
+      (e) => e.enterprise_id === session.data?.user.fav_enterprise_id
+    )[0].enterprise.name
+  );
   return (
     <Dropdown
       className="icon"
-      search
+      // search
       selection
       labeled
       button
       icon="factory"
       // filterable={false}
-      // items={enterprisesList.data?.data || []}
-      options={[]}
-      text="Wybierz firmę"
+      // items={userEnterprises || []}
+      options={userEnterprises}
+      text={
+        allUserEnterprises?.filter(
+          (e) => e.enterprise_id === session.data?.user.fav_enterprise_id
+        )[0]?.enterprise.name || "Wybierz firmę"
+      }
       // itemRenderer={renderItem}
-      // onItemSelect={() => {}}
-      // onItemSelect={(enterprise_selected) =>
-      //   updateFavEnterprise.mutate(enterprise_selected.enterprise_id)
-      // }
+
+      onChange={async (e, data) => {
+        console.log(data, e);
+        const res = await updateFavEnterprise.mutateAsync({
+          enterprise_id: data.value as number,
+        });
+        if (res) {
+          reloadSession();
+        }
+      }}
     />
   );
 }
@@ -98,12 +118,6 @@ function RightButton({ session }: { session: any }) {
   // const logOutAction = useLogoutUser();
   const renderMenuItems = (
     <Menu>
-      <Link href="/enterprise">
-        <MenuItem
-          text="Moje firmy"
-          // onClick={() => history.push("/enterprise")}
-        />
-      </Link>
       <Link href="/invoice">
         <MenuItem
           text="Faktury"
@@ -128,13 +142,21 @@ function RightButton({ session }: { session: any }) {
       text=" "
       floating
       direction="left"
-      options={[
-        {
-          key: "enterprise",
-          text: <Link href="/enterprises" children="Moje firmy" />,
-        },
-      ]}
-    />
+      // options={[
+      //   {
+      //     key: "enterprise",
+      //     text: <Dropdown.Item href="/enterprises" children="Moje firmy" />,
+      //   },
+      //   { key: "invoice", text: <Link href="/invoices" children="Faktury" /> },
+      // ]}
+    >
+      <Dropdown.Menu>
+        <Dropdown.Item text="Firmy" href="/enterprises" />
+        <Dropdown.Item text="Faktury" href="/invoices" />
+        <Dropdown.Item text="Kontrahenci" href="/trading_partners" />
+        <Dropdown.Item text="Wyloguj" onClick={() => signOut()} />
+      </Dropdown.Menu>
+    </Dropdown>
   );
   const authorizedRightButton = (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
