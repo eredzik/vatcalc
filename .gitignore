@@ -17,3 +17,4 @@ tmp/
 .devcontainer
 upsource/
 frontend/src/generated-api
+.next/

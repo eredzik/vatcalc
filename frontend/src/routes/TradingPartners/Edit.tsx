@@ -1,5 +1,5 @@
 import { Button } from "semantic-ui-react";
-import { Layout } from "../../components/Layout";
+import { Layout } from "../../../components/Layout";
 
 export function Edit() {
   return (

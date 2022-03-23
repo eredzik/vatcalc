@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Button, Divider, Form, Message } from "semantic-ui-react";
 import * as yup from "yup";
-import { Layout } from "../../components/Layout";
+import { Layout } from "../../../components/Layout";
 import { useREGONQueryByNIP } from "../../hooks/enterpriseApi";
 import { useTradingPartnersAdd } from "../../hooks/partnersApi";
 import { useUser } from "../../hooks/userApi";

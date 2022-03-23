@@ -1,11 +1,11 @@
 import { Formik } from "formik";
 import { Form, SubmitButton } from "formik-semantic-ui-react";
 import { Dropdown } from "semantic-ui-react";
-import { Layout } from "../../components/Layout";
+import { Layout } from "../../../components/Layout";
 import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 
-import { FormikSemanticDatepicker } from "../../components/Forms/FormikSemanticDatepicker";
+import { FormikSemanticDatepicker } from "../../../components/Forms/FormikSemanticDatepicker";
 import {
   useTradingPartnersAdd,
   useTradingPartnersList,

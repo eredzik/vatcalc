@@ -13,10 +13,10 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Link from "@material-ui/core/Link";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import { mainListItems, secondaryListItems } from "../components/listItems";
-import Chart from "../components/Chart";
-import Deposits from "../components/Deposits";
-import Orders from "../components/Orders";
+import { mainListItems, secondaryListItems } from "../../components/listItems";
+import Chart from "../../components/Chart";
+import Deposits from "../../components/Deposits";
+import Orders from "../../components/Orders";
 
 function Copyright() {
   return (

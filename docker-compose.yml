@@ -31,17 +31,17 @@ services:
       - JWT_SECRET=somesecret
       - SOAP_ENDPOINT=${SOAP_ENDPOINT}
       - SOAP_KEY=${SOAP_KEY}
-  frontend:
-    build:
-      context: frontend/
-      dockerfile:  "Dockerfile"
-    ports:
-      - 3000:3000
-    volumes:
-      - ./frontend:/app
-    environment:
-      - API_URL=http://backend:5000
-      - WAIT_HOSTS=backend:5000
-      - WAIT_HOSTS_TIMEOUT=300
-      - WAIT_SLEEP_INTERVAL=2
-      - WAIT_HOST_CONNECT_TIMEOUT=5
+  # frontend:
+  #   build:
+  #     context: frontend/
+  #     dockerfile:  "Dockerfile"
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - ./frontend:/app
+  #   environment:
+  #     - API_URL=http://backend:5000
+  #     - WAIT_HOSTS=backend:5000
+  #     - WAIT_HOSTS_TIMEOUT=300
+  #     - WAIT_SLEEP_INTERVAL=2
+  #     - WAIT_HOST_CONNECT_TIMEOUT=5

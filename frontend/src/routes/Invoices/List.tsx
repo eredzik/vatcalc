@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { useTable } from "react-table";
 import { Button, Table } from "semantic-ui-react";
-import { Layout } from "../../components/Layout";
+import { Layout } from "../../../components/Layout";
 import { InvoiceListResponse } from "../../generated-api";
 import { useInvoiceList } from "../../hooks/invoicesApi";
 export function InvoicesList() {

@@ -17,6 +17,10 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "@trpc/client": "^9.20.1",
+    "@trpc/next": "^9.20.1",
+    "@trpc/react": "^9.20.1",
+    "@trpc/server": "^9.20.1",
     "@types/jest": "^26.0.24",
     "@types/node": "^12.20.20",
     "@types/react": "^17.0.19",
@@ -27,12 +31,14 @@
     "formik": "^2.2.9",
     "formik-semantic-ui-react": "^2.0.0",
     "http-proxy-middleware": "^0.19.1",
+    "next": "^12.1.0",
+    "next-auth": "^4.2.1",
+    "next-superjson": "^0.0.2",
     "react": "^17.0.2",
     "react-admin": "^3.18.0",
     "react-dom": "^17.0.2",
-    "react-query": "^3.24.5",
+    "react-query": "^3.34.16",
     "react-redux": "^7.2.5",
-    "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
     "react-semantic-ui-datepickers": "^2.17.0",
     "react-table": "^7.7.0",
@@ -43,6 +49,7 @@
     "sass": "^1.42.1",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.0.4",
+    "superjson": "^1.8.1",
     "typescript": "^4.3.5",
     "web-vitals": "^1.1.2",
     "yup": "^0.32.9",
@@ -50,10 +57,10 @@
     "zod-formik-adapter": "^1.0.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "eslintConfig": {
     "extends": [
@@ -76,6 +83,7 @@
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.3.10",
     "@types/react-router-dom": "^5.1.8",
+    "dotenv-cli": "^5.0.0",
     "prettier": "2.3.2"
   },
   "rules": {

@@ -2,7 +2,7 @@ import { Backdrop, CircularProgress } from "@material-ui/core";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Navbar } from "./components/Navbar";
+import { Navbar } from "../components/Navbar";
 import { useUser } from "./hooks/userApi";
 import Dashboard from "./routes/Dashboard";
 import EnterpriseAdd from "./routes/Enterprises/Add";

@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id                String      @id @default(cuid())
+  name              String?
+  email             String?     @unique
+  emailVerified     DateTime?
+  image             String?
+  accounts          Account[]
+  sessions          Session[]
+  fav_enterprise    Enterprise? @relation(fields: [fav_enterprise_id], references: [id])
+  fav_enterprise_id Int?
+
+  userenterprise UserEnterprise[]
+}
+
+// model User {
+//   id                Int              @id @default(autoincrement())
+//   username          String           @unique(map: "ix_user_username") @db.VarChar(255)
+//   email             String           @unique(map: "ix_user_email") @db.VarChar(255)
+//   hashed_password   String           @db.VarChar(255)
+//   fav_enterprise_id Int?
+//   enterprise        Enterprise?      @relation(fields: [fav_enterprise_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_enterprise_id_fav_enterprise_id")
+//   userenterprise    userenterprise[]
+// }
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Enterprise {
+  id             Int              @id @default(autoincrement())
+  name           String           @db.VarChar(64)
+  address        String           @db.VarChar(256)
+  nip_number     String           @db.VarChar(10)
+  invoice        Invoice[]
+  tradingpartner TradingPartner[]
+  user           User[]
+  userenterprise UserEnterprise[]
+  vatrate        VatRate[]
+}
+
+model Invoice {
+  id                  Int               @id @default(autoincrement())
+  invoice_business_id String            @db.VarChar(64)
+  invoice_date        DateTime          @db.Date
+  invoice_type        String            @db.VarChar(8)
+  trading_partner_id  Int?
+  enterprise_id       Int?
+  enterprise          Enterprise?       @relation(fields: [enterprise_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_invoice_enterprise_id_enterprise_id")
+  tradingpartner      TradingPartner?   @relation(fields: [trading_partner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_invoice_tradingpartner_id_trading_partner_id")
+  invoiceposition     InvoicePosition[]
+}
+
+model InvoicePosition {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(50)
+  vat_rate_id Int?
+  num_items   Float
+  price_net   Float
+  invoice_id  Int?
+  invoice     Invoice? @relation(fields: [invoice_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_invoiceposition_invoice_id_invoice_id")
+  vatrate     VatRate? @relation(fields: [vat_rate_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_invoiceposition_vatrate_id_vat_rate_id")
+}
+
+model TradingPartner {
+  id            Int         @id @default(autoincrement())
+  nip_number    String      @db.VarChar(10)
+  name          String      @db.VarChar(255)
+  address       String
+  enterprise_id Int?
+  enterprise    Enterprise? @relation(fields: [enterprise_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_tradingpartner_enterprise_id_enterprise_id")
+  invoice       Invoice[]
+}
+
+model UserEnterprise {
+  id            Int        @id @default(autoincrement())
+  enterprise_id Int
+  user_id       String
+  role          String     @db.VarChar(10)
+  enterprise    Enterprise @relation(fields: [enterprise_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_userenterprise_enterprise_id_enterprise_id")
+  user          User       @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_userenterprise_user_id_user_id")
+}
+
+model VatRate {
+  id              Int               @id @default(autoincrement())
+  vat_rate        Float
+  comment         String            @db.VarChar(255)
+  enterprise_id   Int?
+  enterprise      Enterprise?       @relation(fields: [enterprise_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_vatrate_enterprise_id_enterprise_id")
+  invoiceposition InvoicePosition[]
+}
